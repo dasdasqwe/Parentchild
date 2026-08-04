@@ -180,7 +180,7 @@ export const mockStays = [
     id: 'tp-2',
     cityId: 'taipei',
     cityName: '台北',
-    name: '台北精緻商務平價飯店 (Hey Bear Hotel)',
+    name: '黑熊好眠站旅館 (Hey Bear Hotel)',
     type: 'Hotel',
     image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
     rating: 4.6,
