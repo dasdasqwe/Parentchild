@@ -1,13 +1,15 @@
 export const mockCities = [
-  { id: 'taipei', name: '台北 (Taipei)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台北', 'taipei'] },
-  { id: 'yilan', name: '宜蘭 (Yilan)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['宜蘭', 'yilan'] },
-  { id: 'taichung', name: '台中 (Taichung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台中', 'taichung'] },
-  { id: 'okinawa', name: '沖繩 (Okinawa)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['沖繩', 'okinawa'] },
-  { id: 'tokyo', name: '東京 (Tokyo)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['東京', 'tokyo'] },
-  { id: 'osaka', name: '大阪 (Osaka)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['大阪', 'osaka'] },
-  { id: 'seoul', name: '首爾 (Seoul)', country: '韓國', currency: 'KRW', symbol: '₩', aliases: ['首爾', 'seoul'] },
-  { id: 'kyoto', name: '京都 (Kyoto)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['京都', 'kyoto'] },
-  { id: 'bangkok', name: '曼谷 (Bangkok)', country: '泰國', currency: 'THB', symbol: '฿', aliases: ['曼谷', 'bangkok'] }
+  { id: 'taipei', name: '台北 (Taipei)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台北', 'taipei', '臺北', '大同區', '萬華區', '信義區', '中山區'] },
+  { id: 'yilan', name: '宜蘭 (Yilan)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['宜蘭', 'yilan', '礁溪', '羅東', '頭城', '冬山'] },
+  { id: 'taichung', name: '台中 (Taichung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台中', 'taichung', '臺中', '西屯', '逢甲', '中區'] },
+  { id: 'kaohsiung', name: '高雄 (Kaohsiung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['高雄', 'kaohsiung', '新興區', '鹽埕區', '左營'] },
+  { id: 'tainan', name: '台南 (Tainan)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台南', 'tainan', '臺南', '中西區', '安平'] },
+  { id: 'okinawa', name: '沖繩 (Okinawa)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['沖繩', 'okinawa', '那霸', '名護', '北谷'] },
+  { id: 'tokyo', name: '東京 (Tokyo)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['東京', 'tokyo', '新宿', '上野', '淺草', '銀座'] },
+  { id: 'osaka', name: '大阪 (Osaka)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['大阪', 'osaka', '難波', '心齋橋', '梅田'] },
+  { id: 'seoul', name: '首爾 (Seoul)', country: '韓國', currency: 'KRW', symbol: '₩', aliases: ['首爾', 'seoul', '明洞', '弘大', '東大門'] },
+  { id: 'kyoto', name: '京都 (Kyoto)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['京都', 'kyoto', '祇園', '河原町'] },
+  { id: 'bangkok', name: '曼谷 (Bangkok)', country: '泰國', currency: 'THB', symbol: '฿', aliases: ['曼谷', 'bangkok', '暹羅', '素坤逸'] }
 ];
 
 export const mockStays = [
@@ -36,7 +38,8 @@ export const mockStays = [
   {
     id: 'yil-2',
     cityId: 'yilan',
-    cityName: '宜蘭羅東夜市平價觀光飯店 (Luodong Nightmarket Hotel)',
+    cityName: '宜蘭',
+    name: '宜蘭羅東夜市平價觀光飯店 (Luodong Nightmarket Hotel)',
     type: 'Hotel',
     image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
     rating: 4.7,
@@ -55,7 +58,8 @@ export const mockStays = [
   {
     id: 'yil-3',
     cityId: 'yilan',
-    cityName: '宜蘭冬山河綠意稻田風情民宿 (Dongshan River B&B)',
+    cityName: '宜蘭',
+    name: '宜蘭冬山河綠意稻田風情民宿 (Dongshan River B&B)',
     type: 'B&B',
     image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
     rating: 4.8,
@@ -74,7 +78,8 @@ export const mockStays = [
   {
     id: 'yil-4',
     cityId: 'yilan',
-    cityName: '宜蘭蘭陽平原海景親子行館 (Lanyang Ocean Family Hotel)',
+    cityName: '宜蘭',
+    name: '宜蘭蘭陽平原海景親子行館 (Lanyang Ocean Family Hotel)',
     type: 'Family Hotel',
     image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
     rating: 4.9,
@@ -90,68 +95,24 @@ export const mockStays = [
       { name: 'Agoda', price: 3100, url: 'https://www.agoda.com/zh-tw/search?kw=Lanyang+Ocean+Family+Hotel' }
     ]
   },
-
-  // 沖繩 (Okinawa)
   {
-    id: 'oki-1',
-    cityId: 'okinawa',
-    cityName: '沖繩',
-    name: '沖繩國際通親子主題渡假旅館 (AO Family Resort)',
+    id: 'yil-5',
+    cityId: 'yilan',
+    cityName: '宜蘭',
+    name: '宜蘭礁溪晶泉楓旅主題溫泉飯店 (Wellspring by Silks Jiaoxi)',
     type: 'Family Hotel',
-    image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
     rating: 4.9,
-    reviewsCount: 1120,
-    address: '沖繩縣那霸市久茂地1-4-1 (距離國際通步行 3分鐘 / 縣廳前站 2分鐘)',
-    tags: ['兒童遊戲區', '國際通旁', '嬰兒床備品', '免費親子早餐'],
+    reviewsCount: 3100,
+    address: '宜蘭縣礁溪鄉溫泉路67號 (捷絲旅礁溪館旁)',
+    tags: ['露天泳池', '親子湯屋', '無邊際風呂', '日式清酒禮遇'],
     lowestPriceProvider: 'Agoda',
-    price: 1680,
-    originalPrice: 2800,
-    discountPercent: 40,
+    price: 4200,
+    originalPrice: 6500,
+    discountPercent: 35,
     providers: [
-      { name: 'Agoda', price: 1680, url: 'https://www.agoda.com/zh-tw/search?kw=Okinawa+AO+Family+Resort', isLowest: true },
-      { name: 'Booking.com', price: 1750, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Okinawa+AO+Family+Resort' },
-      { name: 'Trip.com', price: 1800, url: 'https://hk.trip.com/hotels/w/okinawa-hotels' }
-    ]
-  },
-  {
-    id: 'oki-2',
-    cityId: 'okinawa',
-    cityName: '沖繩',
-    name: '沖繩海邊無敵海景平價飯店 (Okinawa Beachside Hotel)',
-    type: 'Hotel',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-    rating: 4.7,
-    reviewsCount: 1540,
-    address: '沖繩縣那霸市辻3-2-36 (鄰近波之上沙灘 / 免費停車)',
-    tags: ['陽台無敵海景', '免費停車位', '大浴場洗禮', '親子放鬆'],
-    lowestPriceProvider: 'Booking.com',
-    price: 1580,
-    originalPrice: 2800,
-    discountPercent: 44,
-    providers: [
-      { name: 'Booking.com', price: 1580, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Okinawa+Beachside+Hotel', isLowest: true },
-      { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/search?kw=Okinawa+Beachside+Hotel' },
-      { name: 'Trip.com', price: 1720, url: 'https://hk.trip.com/hotels/w/okinawa-hotels' }
-    ]
-  },
-  {
-    id: 'oki-3',
-    cityId: 'okinawa',
-    cityName: '沖繩',
-    name: '沖繩美榮橋親子歡樂文旅 (Myrica Family Inn)',
-    type: 'Family Hotel',
-    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
-    rating: 4.8,
-    reviewsCount: 680,
-    address: '沖繩縣那霸市牧志 (單軌美榮橋站步行1分鐘)',
-    tags: ['推車友善', '兒童玩具區', '獨立親子房', '附洗沐用品'],
-    lowestPriceProvider: 'Agoda',
-    price: 1420,
-    originalPrice: 2300,
-    discountPercent: 38,
-    providers: [
-      { name: 'Agoda', price: 1420, url: 'https://www.agoda.com/zh-tw/search?kw=Okinawa+Myrica+Family+Inn', isLowest: true },
-      { name: 'Booking.com', price: 1490, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Okinawa+Myrica+Family+Inn' }
+      { name: 'Agoda', price: 4200, url: 'https://www.agoda.com/zh-tw/search?kw=Wellspring+by+Silks+Jiaoxi', isLowest: true },
+      { name: 'Booking.com', price: 4350, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Wellspring+by+Silks+Jiaoxi' }
     ]
   },
 
@@ -214,6 +175,255 @@ export const mockStays = [
     providers: [
       { name: 'Trip.com', price: 1580, url: 'https://hk.trip.com/hotels/w/taipei-hotels', isLowest: true },
       { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/search?kw=Cho+B%26B+Ximen+Taipei' }
+    ]
+  },
+  {
+    id: 'tp-4',
+    cityId: 'taipei',
+    cityName: '台北',
+    name: '台北君品酒店 (Palais de Chine Hotel)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 4200,
+    address: '台北市大同區承德路一段3號 (京站時尚廣場旁/台北車站直達)',
+    tags: ['五星級典雅', '米其林三星餐廳', '親子高級備品', '連通京站購物'],
+    lowestPriceProvider: 'Agoda',
+    price: 4800,
+    originalPrice: 7500,
+    discountPercent: 36,
+    providers: [
+      { name: 'Agoda', price: 4800, url: 'https://www.agoda.com/zh-tw/search?kw=Palais+de+Chine+Hotel', isLowest: true },
+      { name: 'Booking.com', price: 4950, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Palais+de+Chine+Hotel' }
+    ]
+  },
+  {
+    id: 'tp-5',
+    cityId: 'taipei',
+    cityName: '台北',
+    name: '台北華山文創設計旅旅 (Hua Shan Din Hotel)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.7,
+    reviewsCount: 1890,
+    address: '台北市中正區忠孝東路二段79號 (忠孝新生站步行3分鐘)',
+    tags: ['華山園區旁', '設計風格', '親子閱讀室', '附精緻早餐'],
+    lowestPriceProvider: 'Booking.com',
+    price: 2380,
+    originalPrice: 3800,
+    discountPercent: 37,
+    providers: [
+      { name: 'Booking.com', price: 2380, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Hua+Shan+Din+Hotel', isLowest: true },
+      { name: 'Agoda', price: 2450, url: 'https://www.agoda.com/zh-tw/search?kw=Hua+Shan+Din+Hotel' }
+    ]
+  },
+
+  // 台中 (Taichung)
+  {
+    id: 'tc-1',
+    cityId: 'taichung',
+    cityName: '台中',
+    name: '台中逢甲夜市親子歡樂行館 (Fengjia Joyous Family Hotel)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 2300,
+    address: '台中市西屯區福星路 (逢甲夜市核心商圈步行 1分鐘)',
+    tags: ['兒童球池', '免費停車', '嬰兒澡盆', '夜市美食首選'],
+    lowestPriceProvider: 'Agoda',
+    price: 1850,
+    originalPrice: 3200,
+    discountPercent: 42,
+    providers: [
+      { name: 'Agoda', price: 1850, url: 'https://www.agoda.com/zh-tw/search?kw=Fengjia+Joyous+Family+Hotel+Taichung', isLowest: true },
+      { name: 'Booking.com', price: 1920, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Fengjia+Joyous+Family+Hotel+Taichung' }
+    ]
+  },
+  {
+    id: 'tc-2',
+    cityId: 'taichung',
+    cityName: '台中',
+    name: '台中草悟道綠意設計酒店 (Calligraphy Greenway Hotel)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.7,
+    reviewsCount: 1540,
+    address: '台中市西區公益路 (草悟道/勤美誠品步行 3分鐘)',
+    tags: ['草悟道綠意', '設計風格房', '人文咖啡館', '親善管家'],
+    lowestPriceProvider: 'Booking.com',
+    price: 2100,
+    originalPrice: 3500,
+    discountPercent: 40,
+    providers: [
+      { name: 'Booking.com', price: 2100, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Calligraphy+Greenway+Hotel+Taichung', isLowest: true },
+      { name: 'Agoda', price: 2180, url: 'https://www.agoda.com/zh-tw/search?kw=Calligraphy+Greenway+Hotel+Taichung' }
+    ]
+  },
+  {
+    id: 'tc-3',
+    cityId: 'taichung',
+    cityName: '台中',
+    name: '台中車站綠川風情精緻文旅 (Luchuan Riverside Inn)',
+    type: 'B&B',
+    image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
+    rating: 4.6,
+    reviewsCount: 1120,
+    address: '台中市中區綠川西街 (距離台中火車站 步行4分鐘)',
+    tags: ['宮原眼科旁', '綠川水岸觀景', '平價首選', '豐富早餐'],
+    lowestPriceProvider: 'Agoda',
+    price: 1380,
+    originalPrice: 2400,
+    discountPercent: 42,
+    providers: [
+      { name: 'Agoda', price: 1380, url: 'https://www.agoda.com/zh-tw/search?kw=Luchuan+Riverside+Inn+Taichung', isLowest: true },
+      { name: 'Booking.com', price: 1450, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Luchuan+Riverside+Inn+Taichung' }
+    ]
+  },
+
+  // 高雄 (Kaohsiung)
+  {
+    id: 'kh-1',
+    cityId: 'kaohsiung',
+    cityName: '高雄',
+    name: '高雄駁二藝術特區港景親子飯店 (Pier-2 Ocean Family Hotel)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 2600,
+    address: '高雄市鹽埕區大勇路 (輕軌駁二大義站 步行2分鐘)',
+    tags: ['高雄港無敵海景', '輕軌捷運雙匯', '兒童大遊戲區', '含豐盛早午餐'],
+    lowestPriceProvider: 'Agoda',
+    price: 2280,
+    originalPrice: 3800,
+    discountPercent: 40,
+    providers: [
+      { name: 'Agoda', price: 2280, url: 'https://www.agoda.com/zh-tw/search?kw=Pier-2+Ocean+Family+Hotel+Kaohsiung', isLowest: true },
+      { name: 'Booking.com', price: 2350, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Pier-2+Ocean+Family+Hotel+Kaohsiung' }
+    ]
+  },
+  {
+    id: 'kh-2',
+    cityId: 'kaohsiung',
+    cityName: '高雄',
+    name: '高雄美麗島六合夜市文創行館 (Formosa Boulevard Hotel)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.7,
+    reviewsCount: 1850,
+    address: '高雄市新興區中山一路 (美麗島捷運站11號出口 10秒直達)',
+    tags: ['光之穹頂旁', '六合夜市步行1分', '免費飲料區', '獨立乾濕分離'],
+    lowestPriceProvider: 'Booking.com',
+    price: 1480,
+    originalPrice: 2600,
+    discountPercent: 43,
+    providers: [
+      { name: 'Booking.com', price: 1480, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Formosa+Boulevard+Hotel+Kaohsiung', isLowest: true },
+      { name: 'Agoda', price: 1550, url: 'https://www.agoda.com/zh-tw/search?kw=Formosa+Boulevard+Hotel+Kaohsiung' }
+    ]
+  },
+
+  // 沖繩 (Okinawa)
+  {
+    id: 'oki-1',
+    cityId: 'okinawa',
+    cityName: '沖繩',
+    name: '沖繩國際通親子主題渡假旅館 (AO Family Resort)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 1120,
+    address: '沖繩縣那霸市久茂地1-4-1 (距離國際通步行 3分鐘 / 縣廳前站 2分鐘)',
+    tags: ['兒童遊戲區', '國際通旁', '嬰兒床備品', '免費親子早餐'],
+    lowestPriceProvider: 'Agoda',
+    price: 1680,
+    originalPrice: 2800,
+    discountPercent: 40,
+    providers: [
+      { name: 'Agoda', price: 1680, url: 'https://www.agoda.com/zh-tw/search?kw=Okinawa+AO+Family+Resort', isLowest: true },
+      { name: 'Booking.com', price: 1750, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Okinawa+AO+Family+Resort' },
+      { name: 'Trip.com', price: 1800, url: 'https://hk.trip.com/hotels/w/okinawa-hotels' }
+    ]
+  },
+  {
+    id: 'oki-2',
+    cityId: 'okinawa',
+    cityName: '沖繩',
+    name: '沖繩海邊無敵海景平價飯店 (Okinawa Beachside Hotel)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.7,
+    reviewsCount: 1540,
+    address: '沖繩縣那霸市辻3-2-36 (鄰近波之上沙灘 / 免費停車)',
+    tags: ['陽台無敵海景', '免費停車位', '大浴場洗禮', '親子放鬆'],
+    lowestPriceProvider: 'Booking.com',
+    price: 1580,
+    originalPrice: 2800,
+    discountPercent: 44,
+    providers: [
+      { name: 'Booking.com', price: 1580, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Okinawa+Beachside+Hotel', isLowest: true },
+      { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/search?kw=Okinawa+Beachside+Hotel' }
+    ]
+  },
+  {
+    id: 'oki-3',
+    cityId: 'okinawa',
+    cityName: '沖繩',
+    name: '沖繩美榮橋親子歡樂文旅 (Myrica Family Inn)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 680,
+    address: '沖繩縣那霸市牧志 (單軌美榮橋站步行1分鐘)',
+    tags: ['推車友善', '兒童玩具區', '獨立親子房', '附洗沐用品'],
+    lowestPriceProvider: 'Agoda',
+    price: 1420,
+    originalPrice: 2300,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 1420, url: 'https://www.agoda.com/zh-tw/search?kw=Okinawa+Myrica+Family+Inn', isLowest: true },
+      { name: 'Booking.com', price: 1490, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Okinawa+Myrica+Family+Inn' }
+    ]
+  },
+
+  // 東京 (Tokyo)
+  {
+    id: 'tyo-1',
+    cityId: 'tokyo',
+    cityName: '東京',
+    name: '東京新宿親子主題花園飯店 (Shinjuku Family Garden Hotel)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 3400,
+    address: '東京都新宿區歌舞伎町 (距離新宿站步行 5分鐘)',
+    tags: ['新宿車站旁', '兒童免費住宿', '免費日式早餐', '親子四人房'],
+    lowestPriceProvider: 'Agoda',
+    price: 3200,
+    originalPrice: 5200,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 3200, url: 'https://www.agoda.com/zh-tw/search?kw=Shinjuku+Family+Garden+Hotel+Tokyo', isLowest: true },
+      { name: 'Booking.com', price: 3350, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Shinjuku+Family+Garden+Hotel+Tokyo' }
+    ]
+  },
+  {
+    id: 'tyo-2',
+    cityId: 'tokyo',
+    cityName: '東京',
+    name: '東京上野公園景觀精緻飯店 (Ueno Parkview Hotel)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 2900,
+    address: '東京都台東區上野公園前 (京成上野站步行 2分鐘 / 成田機場Skyliner直達)',
+    tags: ['上野動物園旁', 'Skyliner直達', '綠意公園景觀', '繁體中文服務'],
+    lowestPriceProvider: 'Booking.com',
+    price: 2850,
+    originalPrice: 4500,
+    discountPercent: 36,
+    providers: [
+      { name: 'Booking.com', price: 2850, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Ueno+Parkview+Hotel+Tokyo', isLowest: true },
+      { name: 'Agoda', price: 2950, url: 'https://www.agoda.com/zh-tw/search?kw=Ueno+Parkview+Hotel+Tokyo' }
     ]
   }
 ];
@@ -415,5 +625,3 @@ export const mockFamilyTheaters = [
     ticketPlatform: 'Kham 寬宏售票系統'
   }
 ];
-
-

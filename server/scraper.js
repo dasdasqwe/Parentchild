@@ -50,7 +50,7 @@ export async function runScraperJob(query, onLog) {
   onLog(`[DOM-PARSE] 解析「${normCityName}」多頁 HTML 頁面結構，掃描動態 AJAX 元件數據點...`);
   await sleep(150);
   
-  // Fuzzy match with safe optional chaining across aliases
+  // Fuzzy match with safe optional chaining across searchTerms
   let rawResults = mockStays.filter(stay => {
     const cid = (stay.cityId || '').toLowerCase();
     const cname = (stay.cityName || '').toLowerCase();
@@ -62,8 +62,8 @@ export async function runScraperJob(query, onLog) {
   // Clone results to safely format URLs
   let results = JSON.parse(JSON.stringify(rawResults));
 
-  // Supplement items if needed to ensure rich database output for every search
-  if (results.length < 6) {
+  // Supplement items to ensure rich database search results (target at least 15 items)
+  if (results.length < 15) {
     const additionalTemplates = [
       {
         nameSuffix: '站前旗艦親子觀光飯店',
@@ -72,7 +72,7 @@ export async function runScraperJob(query, onLog) {
         price: 2180,
         origPrice: 3500,
         rating: 4.9,
-        tags: ['兒童遊戲區', '捷運/車站旁', '溫泉大浴場', '豐富自助早餐']
+        tags: ['兒童遊戲區', '捷運/車站旁', '大浴場洗禮', '豐富自助早餐']
       },
       {
         nameSuffix: '海景日光休閒渡假飯店',
@@ -118,15 +118,71 @@ export async function runScraperJob(query, onLog) {
         origPrice: 3100,
         rating: 4.8,
         tags: ['無敵海景露台', '星空野餐桌', '現泡咖啡手作點心']
+      },
+      {
+        nameSuffix: '綠洲花園親子溫馨旅店',
+        type: 'Family Hotel',
+        img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+        price: 2600,
+        origPrice: 4100,
+        rating: 4.9,
+        tags: ['室內球池', '親子樂園備品', '兒童早餐']
+      },
+      {
+        nameSuffix: '都會心靈平價精品飯店',
+        type: 'Hotel',
+        img: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
+        price: 1620,
+        origPrice: 2600,
+        rating: 4.7,
+        tags: ['交通便利', '全館乾淨', '隔音佳']
+      },
+      {
+        nameSuffix: '悠活時光景觀渡假會館',
+        type: 'Hotel',
+        img: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80',
+        price: 2890,
+        origPrice: 4600,
+        rating: 4.8,
+        tags: ['頂樓無邊際景觀', '健身房', '含美式早餐']
+      },
+      {
+        nameSuffix: '溫馨小憩風格民宿',
+        type: 'B&B',
+        img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
+        price: 1280,
+        origPrice: 2000,
+        rating: 4.6,
+        tags: ['平價高CP值', '寵物友善', '溫馨氛圍']
+      },
+      {
+        nameSuffix: '星空景觀親子行館',
+        type: 'Family Hotel',
+        img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+        price: 3100,
+        origPrice: 5000,
+        rating: 4.9,
+        tags: ['星空天窗房', '親子戲水池', '兒童玩具']
+      },
+      {
+        nameSuffix: '時代經典商務飯店',
+        type: 'Hotel',
+        img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+        price: 1800,
+        origPrice: 2900,
+        rating: 4.7,
+        tags: ['商務會議室', '免費洗衣房', '優質服務']
       }
     ];
 
-    additionalTemplates.forEach((tpl, idx) => {
+    const needCount = 15 - results.length;
+    additionalTemplates.slice(0, needCount).forEach((tpl, idx) => {
+      const hotelFullName = `${normCityName}${tpl.nameSuffix}`;
       results.push({
         id: `ext-${normCityId}-${idx}`,
         cityId: normCityId,
         cityName: normCityName,
-        name: `${normCityName} ${tpl.nameSuffix}`,
+        name: hotelFullName,
         type: tpl.type,
         image: tpl.img,
         rating: tpl.rating,
@@ -149,20 +205,22 @@ export async function runScraperJob(query, onLog) {
   // Dynamically attach checkIn, checkOut, adults, children to all provider deep links
   results.forEach(stay => {
     const rawName = stay.name || '';
+    // Extract English name in parentheses if present
     const engMatch = rawName.match(/\(([^)]+)\)/);
     const cleanKw = engMatch ? engMatch[1].trim() : rawName.replace(/\(.*?\)/g, '').replace(/【.*?】/g, '').trim();
     const encodedKw = encodeURIComponent(cleanKw || normCityName);
 
     stay.providers = stay.providers.map(p => {
-      let targetUrl = p.url;
+      let targetUrl = '';
       if (p.name.includes('Booking')) {
         targetUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}`;
       } else if (p.name.includes('Agoda')) {
-        targetUrl = `https://www.agoda.com/zh-tw/search?text=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
+        // Agoda kw & headerKeyword parameter for accurate hotel page redirect
+        targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&headerKeyword=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
       } else if (p.name.includes('Trip')) {
         targetUrl = `https://tw.trip.com/hotels/list?keyword=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
       } else {
-        targetUrl = `https://www.agoda.com/zh-tw/search?text=${encodedKw}`;
+        targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&headerKeyword=${encodedKw}`;
       }
       return { ...p, url: targetUrl };
     });
@@ -176,7 +234,7 @@ export async function runScraperJob(query, onLog) {
   // Price filter
   results = results.filter(s => s.price <= maxPrice);
 
-  onLog(`[SCRAPE] 成功完成深層抓取！比價 ${results.length * 4} 個跨平台數據點 (Agoda, Booking, Trip.com)`);
+  onLog(`[SCRAPE] 成功完成深層抓取！比價 ${results.length * 3} 個跨平台數據點 (Agoda, Booking, Trip.com)`);
   await sleep(100);
 
   // Sorting
@@ -208,7 +266,7 @@ export async function runPackageScraperJob(query, onLog) {
     return searchTerms.some(term => cid.includes(term) || cname.includes(term) || title.includes(term));
   });
 
-  if (results.length < 2) {
+  if (results.length < 4) {
     results.push(
       {
         id: `pkg-ext-1-${normCityId}`,
@@ -223,7 +281,8 @@ export async function runPackageScraperJob(query, onLog) {
         savingsText: '組合包比單買現省 NT$1,420',
         tags: ['親子同樂', '含專車接送', '主題樂園'],
         rating: 4.9,
-        reviewsCount: 420
+        reviewsCount: 420,
+        url: `https://www.kkday.com/zh-tw/product/search?keyword=${encodeURIComponent(normCityName)}`
       },
       {
         id: `pkg-ext-2-${normCityId}`,
@@ -238,7 +297,8 @@ export async function runPackageScraperJob(query, onLog) {
         savingsText: '組合包比單買現省 NT$2,000',
         tags: ['觀光包車', '雙人美景晚餐', '熱銷爆款'],
         rating: 4.8,
-        reviewsCount: 310
+        reviewsCount: 310,
+        url: `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(normCityName)}`
       }
     );
   }
@@ -261,7 +321,7 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
     return searchTerms.some(term => cid.includes(term) || cname.includes(term) || name.includes(term));
   });
 
-  if (results.length < 2) {
+  if (results.length < 4) {
     results.push(
       {
         id: `fam-ext-1-${normCityId}`,
@@ -325,4 +385,3 @@ export async function runTheaterScraperJob(query, onLog) {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
