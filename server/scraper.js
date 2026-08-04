@@ -205,9 +205,8 @@ export async function runScraperJob(query, onLog) {
   // Dynamically attach checkIn, checkOut, adults, children to all provider deep links
   results.forEach(stay => {
     const rawName = stay.name || '';
-    // Extract English name in parentheses if present
-    const engMatch = rawName.match(/\(([^)]+)\)/);
-    const cleanKw = engMatch ? engMatch[1].trim() : rawName.replace(/\(.*?\)/g, '').replace(/【.*?】/g, '').trim();
+    // Retain full Chinese and English hotel name so search engines match accurately
+    const cleanKw = rawName.replace(/【.*?】/g, '').trim();
     const encodedKw = encodeURIComponent(cleanKw || normCityName);
 
     stay.providers = stay.providers.map(p => {

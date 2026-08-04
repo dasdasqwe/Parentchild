@@ -201,7 +201,7 @@ export const mockStays = [
     id: 'tp-5',
     cityId: 'taipei',
     cityName: '台北',
-    name: '台北華山文創設計旅旅 (Hua Shan Din Hotel)',
+    name: '天成文旅 - 華山町 (Hua Shan Din Hotel)',
     type: 'Hotel',
     image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
     rating: 4.7,
