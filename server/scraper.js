@@ -35,99 +35,99 @@ const curatedPhotoGalleries = [
 const agodaCityIdMap = {
   // Taiwan Domestic Destinations
   taipei: 4951,
-  '?��?': 4951,
-  '?��?': 4951,
+  '台北': 4951,
+  '臺北': 4951,
   taichung: 12080,
-  '?�中': 12080,
-  '?�中': 12080,
+  '台中': 12080,
+  '臺中': 12080,
   kaohsiung: 17390,
-  '高�?': 17390,
+  '高雄': 17390,
   yilan: 17388,
   '宜蘭': 17388,
   '礁溪': 17388,
   tainan: 17389,
-  '?��?': 17389,
-  '?��?': 17389,
+  '台南': 17389,
+  '臺南': 17389,
   hualien: 17391,
-  '?�蓮': 17391,
+  '花蓮': 17391,
   hsinchu: 17392,
-  '?�竹': 17392,
+  '新竹': 17392,
   taoyuan: 17393,
-  '桃�?': 17393,
+  '桃園': 17393,
   kenting: 17394,
-  '墾�?': 17394,
+  '墾丁': 17394,
   pingtung: 17394,
   '屏東': 17394,
   nantou: 17395,
-  '?��?': 17395,
+  '南投': 17395,
   sunmoonlake: 17395,
-  '?��?�?: 17395,
+  '日月潭': 17395,
   chiayi: 17396,
-  '?�義': 17396,
+  '嘉義': 17396,
   alishan: 17396,
-  '?��?�?: 17396,
+  '阿里山': 17396,
   taitung: 17397,
-  '?�東': 17397,
+  '台東': 17397,
   penghu: 17398,
-  '澎�?': 17398,
+  '澎湖': 17398,
 
   // Japan Destinations
   okinawa: 717899,
   '沖繩': 717899,
   naha: 717899,
-  '??��': 717899,
+  '那霸': 717899,
   tokyo: 5085,
-  '?�京': 5085,
+  '東京': 5085,
   shinjuku: 5085,
-  '?�宿': 5085,
+  '新宿': 5085,
   kyoto: 15833,
   '京都': 15833,
   osaka: 13170,
   '大阪': 13170,
   sapporo: 15392,
-  '?��?': 15392,
+  '札幌': 15392,
   hokkaido: 15392,
-  '?�海??: 15392,
+  '北海道': 15392,
   fukuoka: 14781,
   '福岡': 14781,
   nagoya: 14934,
-  '?�古�?: 14934,
+  '名古屋': 14934,
 
   // Korea Destinations
   seoul: 14690,
   '首爾': 14690,
   busan: 15024,
-  '?�山': 15024,
+  '釜山': 15024,
   jeju: 17189,
-  '濟�?': 17189,
+  '濟州': 17189,
 
   // Southeast Asia Destinations
   bangkok: 9395,
-  '?�谷': 9395,
+  '曼谷': 9395,
   chiangmai: 16901,
-  '清�?': 16901,
+  '清邁': 16901,
   phuket: 16056,
-  '?��?�?: 16056,
+  '普吉島': 16056,
   pattaya: 8584,
-  '?��???: 8584,
+  '芭達雅': 8584,
   singapore: 4064,
-  '?��???: 4064,
+  '新加坡': 4064,
   bali: 17193,
-  '峇�?�?: 17193,
+  '峇里島': 17193,
 
   // Europe & Americas & Global Hubs
   london: 233,
-  '?�敦': 233,
+  '倫敦': 233,
   paris: 1572,
-  '巴�?': 1572,
+  '巴黎': 1572,
   newyork: 318,
-  '紐�?': 318,
+  '紐約': 318,
   sydney: 14371,
-  '?�梨': 14371,
+  '雪梨': 14371,
   hongkong: 2758,
   '香港': 2758,
   macau: 2000,
-  '澳�?': 2000
+  '澳門': 2000
 };
 
 function resolveAgodaCityId(cityName = '') {
@@ -144,16 +144,16 @@ function resolveAgodaCityId(cityName = '') {
  * Known City Keywords List to filter out cross-city sponsored ads from live scraping results
  */
 const cityKeywords = [
-  { key: 'taipei', names: ['?��?', '?��?', '?��?', '?��?', '三�?', '淡水', 'TAIPEI'] },
-  { key: 'taichung', names: ['?�中', '?�中', '?�甲', '?��???, 'TAICHUNG'] },
-  { key: 'kaohsiung', names: ['高�?', '駁�?', '?��?', 'KAOHSIUNG'] },
-  { key: 'okinawa', names: ['沖繩', '??��', '?�谷', '?��?', 'OKINAWA', 'NAHA'] },
+  { key: 'taipei', names: ['台北', '臺北', '新北', '板橋', '三重', '淡水', 'TAIPEI'] },
+  { key: 'taichung', names: ['台中', '臺中', '逢甲', '草悟道', 'TAICHUNG'] },
+  { key: 'kaohsiung', names: ['高雄', '駁二', '六合', 'KAOHSIUNG'] },
+  { key: 'okinawa', names: ['沖繩', '那霸', '北谷', '恩納', 'OKINAWA', 'NAHA'] },
   { key: 'yilan', names: ['宜蘭', '礁溪', '羅東', 'YILAN'] },
-  { key: 'tainan', names: ['?��?', '?��?', 'TAINAN'] },
-  { key: 'hualien', names: ['?�蓮', 'HUALIEN'] },
-  { key: 'tokyo', names: ['?�京', '?�宿', '上�?', 'TOKYO'] },
+  { key: 'tainan', names: ['台南', '臺南', 'TAINAN'] },
+  { key: 'hualien', names: ['花蓮', 'HUALIEN'] },
+  { key: 'tokyo', names: ['東京', '新宿', '上野', 'TOKYO'] },
   { key: 'kyoto', names: ['京都', 'KYOTO'] },
-  { key: 'osaka', names: ['大阪', '??��', '心�?�?, 'OSAKA'] }
+  { key: 'osaka', names: ['大阪', '難波', '心齋橋', 'OSAKA'] }
 ];
 
 function isHotelMatchingCity(hotelName, normCityId) {
@@ -183,68 +183,68 @@ function getHotelCityId(hotelName, fallbackCityId) {
  */
 const cityRealHotelsMap = {
   okinawa: [
-    { name: '沖繩?��??��?海�?渡�?飯�? (Okinawa Kariyushi Beach Resort), agodaSlug: 'okinawa-kariyushi-beach-resort-onna/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩�???�郡?��??��??��?2590 (美�?海�?第�???', price: 2680, origPrice: 4300, rating: 4.8, tags: ['?��??�海?�泳�?, '私人沙�?', '親�?水�?樂�?'] },
-    { name: '沖繩美�??��?帕�??�舶飯�? (Vessel Hotel Campana Okinawa), agodaSlug: 'vessel-hotel-campana-okinawa/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩�??谷町美濱9-22 (美�??�日?�海?��?)', price: 2480, origPrice: 4100, rating: 4.9, tags: ['美�??�日?�海??, '海景大浴??, '18歲以下�?費�?�?] },
-    { name: '??��?�札?�飯�?(Hotel Azat Okinawa), agodaSlug: 'hotel-azat/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩�?��?��?安�?2-8-8 (?��??��?安�?�?30�?', price: 1250, origPrice: 2100, rating: 4.6, tags: ['?��?站�?30�?, '24H超�???, 'CP?�極�?] },
-    { name: '沖繩??��?�航?��?飯�? (Hotel JAL City Naha), agodaSlug: 'hotel-jal-city-naha/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩�?��?��??��?1-3-70 (?��??�正中央?�??', price: 2150, origPrice: 3500, rating: 4.8, tags: ['?��??�正中央', '?�航?��??��?', '豐�??��??��?'] },
-    { name: '沖繩?�海海�?渡�?飯�? (Southern Beach Hotel & Resort Okinawa)', type: 'Family Hotel', address: '沖繩�?��滿�?西�???-6-1 (美�?海�??�??', price: 2890, origPrice: 4600, rating: 4.9, tags: ['室內外�?泳�?', '美�?海�???, '親�?水�?活�?'] },
-    { name: '沖繩海港?�致飯�? (Okinawa Harborview Hotel)', type: 'Hotel', address: '沖繩�?��?��?泉�?2-46 (??��市政廳�?)', price: 1980, origPrice: 3200, rating: 4.7, tags: ['??��市中�?, '?��??��?庭�?', '豐�?Buffet?��?'] },
-    { name: '??��歌町?�家 ORION 飯�? (Hotel Royal Orion Naha)', type: 'Hotel', address: '沖繩�?��?��?安�?1-2-21 (?��??��?站�?)', price: 1680, origPrice: 2800, rating: 4.7, tags: ['?��??��?站�?', '?��??�起�?, '?�精緻早�?] },
-    { name: '沖繩?�谷希爾?�渡?�飯�?(Hilton Okinawa Chatan Resort), agodaSlug: 'hilton-okinawa-chatan-resort/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩�??谷町美濱40-1 (美�??�核心特?�)', price: 4200, origPrice: 6500, rating: 4.9, tags: ['美�??�第一??, '豪華水�?樂�?', '?�泳池設??] },
-    { name: '沖繩??�� STRATA 飯�? (HOTEL STRATA NAHA)', type: 'Hotel', address: '沖繩�?��?��?美榮�?-19-8 (?��?美榮橋�? 1??', price: 2100, origPrice: 3300, rating: 4.8, tags: ['?��?綠�?泳�?', '設�?師�?�?, '?��?站�?'] },
-    { name: '沖繩?�特?�水?�渡?�飯�?(Hotel Monterey Okinawa Spa & Resort)', type: 'Family Hotel', address: '沖繩�?��納�?富�?1550 (?��?海�?第�???', price: 3800, origPrice: 5900, rating: 4.9, tags: ['?��?海�??��?', '?�浪池�?水�?滑梯', '?��??�泳�?] },
-    { name: '沖繩?�日空萬座海濱洲?��?�?(ANA InterContinental Manza Beach Resort), agodaSlug: 'ana-intercontinental-manza-beach-resort/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩�?��納�??�良??260 (?�座毛海角�???', price: 4500, origPrice: 7200, rating: 4.9, tags: ['?�座海�?海�?樂�?', '洲�?奢華?��?', '?�海?�客??] },
-    { name: '??��首�??��?樹�??��??��? (DoubleTree by Hilton Naha Shuri Castle), agodaSlug: 'doubletree-by-hilton-naha-shuri-castle/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩�?��?��?首�?山�???-132 (首�??�景?�)', price: 2300, origPrice: 3700, rating: 4.7, tags: ['俯瞰首�??��???, '?��?泳�?', '家庭寬�???] },
-    { name: '沖繩?��?溫�??�長島飯�?(Ryukyu Onsen Senagajima Hotel), agodaSlug: 'ryukyu-onsen-senagajima-hotel/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩�??見�?市瀨長174-5 (?�長島陽?�露?��?)', price: 3900, origPrice: 6100, rating: 4.9, tags: ['天然海景溫�?', '近�??��?飛�?起�?', '美景夕陽'] },
-    { name: '沖繩??��休格?��?店�??�台 (Hewitt Resort Naha)', type: 'Hotel', address: '沖繩�?��?��?安�?2-5-16 (?��?安�?站步�???', price: 1950, origPrice: 3100, rating: 4.8, tags: ['?��??��??�溫水泳�?, '豐�?Buffet', '?�新飯�?'] },
-    { name: '??��?��??��?之�??��? (One\'s Hotel Naha)', type: 'Hotel', address: '沖繩�?��?��??�山2-1-15 (距離?��??�步�???', price: 1350, origPrice: 2200, rating: 4.6, tags: ['平價高CP??, '?��?寬�?', '?�活機能極佳'] }
+    { name: '沖繩喜璃癒志海灘渡假飯店 (Okinawa Kariyushi Beach Resort), agodaSlug: 'okinawa-kariyushi-beach-resort-onna/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣國頭郡恩納村名嘉真2590 (美麗海灘第一排)', price: 2680, origPrice: 4300, rating: 4.8, tags: ['無邊際海景泳池', '私人沙灘', '親子水上樂園'] },
+    { name: '沖繩美國村坎帕納船舶飯店 (Vessel Hotel Campana Okinawa), agodaSlug: 'vessel-hotel-campana-okinawa/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣北谷町美濱9-22 (美國村日落海灘旁)', price: 2480, origPrice: 4100, rating: 4.9, tags: ['美國村日落海景', '海景大浴場', '18歲以下免費住宿'] },
+    { name: '那霸阿札特飯店 (Hotel Azat Okinawa), agodaSlug: 'hotel-azat/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市安里2-8-8 (單軌列車安里站 30秒)', price: 1250, origPrice: 2100, rating: 4.6, tags: ['單軌站旁30秒', '24H超市旁', 'CP值極高'] },
+    { name: '沖繩那霸日航都市飯店 (Hotel JAL City Naha), agodaSlug: 'hotel-jal-city-naha/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市牧志1-3-70 (國際通正中央門口)', price: 2150, origPrice: 3500, rating: 4.8, tags: ['國際通正中央', '日航星級服務', '豐富日式早餐'] },
+    { name: '沖繩南海海灘渡假飯店 (Southern Beach Hotel & Resort Okinawa), agodaSlug: 'southern-beach-hotel-resort-okinawa/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣糸滿市西崎町1-6-1 (美美海灘門前)', price: 2890, origPrice: 4600, rating: 4.9, tags: ['室內外雙泳池', '美美海灘旁', '親子水上活動'] },
+    { name: '沖繩海港景致飯店 (Okinawa Harborview Hotel), agodaSlug: 'okinawa-harborview-hotel/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市泉崎2-46 (那霸市政廳旁)', price: 1980, origPrice: 3200, rating: 4.7, tags: ['那霸市中心', '典雅花園庭園', '豐富Buffet早餐'] },
+    { name: '那霸歌町皇家 ORION 飯店 (Hotel Royal Orion Naha), agodaSlug: 'hotel-royal-orion-naha/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市安里1-2-21 (單軌牧志站旁)', price: 1680, origPrice: 2800, rating: 4.7, tags: ['單軌牧志站旁', '國際通起點', '附精緻早餐'] },
+    { name: '沖繩北谷希爾頓渡假飯店 (Hilton Okinawa Chatan Resort), agodaSlug: 'hilton-okinawa-chatan-resort/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣北谷町美濱40-1 (美國村核心特區)', price: 4200, origPrice: 6500, rating: 4.9, tags: ['美國村第一排', '豪華水上樂園', '雙泳池設施'] },
+    { name: '沖繩那霸 STRATA 飯店 (HOTEL STRATA NAHA)', type: 'Hotel', address: '沖繩縣那霸市美榮橋1-19-8 (單軌美榮橋站 1分)', price: 2100, origPrice: 3300, rating: 4.8, tags: ['戶外綠意泳池', '設計師美學', '單軌站旁'] },
+    { name: '沖繩蒙特利水療渡假飯店 (Hotel Monterey Okinawa Spa & Resort), agodaSlug: 'hotel-monterey-okinawa-spa-resort/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣恩納村富着1550 (老虎海灘第一排)', price: 3800, origPrice: 5900, rating: 4.9, tags: ['老虎海灘直達', '造浪池與水上滑梯', '無邊際泳池'] },
+    { name: '沖繩全日空萬座海濱洲際酒店 (ANA InterContinental Manza Beach Resort), agodaSlug: 'ana-intercontinental-manza-beach-resort/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣恩納村瀨良垣2260 (萬座毛海角勝景)', price: 4500, origPrice: 7200, rating: 4.9, tags: ['萬座海灘海上樂園', '洲際奢華服務', '全海景客房'] },
+    { name: '那霸首里城雙樹希爾頓酒店 (DoubleTree by Hilton Naha Shuri Castle), agodaSlug: 'doubletree-by-hilton-naha-shuri-castle/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市首里山川町1-132 (首里城景區)', price: 2300, origPrice: 3700, rating: 4.7, tags: ['俯瞰首里城夜景', '花園泳池', '家庭寬敞房'] },
+    { name: '沖繩琉球溫泉瀨長島飯店 (Ryukyu Onsen Senagajima Hotel), agodaSlug: 'ryukyu-onsen-senagajima-hotel/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣豐見城市瀨長174-5 (瀨長島陽台露台旁)', price: 3900, origPrice: 6100, rating: 4.9, tags: ['天然海景溫泉', '近距離看飛機起降', '美景夕陽'] },
+    { name: '沖繩那霸休格爾酒店與露台 (Hewitt Resort Naha), agodaSlug: 'hewitt-resort-naha/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市安里2-5-16 (單軌安里站步行3分)', price: 1950, origPrice: 3100, rating: 4.8, tags: ['頂樓無邊際溫水泳池', '豐富Buffet', '全新飯店'] },
+    { name: '那霸國際通一之屋酒店 (One\'s Hotel Naha)', type: 'Hotel', address: '沖繩縣那霸市松山2-1-15 (距離國際通步行5分)', price: 1350, origPrice: 2200, rating: 4.6, tags: ['平價高CP值', '房間寬敞', '生活機能極佳'] }
   ],
   taipei: [
-    { name: '?��??��??��? (Palais de Chine Hotel), agodaSlug: 'palais-de-chine/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市大?��??�德路�?�???(京�?�?��?��?)', price: 4800, origPrice: 7500, rating: 4.8, tags: ['京�??��?�?��?��?', '米其?��??��?�?, '?��?親�??��?'] },
-    { name: '天�??��? - ?�山??(Hua Shan Din Hotel), agodaSlug: 'hua-shan-din-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市中�??忠�??�路二段79??(忠�??��?站步�???', price: 2380, origPrice: 3800, rating: 4.7, tags: ['?�山?�創?��???, '?�庫設�?風格', '?�精緻早�?] },
-    { name: '黑�?好�?站�?�?(Hey Bear Hotel), agodaSlug: 'hey-bear-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市�??��??�新路�?�???(?��?橋捷?��???', price: 1390, origPrice: 2200, rating: 4.6, tags: ['?��??�口1?��?', '?��?衛浴', '?�費飲�??�'] },
-    { name: 'Flip Flop ?��?車�?親�??��? (Flip Flop Family Hotel), agodaSlug: 'flip-flop-family-hotel/hotel/taipei-tw.html'', type: 'Family Hotel', address: '?��?市大?��??��?西路137??(距離?��?車�?450m)', price: 1880, origPrice: 3200, rating: 4.8, tags: ['近台?��?�?, '嬰�?床浴?��???, '親�??��?�?] },
-    { name: '?��?西�??�日記�??��?�?(Cho Hotel Ximen), agodaSlug: 'cho-hotel-ximen/hotel/taipei-tw.html'', type: 'B&B', address: '?��?市萬?��??��?�?19??(西�??��?站步�???', price: 1750, origPrice: 2800, rating: 4.7, tags: ['西�??�核心�???, '?��??�創風格', '?��??��??�費??] },
-    { name: '?��??��?三�??��?飯�? (Mitsui Garden Hotel Taipei), agodaSlug: 'mitsui-garden-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市大安�?忠�??�路三段30??(忠�??��?站�?)', price: 3600, origPrice: 5800, rating: 4.9, tags: ['?�系大浴??, '忠�??��?站正對面', '精緻?��?Buffet'] },
-    { name: '?��??�華?��? (Regent Taipei), agodaSlug: 'the-regent-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市中山�?中山?�路二段39�???(中山?��?站步�???', price: 5200, origPrice: 8500, rating: 4.9, tags: ['?��??�天溫水泳�?', '?��?廳知?�Buffet', '奢華購物精�?�?] },
-    { name: '?��??�山大飯�?(The Grand Hotel), agodaSlug: 'the-grand-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市中山�?中山?�路?�段1??(?��??�費?��?�?', price: 3200, origPrice: 5200, rating: 4.8, tags: ['宮殿式地標建�?, '?�敵?��?河�???, '密�?體�?行�?'] },
-    { name: '?��?寒�??��??��? (Le Meridien Taipei), agodaSlug: 'le-meridien-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市信義�??��?�?8??(信義?��??��?)', price: 6800, origPrice: 10500, rating: 4.9, tags: ['信義?��?心�??�帶', '?�代?��??��?', '?�索廚房餐廳'] },
-    { name: '?��? W 飯�? (W Taipei), agodaSlug: 'w-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市信義�?忠�??�路五段10??(市�?轉�?站直??', price: 7500, origPrice: 12000, rating: 4.9, tags: ['WET 碧波泳�?', '?��?微醺?�吧', '?��??�急百�?] },
-    { name: '?��??��?大飯�?(Caesar Park Hotel Banqiao / Wanhua), agodaSlug: 'caesar-park-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市萬?��??�舺大�?167??(?�華車�??��?)', price: 2100, origPrice: 3500, rating: 4.7, tags: ['?�華車�??��?', '高空?�天泳�?', '龍山寺�?市�?'] },
-    { name: '?��??�爺大�?�?(Hotel Royal-Nikko Taipei), agodaSlug: 'hotel-royal-nikko-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市中山�?中山?�路二段37-1??(中山站步�???', price: 3800, origPrice: 6000, rating: 4.8, tags: ['?�航?��??��?', '中山綠蔭大�?', '?��??��?�?] },
-    { name: '?��??��??�大飯�? (Sheraton Grand Taipei Hotel), agodaSlug: 'sheraton-grand-taipei-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市中�??忠�??�路一�?2??(?��?寺捷?��??�口)', price: 4200, origPrice: 6800, rating: 4.8, tags: ['請客樓米?��?二�?', '?�天泳�?', '?��?站出???��?'] },
-    { name: '?��??�絲?�精?��?�?(Gnight Hotel Taipei), agodaSlug: 'gnight-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市中山�??�森?�路', price: 1450, origPrice: 2400, rating: 4.6, tags: ['?��???, '?��?乾�??�離', '平價極致?�適'] },
-    { name: '?��?美�?大飯�?(Parkview Taipei), agodaSlug: 'parkview-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '?��?市中山�?復�??�路一�???, price: 2600, origPrice: 4200, rating: 4.7, tags: ['大�?森�??��???, '?��?極佳', '?��??��? quiet'] }
+    { name: '台北君品酒店 (Palais de Chine Hotel), agodaSlug: 'palais-de-chine/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市大同區承德路一段3號 (京站廣場直達)', price: 4800, origPrice: 7500, rating: 4.8, tags: ['京站時尚廣場直達', '米其林三星餐廳', '頂級親子備品'] },
+    { name: '天成文旅 - 華山町 (Hua Shan Din Hotel), agodaSlug: 'hua-shan-din-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中正區忠孝東路二段79號 (忠孝新生站步行3分)', price: 2380, origPrice: 3800, rating: 4.7, tags: ['華山文創園區旁', '金庫設計風格', '附精緻早餐'] },
+    { name: '黑熊好眠站旅館 (Hey Bear Hotel), agodaSlug: 'hey-bear-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '新北市三重區重新路二段1號 (台北橋捷運站旁)', price: 1390, origPrice: 2200, rating: 4.6, tags: ['捷運出口1分鐘', '獨立衛浴', '免費飲料區'] },
+    { name: 'Flip Flop 台北車站親子旅店 (Flip Flop Family Hotel), agodaSlug: 'flip-flop-family-hotel/hotel/taipei-tw.html'', type: 'Family Hotel', address: '台北市大同區長安西路137號 (距離台北車站450m)', price: 1880, origPrice: 3200, rating: 4.8, tags: ['近台北車站', '嬰兒床浴盆備品', '親子閱讀室'] },
+    { name: '台北西門町日記記憶旅店 (Cho Hotel Ximen), agodaSlug: 'cho-hotel-ximen/hotel/taipei-tw.html'', type: 'B&B', address: '台北市萬華區昆明街119號 (西門捷運站步行3分)', price: 1750, origPrice: 2800, rating: 4.7, tags: ['西門町核心商圈', '懷舊文創風格', '懷舊零食免費吃'] },
+    { name: '台北和苑三井花園飯店 (Mitsui Garden Hotel Taipei), agodaSlug: 'mitsui-garden-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市大安區忠孝東路三段30號 (忠孝新生站旁)', price: 3600, origPrice: 5800, rating: 4.9, tags: ['日系大浴場', '忠孝新生站正對面', '精緻日式Buffet'] },
+    { name: '台北晶華酒店 (Regent Taipei), agodaSlug: 'the-regent-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區中山北路二段39巷3號 (中山捷運站步行5分)', price: 5200, origPrice: 8500, rating: 4.9, tags: ['頂樓露天溫水泳池', '栢麗廳知名Buffet', '奢華購物精品廊'] },
+    { name: '台北圓山大飯店 (The Grand Hotel), agodaSlug: 'the-grand-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區中山北路四段1號 (提供免費接駁車)', price: 3200, origPrice: 5200, rating: 4.8, tags: ['宮殿式地標建築', '無敵基隆河市景', '密道體驗行程'] },
+    { name: '台北寒舍艾美酒店 (Le Meridien Taipei), agodaSlug: 'le-meridien-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市信義區松仁路38號 (信義商圈核心)', price: 6800, origPrice: 10500, rating: 4.9, tags: ['信義商圈心臟地帶', '現代藝術薈萃', '探索廚房餐廳'] },
+    { name: '台北 W 飯店 (W Taipei), agodaSlug: 'w-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市信義區忠孝東路五段10號 (市府轉運站直達)', price: 7500, origPrice: 12000, rating: 4.9, tags: ['WET 碧波泳池', '時尚微醺酒吧', '直達阪急百貨'] },
+    { name: '台北凱達大飯店 (Caesar Park Hotel Banqiao / Wanhua), agodaSlug: 'caesar-park-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市萬華區艋舺大道167號 (萬華車站直達)', price: 2100, origPrice: 3500, rating: 4.7, tags: ['萬華車站直達', '高空露天泳池', '龍山寺夜市旁'] },
+    { name: '台北老爺大酒店 (Hotel Royal-Nikko Taipei), agodaSlug: 'hotel-royal-nikko-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區中山北路二段37-1號 (中山站步行3分)', price: 3800, origPrice: 6000, rating: 4.8, tags: ['日航星級服務', '中山綠蔭大道', '烘焙坊名店'] },
+    { name: '台北喜來登大飯店 (Sheraton Grand Taipei Hotel), agodaSlug: 'sheraton-grand-taipei-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中正區忠孝東路一段12號 (善導寺捷運站出口)', price: 4200, origPrice: 6800, rating: 4.8, tags: ['請客樓米其林二星', '露天泳池', '捷運站出口0分鐘'] },
+    { name: '台北格絲蒂精品旅店 (Gnight Hotel Taipei), agodaSlug: 'gnight-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區林森北路', price: 1450, origPrice: 2400, rating: 4.6, tags: ['捷運旁', '獨立乾濕分離', '平價極致舒適'] },
+    { name: '台北美侖大飯店 (Parkview Taipei), agodaSlug: 'parkview-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區復興南路一段6號', price: 2600, origPrice: 4200, rating: 4.7, tags: ['大安森林公園旁', '採光極佳', '環境優雅 quiet'] }
   ],
   taichung: [
-    { name: '?�中?�方?��??��? (Le Meridien Taichung), agodaSlug: 'le-meridien-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '?�中市中?�建�?�?11??(?�中車�?對面)', price: 4200, origPrice: 6800, rating: 4.9, tags: ['?�中車�?對面', '高空泳�??��???, '?�豪?��?體�?'] },
-    { name: '?�中?�甲碧根?�甲?��? (Beacon Hotel Taichung), agodaSlug: 'beacon-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '?�中市西屯�?福�?�?37??(?�甲夜�??��?)', price: 1880, origPrice: 3200, rating: 4.7, tags: ['?�甲夜�??�??, '?��??��???, '高CP??] },
-    { name: '?�中?��??��?宿�???(Green Hotel Taichung), agodaSlug: 'green-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '?�中市西?�民�??�路126??(?��??��??��?)', price: 1750, origPrice: 2900, rating: 4.8, tags: ['?��??��?樹�???, '?��?主�??��?', '心�??��???] },
-    { name: '?�中?��??�禧?��? (Millennium Hotel Taichung), agodaSlug: 'millennium-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '?�中市西屯�?市政�?7??(七�??��??�)', price: 3800, origPrice: 6200, rating: 4.8, tags: ['七�?豪�??�', '?�天泳�??�水??, '極致?��?休�?'] },
-    { name: '?�中?�榮桂�??��? (Evergreen Laurel Hotel Taichung), agodaSlug: 'evergreen-laurel-hotel-taichung/hotel/taichung-tw.html'', type: 'Family Hotel', address: '?�中市西屯�??�灣大�?二段666??, price: 2800, origPrice: 4500, rating: 4.8, tags: ['室�?海派泳�?', '親�??�戲繪本�?, '經典五�?�?] },
-    { name: '?�中裕�??��??��? (Windsor Hotel Taichung), agodaSlug: 'windsor-hotel-taichung/hotel/taichung-tw.html'', type: 'Family Hotel', address: '?�中市西屯�??�灣大�??�段610??(?�中交�??��?)', price: 3200, origPrice: 5200, rating: 4.9, tags: ['室內溫水泳�??�水?��?', '親�??�戲�?, '交�??��??�便'] },
-    { name: '?�中?��?�?(The Lin Hotel Taichung), agodaSlug: 'the-lin-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '?�中市西屯�??��?�?9??(?�家歌�??��?)', price: 4800, origPrice: 7500, rating: 4.9, tags: ['?�家歌�??��?', '豪華渡�?泳�?', '?��?LV?�匯?��?'] },
-    { name: '?�中?�典?��? (The Splendor Hotel Taichung), agodaSlug: 'the-splendor-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '?�中市西?�?��?�?049??(�??SOGO??', price: 2980, origPrice: 4800, rating: 4.8, tags: ['�??SOGO??, '高空?�天溫水泳�?', '家庭寬�??��?'] },
-    { name: '?�中?��?大飯�?(National Hotel Taichung)', type: 'Hotel', address: '?�中市西?�館�?�?7??(?��??�正中央)', price: 2200, origPrice: 3600, rating: 4.7, tags: ['?��??�正對面', '?��??�典?��???, '?�活機能極佳'] },
-    { name: '?�中?��??��??�中�?(Inhouse Hotel Taichung)', type: 'Hotel', address: '?�中市東?�?�中�?03??(忠�?夜�???', price: 1680, origPrice: 2700, rating: 4.7, tags: ['忠�?夜�?步�?2??, '夜�?美學風格', '?�設?�身??] },
-    { name: '?�中?��??�河�?�?(Moving Star Hotel)', type: 'Hotel', address: '?�中市中?�?�由路�?�?6??(?�中?��???', price: 1450, origPrice: 2400, rating: 4.6, tags: ['?��?科幻主�?', '機器人�???, '平價極致?�適'] },
-    { name: '?�中?��??��??�中車�?�?(CityInn Hotel Plus Taichung)', type: 'Hotel', address: '?�中市東?�復�?路�?�?33??(?�中車�?後�?1??', price: 1850, origPrice: 3000, rating: 4.8, tags: ['車�?後�?1?��?', '設�?師�??�房??, '?�費?�助洗衣'] },
-    { name: '?�中寶島53行館 (53 Hotel Taichung)', type: 'Hotel', address: '?�中市中?�中山�?7??(宮�??��?�????', price: 1580, origPrice: 2600, rating: 4.7, tags: ['宮�??��?對面', '復古?��?風格', '?�費?��?租�?] },
-    { name: '?�中?��??�飯店�??��?�?(Airline Inn Green Park Way Taichung)', type: 'Hotel', address: '?�中市西?�美�?路�?�?2??(?��?誠�???', price: 1980, origPrice: 3200, rating: 4.8, tags: ['?��?誠�?綠�??��?', '機�?座�?體�?', '?�活機能超強'] },
-    { name: '?�中微米?��? (Micro Hotel Taichung)', type: 'Hotel', address: '?�中市中?�繼�?�?, price: 1250, origPrice: 2100, rating: 4.5, tags: ['平價?�年?��?', '乾�??�離衛浴', '繼�??��???] }
+    { name: '台中李方艾美酒店 (Le Meridien Taichung), agodaSlug: 'le-meridien-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市中區建國路111號 (台中車站對面)', price: 4200, origPrice: 6800, rating: 4.9, tags: ['台中車站對面', '高空泳池與酒吧', '萬豪頂級體驗'] },
+    { name: '台中逢甲碧根逢甲酒店 (Beacon Hotel Taichung), agodaSlug: 'beacon-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西屯區福星路537號 (逢甲夜市核心)', price: 1880, origPrice: 3200, rating: 4.7, tags: ['逢甲夜市門口', '獨立停車場', '高CP值'] },
+    { name: '台中草悟道綠宿行旅 (Green Hotel Taichung), agodaSlug: 'green-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西區民生北路126號 (勤美草悟道旁)', price: 1750, origPrice: 2900, rating: 4.8, tags: ['草悟道綠樹林蔭', '環保主題旅店', '心願牆互動'] },
+    { name: '台中日月千禧酒店 (Millennium Hotel Taichung), agodaSlug: 'millennium-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西屯區市政路77號 (七期重劃區)', price: 3800, origPrice: 6200, rating: 4.8, tags: ['七期豪宅區', '露天泳池與水療', '極致商務休閒'] },
+    { name: '台中長榮桂冠酒店 (Evergreen Laurel Hotel Taichung), agodaSlug: 'evergreen-laurel-hotel-taichung/hotel/taichung-tw.html'', type: 'Family Hotel', address: '台中市西屯區台灣大道二段666號', price: 2800, origPrice: 4500, rating: 4.8, tags: ['室外海派泳池', '親子遊戲繪本室', '經典五星級'] },
+    { name: '台中裕元花園酒店 (Windsor Hotel Taichung), agodaSlug: 'windsor-hotel-taichung/hotel/taichung-tw.html'', type: 'Family Hotel', address: '台中市西屯區台灣大道四段610號 (台中交流道旁)', price: 3200, origPrice: 5200, rating: 4.9, tags: ['室內溫水泳池與水療區', '親子遊戲室', '交流道旁方便'] },
+    { name: '台中林酒店 (The Lin Hotel Taichung), agodaSlug: 'the-lin-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西屯區朝富路99號 (國家歌劇院旁)', price: 4800, origPrice: 7500, rating: 4.9, tags: ['國家歌劇院旁', '豪華渡假泳池', '知名LV百匯早餐'] },
+    { name: '台中金典酒店 (The Splendor Hotel Taichung), agodaSlug: 'the-splendor-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西區健行路1049號 (廣三SOGO旁)', price: 2980, origPrice: 4800, rating: 4.8, tags: ['廣三SOGO旁', '高空露天溫水泳池', '家庭寬敞房型'] },
+    { name: '台中全國大飯店 (National Hotel Taichung), agodaSlug: 'national-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西區館前路57號 (草悟道正中央)', price: 2200, origPrice: 3600, rating: 4.7, tags: ['草悟道正對面', '老字號典雅服務', '生活機能極佳'] },
+    { name: '台中薆悅酒店台中館 (Inhouse Hotel Taichung), agodaSlug: 'inhouse-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市東區台中路203號 (忠孝夜市旁)', price: 1680, origPrice: 2700, rating: 4.7, tags: ['忠孝夜市步行2分', '夜店美學風格', '附設健身房'] },
+    { name: '台中星動銀河旅站 (Moving Star Hotel)', type: 'Hotel', address: '台中市中區自由路二段66號 (台中公園旁)', price: 1450, origPrice: 2400, rating: 4.6, tags: ['星際科幻主題', '機器人服務', '平價極致舒適'] },
+    { name: '台中新驛旅店台中車站店 (CityInn Hotel Plus Taichung), agodaSlug: 'cityinn-hotel-plus-taichung-station/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市東區復興路四段133號 (台中車站後站1分)', price: 1850, origPrice: 3000, rating: 4.8, tags: ['車站後站1分鐘', '設計師插畫房型', '免費自助洗衣'] },
+    { name: '台中寶島53行館 (53 Hotel Taichung)', type: 'Hotel', address: '台中市中區中山路27號 (宮原眼科正對面)', price: 1580, origPrice: 2600, rating: 4.7, tags: ['宮原眼科對面', '復古文青風格', '免費單車租借'] },
+    { name: '台中頭等艙飯店綠園道館 (Airline Inn Green Park Way Taichung)', type: 'Hotel', address: '台中市西區美村路一段22號 (勤美誠品旁)', price: 1980, origPrice: 3200, rating: 4.8, tags: ['勤美誠品綠園道旁', '機艙座艙體驗', '生活機能超強'] },
+    { name: '台中微米文旅 (Micro Hotel Taichung)', type: 'Hotel', address: '台中市中區繼光街', price: 1250, origPrice: 2100, rating: 4.5, tags: ['平價青年旅店', '乾濕分離衛浴', '繼光商圈旁'] }
   ],
   kaohsiung: [
-    { name: '高�?駁�??��??��??��?�?(City Suites Kaohsiung Chenai)', type: 'Hotel', address: '高�?市鹽?��?大義�???(輕�?大義�???', price: 1680, origPrice: 2800, rating: 4.7, tags: ['駁�??��??��???, '海景港灣?�台', '輕�?�???] },
-    { name: '高�??�豪?��? (Kaohsiung Marriott Hotel), agodaSlug: 'kaohsiung-marriott-hotel/hotel/kaohsiung-tw.html'', type: 'Hotel', address: '高�?市�?山�?龍德?�路222??(義享天地?��?', price: 4500, origPrice: 7200, rating: 4.9, tags: ['義享天地購物中�?', '水�?SPA?�泳�?, '?��?豪奢客房'] },
-    { name: '高�?美�?島六?��?市�??��?�?(Formosa Boulevard Hotel)', type: 'Hotel', address: '高�?市新?��?中山一�?(美�?島�?11?�出??', price: 1280, origPrice: 2100, rating: 4.6, tags: ['美�?島�?之穹?��?', '?��?夜�?步�?2??, '高CP??] },
-    { name: '高�?漢�?大飯�?(Grand Hi-Lai Hotel), agodaSlug: 'grand-hi-lai-hotel/hotel/kaohsiung-tw.html'', type: 'Hotel', address: '高�?市�??��??��?一�?66??(漢�??�貨?��?', price: 3600, origPrice: 5800, rating: 4.9, tags: ['漢�??�貨?��?, '?�天渡�?泳�?', '海景?��?客房'] },
-    { name: '高�??��??��? (TAI Urban Resort)', type: 'Family Hotel', address: '高�?市�??��??�森?�路189??(高空?��??�泳�?', price: 4800, origPrice: 7800, rating: 4.9, tags: ['?��??��?高空?�空?��??�泳�?, '?�書館�?�?, '亞灣視�?'] }
+    { name: '高雄駁二城市商旅真愛館 (City Suites Kaohsiung Chenai), agodaSlug: 'city-suites-kaohsiung-chenai/hotel/kaohsiung-tw.html'', type: 'Hotel', address: '高雄市鹽埕區大義街1號 (輕軌大義站1分)', price: 1680, origPrice: 2800, rating: 4.7, tags: ['駁二藝術特區旁', '海景港灣露台', '輕軌站1分'] },
+    { name: '高雄萬豪酒店 (Kaohsiung Marriott Hotel), agodaSlug: 'kaohsiung-marriott-hotel/hotel/kaohsiung-tw.html'', type: 'Hotel', address: '高雄市鼓山區龍德新路222號 (義享天地直通)', price: 4500, origPrice: 7200, rating: 4.9, tags: ['義享天地購物中心', '水療SPA與泳池', '頂級豪奢客房'] },
+    { name: '高雄美麗島六合夜市文創行館 (Formosa Boulevard Hotel)', type: 'Hotel', address: '高雄市新興區中山一路 (美麗島站11號出口)', price: 1280, origPrice: 2100, rating: 4.6, tags: ['美麗島光之穹頂旁', '六合夜市步行2分', '高CP值'] },
+    { name: '高雄漢來大飯店 (Grand Hi-Lai Hotel), agodaSlug: 'grand-hi-lai-hotel/hotel/kaohsiung-tw.html'', type: 'Hotel', address: '高雄市前金區成功一路266號 (漢神百貨直通)', price: 3600, origPrice: 5800, rating: 4.9, tags: ['漢神百貨直通', '露天渡假泳池', '海景景觀客房'] },
+    { name: '高雄承億酒店 (TAI Urban Resort)', type: 'Family Hotel', address: '高雄市前鎮區林森四路189號 (高空無邊際泳池)', price: 4800, origPrice: 7800, rating: 4.9, tags: ['全球唯一高空懸空無邊際泳池', '圖書館美學', '亞灣視界'] }
   ],
   tokyo: [
-    { name: '?�京?�宿?��??�飯�?(Shinjuku Washington Hotel), agodaSlug: 'shinjuku-washington-hotel/hotel/tokyo-jp.html'', type: 'Hotel', address: '?�京?�新宿�?西新�?-2-9 (?�宿站地下�??��?', price: 2980, origPrice: 4600, rating: 4.7, tags: ['?�宿站地下�??��?, '?�天不沾�?, '?�木津巴士直??] },
-    { name: '?�京上�??��??��?精緻飯�? (Ueno Parkview Hotel)', type: 'Hotel', address: '?�京?�台?��?上�??��???(京�?上�?�???', price: 2280, origPrice: 3600, rating: 4.8, tags: ['?�田機場?��?京�?�?, '上�??��??��???, '?��?橫�?5??] },
-    { name: '?�京?��??��??�宿飯�? (Hotel Gracery Shinjuku), agodaSlug: 'hotel-gracery-shinjuku/hotel/tokyo-jp.html'', type: 'Hotel', address: '?�京?�新宿�?歌�?伎町1-19-1 (?��??�地標飯�?', price: 3400, origPrice: 5200, rating: 4.8, tags: ['?��??�巨?�地�?, '歌�?伎町?��?', '影�?樓�?'] },
-    { name: '?�京?��??��?大飯�?(Shinagawa Prince Hotel), agodaSlug: 'shinagawa-prince-hotel/hotel/tokyo-jp.html'', type: 'Family Hotel', address: '?�京?�港?�高輪4-10-30 (?��??�幹線�?對面)', price: 3200, origPrice: 5000, rating: 4.8, tags: ['羽田機場?��?線直??, '水�?館�?保齡?�館', '交通�?�?] }
+    { name: '東京新宿華盛頓飯店 (Shinjuku Washington Hotel), agodaSlug: 'shinjuku-washington-hotel/hotel/tokyo-jp.html'', type: 'Hotel', address: '東京都新宿區西新宿3-2-9 (新宿站地下道直通)', price: 2980, origPrice: 4600, rating: 4.7, tags: ['新宿站地下道直通', '雨天不沾濕', '利木津巴士直達'] },
+    { name: '東京上野公園景觀精緻飯店 (Ueno Parkview Hotel)', type: 'Hotel', address: '東京都台東區上野公園前 (京成上野站2分)', price: 2280, origPrice: 3600, rating: 4.8, tags: ['成田機場直達京成線', '上野恩賜公園旁', '阿美橫丁5分'] },
+    { name: '東京格拉斯麗新宿飯店 (Hotel Gracery Shinjuku), agodaSlug: 'hotel-gracery-shinjuku/hotel/tokyo-jp.html'', type: 'Hotel', address: '東京都新宿區歌舞伎町1-19-1 (哥吉拉地標飯店)', price: 3400, origPrice: 5200, rating: 4.8, tags: ['哥吉拉巨型地標', '歌舞伎町核心', '影城樓上'] },
+    { name: '東京品川王子大飯店 (Shinagawa Prince Hotel), agodaSlug: 'shinagawa-prince-hotel/hotel/tokyo-jp.html'', type: 'Family Hotel', address: '東京都港區高輪4-10-30 (品川新幹線站對面)', price: 3200, origPrice: 5000, rating: 4.8, tags: ['羽田機場急行線直達', '水族館與保齡球館', '交通樞紐'] }
   ]
 };
 
@@ -286,9 +286,9 @@ export async function runScraperJob(query, onLog) {
 
   const { cityId: normCityId, cityName: normCityName, searchQuery } = resolveCity(cityId);
   
-  onLog(`[SYS] ?��? 100% Live 實�?網�??�蟲... ?��??? "${searchQuery.toUpperCase()}" (?��?: ${checkIn} ~ ${checkOut}, 人數: ${adults}�?{children}�?`);
+  onLog(`[SYS] 啟動 100% Live 實時網頁爬蟲... 目的地: "${searchQuery.toUpperCase()}" (日期: ${checkIn} ~ ${checkOut}, 人數: ${adults}大${children}小)`);
   await sleep(100);
-  onLog(`[HTTP-REQ] ?�起�?Booking.com 線�??��??��??�面多照??DOM �??請�?...`);
+  onLog(`[HTTP-REQ] 發起對 Booking.com 線上即時搜尋頁面多照片 DOM 解析請求...`);
 
   let liveStays = [];
 
@@ -304,7 +304,7 @@ export async function runScraperJob(query, onLog) {
       timeout: 8000
     });
 
-    onLog(`[DOM-PARSE] ?��??�獲線�? HTML ?��?，�??��?平台實景?��?...`);
+    onLog(`[DOM-PARSE] 成功接獲線上 HTML 數據，提取多平台實景圖集...`);
     const $ = cheerio.load(response.data);
 
     $('[data-testid="property-card"]').each((idx, el) => {
@@ -313,7 +313,7 @@ export async function runScraperJob(query, onLog) {
       const name = $(el).find('[data-testid="title"]').text().trim() || $(el).find('.sr-hotel__name').text().trim();
       const rawPriceText = $(el).find('[data-testid="price-and-discounted-price"]').text().trim() || $(el).find('.bui-price-display__value').text().trim();
       const rawRatingText = $(el).find('[data-testid="review-score"]').text().trim() || $(el).find('.bui-review-score__badge').text().trim();
-      const address = $(el).find('[data-testid="distance"]').text().trim() || $(el).find('[data-testid="address"]').text().trim() || `${searchQuery} 觀?�景點�?`;
+      const address = $(el).find('[data-testid="distance"]').text().trim() || $(el).find('[data-testid="address"]').text().trim() || `${searchQuery} 觀光景點區`;
       
       const gallery = [];
       const mainImg = $(el).find('img[data-testid="image"]').attr('src');
@@ -347,7 +347,7 @@ export async function runScraperJob(query, onLog) {
       }
 
       if (name) {
-        const cleanName = name.replace(/??*???g, '').trim();
+        const cleanName = name.replace(/【.*?】/g, '').trim();
         // Strict city filter: skip cross-city sponsored items returned by Booking.com
         if (isHotelMatchingCity(cleanName, normCityId)) {
           const stayCityId = getHotelCityId(cleanName, normCityId);
@@ -356,13 +356,13 @@ export async function runScraperJob(query, onLog) {
             cityId: stayCityId,
             cityName: normCityName,
             name: cleanName,
-            type: cleanName.includes('民宿') || cleanName.includes('B&B') ? 'B&B' : (cleanName.includes('親�?') || cleanName.includes('Family') ? 'Family Hotel' : 'Hotel'),
+            type: cleanName.includes('民宿') || cleanName.includes('B&B') ? 'B&B' : (cleanName.includes('親子') || cleanName.includes('Family') ? 'Family Hotel' : 'Hotel'),
             image: gallery[0],
             images: gallery,
             rating: parsedRating || 4.7,
             reviewsCount: 300 + idx * 180,
-            address: address || `${searchQuery} ?��??��?`,
-            tags: ['實景?��?', '?��?線�??�價', '?��??��?', '?��?礙空??],
+            address: address || `${searchQuery} 核心特區`,
+            tags: ['實景圖集', '即時線上房價', '景點周邊', '無障礙空間'],
             lowestPriceProvider: idx % 2 === 0 ? 'Booking.com' : 'Agoda',
             price: parsedPrice,
             originalPrice: Math.round(parsedPrice * 1.5),
@@ -373,10 +373,10 @@ export async function runScraperJob(query, onLog) {
       }
     });
 
-    onLog(`[LIVE-SCRAPE] ?��?完�? Live 多平?�照?��??��??��???${liveStays.length} 筆實?�飯店照?�庫`);
+    onLog(`[LIVE-SCRAPE] 成功完成 Live 多平台照片抓取，提取到 ${liveStays.length} 筆實時飯店照片庫`);
 
   } catch (err) {
-    onLog(`[FALLBACK] 線�??��??��??��?，自?��??��??��?庫�?飯�?對照�?.. (${err.message})`);
+    onLog(`[FALLBACK] 線上抓取時間逾時，自動啟用備用圖庫與飯店對照組... (${err.message})`);
   }
 
   // Universal Dynamic Fallback for ANY Country / City entered by the user
@@ -408,18 +408,18 @@ export async function runScraperJob(query, onLog) {
         }
       });
     } else {
-      // Universal Dynamic Generation for arbitrary global countries / cities (e.g. ?�敦, 巴�?, ?��??? ?�海?? ?�谷, ?�蓮)
+      // Universal Dynamic Generation for arbitrary global countries / cities (e.g. 倫敦, 巴黎, 新加坡, 北海道, 曼谷, 花蓮)
       const dynamicTemplates = [
-        { suffix: `??{searchQuery}?��??��?級渡?��?�?(${searchQuery} Grand International Hotel)`, type: 'Hotel', price: 3200, origPrice: 5000, rating: 4.9, tags: ['市中心特?�', '?��??�景觀', '精緻Buffet?��?'] },
-        { suffix: `??{searchQuery}?�海?�景觀親�?渡�???(${searchQuery} Ocean View Resort)`, type: 'Family Hotel', price: 3800, origPrice: 5800, rating: 4.9, tags: ['親�??�戲�?, '?��??�泳�?, '?�費?��?'] },
-        { suffix: `??{searchQuery}?��?站�??�精?��???(${searchQuery} Station Boutique Hotel)`, type: 'Hotel', price: 2100, origPrice: 3400, rating: 4.7, tags: ['車�????��?', '乾�??�離衛浴', '機能極佳'] },
-        { suffix: `??{searchQuery}?��??�風?�特?��?�?(${searchQuery} Heritage B&B)`, type: 'B&B', price: 1680, origPrice: 2600, rating: 4.8, tags: ['?�地?��??��?', '?��?庭�?', '親�?溫馨'] },
-        { suffix: `??{searchQuery}?��?榮豪奢SPA水�??�館 (${searchQuery} Deluxe Spa Hotel)`, type: 'Hotel', price: 4500, origPrice: 7200, rating: 4.9, tags: ['水�?SPA設施', '米其?��?�?, '極致奢華'] },
-        { suffix: `??{searchQuery}?�鬧?�?��?輕奢行館 (${searchQuery} Urban Luxury Inn)`, type: 'Hotel', price: 1950, origPrice: 3100, rating: 4.6, tags: ['?��??�吧', '高空觀?�台', '高CP??] },
-        { suffix: `??{searchQuery}?�溫泉水?�親子飯�?(${searchQuery} Hot Spring Resort)`, type: 'Family Hotel', price: 3600, origPrice: 5600, rating: 4.8, tags: ['天然溫�?風�?', '?�童?�水�?, '家庭寬�???] },
-        { suffix: `??{searchQuery}?��??�自?�渡?�山??(${searchQuery} Eco Nature Resort)`, type: 'B&B', price: 2480, origPrice: 3900, rating: 4.7, tags: ['森�??��?�?, '?��?農�??��?', '?��?觀�?] },
-        { suffix: `??{searchQuery}?��??�購?�大?�飯�?(${searchQuery} Shopping Avenue Hotel)`, type: 'Hotel', price: 2800, origPrice: 4300, rating: 4.8, tags: ['?��?購物中�?', '高�?床�?室內設�?', '交通�?�?] },
-        { suffix: `??{searchQuery}?�日?��??�海岸�?�?(${searchQuery} Sunset Coast Hotel)`, type: 'Family Hotel', price: 3100, origPrice: 4900, rating: 4.9, tags: ['夕陽海景??, '私人沙�?', '海�?娛�?活�?'] }
+        { suffix: `【${searchQuery}】國際星級渡假酒店 (${searchQuery} Grand International Hotel)`, type: 'Hotel', price: 3200, origPrice: 5000, rating: 4.9, tags: ['市中心特區', '無邊際景觀', '精緻Buffet早餐'] },
+        { suffix: `【${searchQuery}】海景景觀親子渡假村 (${searchQuery} Ocean View Resort)`, type: 'Family Hotel', price: 3800, origPrice: 5800, rating: 4.9, tags: ['親子遊戲室', '無邊際泳池', '免費停車'] },
+        { suffix: `【${searchQuery}】車站商圈精品文旅 (${searchQuery} Station Boutique Hotel)`, type: 'Hotel', price: 2100, origPrice: 3400, rating: 4.7, tags: ['車站旁1分鐘', '乾濕分離衛浴', '機能極佳'] },
+        { suffix: `【${searchQuery}】經典風情特色民宿 (${searchQuery} Heritage B&B)`, type: 'B&B', price: 1680, origPrice: 2600, rating: 4.8, tags: ['在地手作早餐', '景觀庭園', '親切溫馨'] },
+        { suffix: `【${searchQuery}】尊榮豪奢SPA水療會館 (${searchQuery} Deluxe Spa Hotel)`, type: 'Hotel', price: 4500, origPrice: 7200, rating: 4.9, tags: ['水療SPA設施', '米其林餐飲', '極致奢華'] },
+        { suffix: `【${searchQuery}】鬧區時尚輕奢行館 (${searchQuery} Urban Luxury Inn)`, type: 'Hotel', price: 1950, origPrice: 3100, rating: 4.6, tags: ['時尚酒吧', '高空觀景台', '高CP值'] },
+        { suffix: `【${searchQuery}】溫泉水療親子飯店 (${searchQuery} Hot Spring Resort)`, type: 'Family Hotel', price: 3600, origPrice: 5600, rating: 4.8, tags: ['天然溫泉風呂', '兒童戲水池', '家庭寬敞房'] },
+        { suffix: `【${searchQuery}】綠能自然渡假山莊 (${searchQuery} Eco Nature Resort)`, type: 'B&B', price: 2480, origPrice: 3900, rating: 4.7, tags: ['森林芬多精', '有機農莊早餐', '生態觀察'] },
+        { suffix: `【${searchQuery}】繁華購物大道飯店 (${searchQuery} Shopping Avenue Hotel)`, type: 'Hotel', price: 2800, origPrice: 4300, rating: 4.8, tags: ['直達購物中心', '高級床墊室內設備', '交通樞紐'] },
+        { suffix: `【${searchQuery}】日落美景海岸會館 (${searchQuery} Sunset Coast Hotel)`, type: 'Family Hotel', price: 3100, origPrice: 4900, rating: 4.9, tags: ['夕陽海景房', '私人沙灘', '海上娛樂活動'] }
       ];
 
       dynamicTemplates.forEach((tpl, idx) => {
@@ -436,7 +436,7 @@ export async function runScraperJob(query, onLog) {
             images: gallery,
             rating: tpl.rating,
             reviewsCount: 450 + idx * 160,
-            address: `${searchQuery} ?��?觀?�景點�? (交通便?�地�?`,
+            address: `${searchQuery} 核心觀光景點區 (交通便利地段)`,
             tags: tpl.tags,
             lowestPriceProvider: idx % 2 === 0 ? 'Agoda' : 'Booking.com',
             price: tpl.price,
@@ -459,16 +459,15 @@ export async function runScraperJob(query, onLog) {
     // Use English hotel name (inside parentheses) for direct hotel search on all platforms
     const englishMatch = stay.name.match(/\(([^)]+)\)/);
     // English name (most universally recognized by both platforms)
-    const englishName = englishMatch ? englishMatch[1].trim() : stay.name.replace(/??*???g, '').trim();
+    const englishName = englishMatch ? englishMatch[1].trim() : stay.name.replace(/【.*?】/g, '').trim();
     // Chinese name only (before parenthesis, no city prefix brackets)
-    const chineseName = stay.name.split(' (')[0].replace(/??*???g, '').trim();
+    const chineseName = stay.name.split(' (')[0].replace(/【.*?】/g, '').trim();
 
     const encodedEn = encodeURIComponent(englishName);
-    const encodedZh = encodeURIComponent(chineseName);
 
     // Agoda URL strategy:
-    // 1. If hotel has a direct page slug -> use /zh-tw/{slug}/hotel/city.html (100% accurate, confirmed working)
-    // 2. Fallback -> city + textToSearch search (React SPA reads textToSearch to filter hotel within city)
+    // 1. If hotel has agodaSlug -> direct hotel detail page (100% accurate, body class = NewHotel)
+    // 2. Fallback -> city + textToSearch search URL (React SPA reads param to filter within city)
     let agodaUrl;
     if (stay.agodaSlug) {
       agodaUrl = `https://www.agoda.com/zh-tw/${stay.agodaSlug}?checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`;
@@ -481,7 +480,7 @@ export async function runScraperJob(query, onLog) {
         name: 'Booking.com',
         price: stay.price,
         isLowest: stay.lowestPriceProvider === 'Booking.com',
-        // Booking.com: use English name as ss param ??most precise for global hotel matching
+        // Booking.com: use English name as ss param — most precise for global hotel matching
         url: `https://www.booking.com/searchresults.zh-tw.html?ss=${encodedEn}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=index&src_elem=sb`
       },
       {
@@ -517,7 +516,7 @@ export async function runScraperJob(query, onLog) {
     results.sort((a, b) => b.rating - a.rating);
   }
 
-  onLog(`[COMPLETE] ?��?完畢！已?��??�傳??{searchQuery}?�共 ${results.length} 筆�??��?宿�??��?多張?��?`);
+  onLog(`[COMPLETE] 抓取完畢！已成功回傳「${searchQuery}」共 ${results.length} 筆比價住宿資料與多張圖集`);
   return results;
 }
 
@@ -525,7 +524,7 @@ export async function runPackageScraperJob(query, onLog) {
   const { cityId = 'taipei' } = query;
   const { searchQuery } = resolveCity(cityId);
 
-  onLog(`[SYS] ?��???{searchQuery}?��??��?套�?程深層�??��???..`);
+  onLog(`[SYS] 啟動「${searchQuery}」多頁包套行程深層抓取引擎...`);
   await sleep(150);
 
   let results = mockPackageTours.filter(pkg => {
@@ -538,15 +537,15 @@ export async function runPackageScraperJob(query, onLog) {
       {
         id: `pkg-ext-1-${searchQuery}`,
         cityId: searchQuery,
-        title: `??{searchQuery} 精選親�?飯�? + ?��??��?證�?觀?��?車接?�】�??��??��?`,
+        title: `【${searchQuery} 精選親子飯店 + 景點通行證與觀光專車接送】超值組合包`,
         image: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80',
-        stayIncluded: `${searchQuery} 親�?渡�?飯�? 1?�`,
-        toursIncluded: [`${searchQuery} ?��?主�?樂�?/?��??�票通票`, '觀?��?車�?返接?��???, '?�地美�??�價??],
+        stayIncluded: `${searchQuery} 親子渡假飯店 1晚`,
+        toursIncluded: [`${searchQuery} 熱門主題樂園/景點門票通票`, '觀光專車往返接送服務', '在地美食折價券'],
         price: 3480,
         originalPrice: 4900,
         discountPercent: 29,
-        savingsText: '組�??��??�買?��? NT$1,420',
-        tags: ['親�??��?', '?��?車接??, '主�?樂�?'],
+        savingsText: '組合包比單買現省 NT$1,420',
+        tags: ['親子同樂', '含專車接送', '主題樂園'],
         rating: 4.9,
         reviewsCount: 420,
         url: `https://www.kkday.com/zh-tw/product/search?keyword=${encodeURIComponent(searchQuery)}`
@@ -554,15 +553,15 @@ export async function runPackageScraperJob(query, onLog) {
       {
         id: `pkg-ext-2-${searchQuery}`,
         cityId: searchQuery,
-        title: `??{searchQuery} ?��?飯�? + 美�?餐券?��??��??��??��??�特?��?`,
+        title: `【${searchQuery} 景觀飯店 + 美食餐券與一日遊包車】閃電特惠包`,
         image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-        stayIncluded: `${searchQuery} ?��??��?飯�? 2?�`,
-        toursIncluded: [`${searchQuery} ?��?一?��??��??��?`, '?��?美景餐廳?�人?��???],
+        stayIncluded: `${searchQuery} 陽光景觀飯店 2晚`,
+        toursIncluded: [`${searchQuery} 全區一日遊包車服務`, '星級美景餐廳雙人晚餐券'],
         price: 4200,
         originalPrice: 6200,
         discountPercent: 32,
-        savingsText: '組�??��??�買?��? NT$2,000',
-        tags: ['觀?��?�?, '?�人美景?��?', '?�銷?�款'],
+        savingsText: '組合包比單買現省 NT$2,000',
+        tags: ['觀光包車', '雙人美景晚餐', '熱銷爆款'],
         rating: 4.8,
         reviewsCount: 310,
         url: `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(searchQuery)}`
@@ -570,7 +569,7 @@ export async function runPackageScraperJob(query, onLog) {
     );
   }
 
-  onLog(`[CALC] 完�??��??�錢?��?計�? (平�??��? 28% - 35%)`);
+  onLog(`[CALC] 完成動態省錢公式計算 (平均現省 28% - 35%)`);
   return results;
 }
 
@@ -578,7 +577,7 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
   const { cityId = 'taipei' } = query;
   const { searchQuery } = resolveCity(cityId);
 
-  onLog(`[SYS] ?��???{searchQuery}?��??�熱?�親�??��?庫�?設施?��?...`);
+  onLog(`[SYS] 抓取「${searchQuery}」最新熱門親子景點庫與設施數據...`);
   await sleep(150);
 
   let results = mockFamilyAttractions.filter(f => {
@@ -591,35 +590,35 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
       {
         id: `fam-ext-1-${searchQuery}`,
         cityId: searchQuery,
-        name: `${searchQuery} 綠能?�然?��??�索?��? & ?�童滑梯樂�?`,
-        category: '?��??�然?��? / ?�童?�戲??,
+        name: `${searchQuery} 綠能自然戶外探索公園 & 兒童滑梯樂園`,
+        category: '戶外自然公園 / 兒童遊戲場',
         image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
-        ageRecommendation: '0-12�?(?�家?��??�電?�地)',
+        ageRecommendation: '0-12歲 (全家戶外放電勝地)',
         rating: 4.9,
-        ticketPrice: '完全?�費?�放 (?��?費�?車場)',
-        features: ['超長滾輪溜�?�?, '?��?礙推車坡??, '五�?級育嬰室', '大�??��?餐�?'],
-        description: `${searchQuery} ?�?�歡迎�?大�??��?親�??��?，設?�大?��?童�??�場?�無?��?步�??�`,
-        nearbyStays: [`${searchQuery} 親�?主�?渡�??�館 (車�?10??`],
-        highlights: '?��?設施豐�?且�??��?費�??��?家庭帶�??��??��?踏�???
+        ticketPrice: '完全免費開放 (含免費停車場)',
+        features: ['超長滾輪溜滑梯', '無障礙推車坡道', '五星級育嬰室', '大草坪野餐區'],
+        description: `${searchQuery} 最受歡迎的大型戶外親子公園，設有大型兒童遊戲場與無障礙步道。`,
+        nearbyStays: [`${searchQuery} 親子主題渡假旅館 (車程10分)`],
+        highlights: '公園設施豐富且完全免費，適合家庭帶小朋友戶外踏青。'
       },
       {
         id: `fam-ext-2-${searchQuery}`,
         cityId: searchQuery,
-        name: `${searchQuery} 科�??�索體�?�?& 室內?�童科學樂�?`,
-        category: '室內科�?�?/ ?�童樂�?',
+        name: `${searchQuery} 科技探索體驗館 & 室內兒童科學樂園`,
+        category: '室內科技館 / 兒童樂園',
         image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-        ageRecommendation: '3-15�?,
+        ageRecommendation: '3-15歲',
         rating: 4.8,
-        ticketPrice: '平價?��?NT$ 60 �?,
-        features: ['室內?�氣?�放', '?�影互�?展�?', '?��??�嬰�?, '?��?寄放?�'],
-        description: `?�天?�佳�?案�?設�?豐�??��?影�??��?學�??�室?��??��??�設?�。`,
-        nearbyStays: [`${searchQuery} 綠�??��??��?飯�? (步�?8??`],
-        highlights: '?�天?�室?��?溫冷�???�天?��?夏�?佳避?�放?�景點�?
+        ticketPrice: '平價門票 NT$ 60 起',
+        features: ['室內冷氣開放', '光影互動展區', '獨立育嬰室', '推車寄放區'],
+        description: `雨天最佳備案！設有豐富的光影互動科學展與室內攀爬遊戲設施。`,
+        nearbyStays: [`${searchQuery} 綠意陽光文旅飯店 (步行8分)`],
+        highlights: '全天候室內恆溫冷氣，雨天或炎夏最佳避暑放電景點。'
       }
     );
   }
 
-  onLog(`[SUCCESS] ?��??��? ${results.length} ?��?{searchQuery}?��??�熱?�親�??��?`);
+  onLog(`[SUCCESS] 成功獲取 ${results.length} 個「${searchQuery}」最新熱門親子景點`);
   return results;
 }
 
@@ -627,11 +626,11 @@ export async function runTheaterScraperJob(query, onLog) {
   const { cityId = 'taipei' } = query;
   const { searchQuery } = resolveCity(cityId);
 
-  onLog(`[SYS] ?��?近�?年「親子大?��??��? / 巧�??�場 / 歌�??�」�?屬爬?��???..`);
+  onLog(`[SYS] 啟動近半年「親子大型舞台劇 / 巧虎劇場 / 歌舞劇」專屬爬蟲引擎...`);
   await sleep(150);
 
   let results = mockFamilyTheaters;
-  onLog(`[SUCCESS] ?��??��?�?6 ?��???${results.length} 檔�??�熱?�親�??��?表�??�「�??��??�購票�??�」`);
+  onLog(`[SUCCESS] 成功抓取近 6 個月共 ${results.length} 檔最新熱門親子劇團表演與「最早開放購票時間」`);
   return results;
 }
 
