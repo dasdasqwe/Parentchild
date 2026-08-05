@@ -34,7 +34,7 @@ export default function App() {
   // Scraper console states
   const [logs, setLogs] = useState([]);
   const [isScraping, setIsScraping] = useState(false);
-  const [isConsoleOpen, setIsConsoleOpen] = useState(true);
+  const [isConsoleOpen, setIsConsoleOpen] = useState(false);
 
   // Modals
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
