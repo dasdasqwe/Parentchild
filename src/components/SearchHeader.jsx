@@ -311,10 +311,10 @@ export default function SearchHeader({
 
       </div>
 
-      {/* Bottom Bar: Popular City Quick Pills (Left) + Budget Cap & Sort Selector (Far Right) */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+      {/* Bottom Bar: Popular City Quick Pills (Left) + Budget Cap & Sort Selector (Far Right Edge) */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px 16px' }}>
         
-        {/* Popular City Hot Pills (Left) */}
+        {/* Popular City Hot Pills */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>
             ✨ 熱門快速選擇：
@@ -340,8 +340,8 @@ export default function SearchHeader({
           ))}
         </div>
 
-        {/* Far Right: Budget Cap Slider & Sort Order Dropdown */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+        {/* Far Right Edge: Budget Cap Slider & Sort Order Dropdown */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginLeft: 'auto', justifyContent: 'flex-end' }}>
           
           {/* Max Budget Slider */}
           {activeTab === 'stays' && (
