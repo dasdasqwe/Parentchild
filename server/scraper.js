@@ -263,7 +263,7 @@ export async function runScraperJob(query, onLog) {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        url: `https://www.agoda.com/zh-tw/pages/agoda/default/page_gosearch.aspx?text=${encodedKw}&textToSearch=${encodedKw}&kw=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`
+        url: `https://www.agoda.com/zh-tw/search?headerKeyword=${encodedKw}&text=${encodedKw}&kw=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`
       },
       {
         name: 'Trip.com',
