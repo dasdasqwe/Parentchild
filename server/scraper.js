@@ -236,15 +236,13 @@ export async function runScraperJob(query, onLog) {
   onLog(`[SCRAPE] 成功完成深層抓取！比價 ${results.length * 3} 個跨平台數據點 (Agoda, Booking, Trip.com)`);
   await sleep(100);
 
-  // Sorting
+  // Sorting (Price Low-to-High, Price High-to-Low, Rating Satisfaction)
   if (sort === 'price_asc') {
     results.sort((a, b) => a.price - b.price);
   } else if (sort === 'price_desc') {
     results.sort((a, b) => b.price - a.price);
   } else if (sort === 'rating_desc') {
     results.sort((a, b) => b.rating - a.rating);
-  } else if (sort === 'discount_desc') {
-    results.sort((a, b) => b.discountPercent - a.discountPercent);
   }
 
   onLog(`[COMPLETE] 抓取完畢！已成功回傳「${normCityName}」共 ${results.length} 筆比價住宿資料`);

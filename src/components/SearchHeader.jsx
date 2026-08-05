@@ -293,7 +293,7 @@ export default function SearchHeader({
             }}
           >
             <option value="price_asc">價格由低到高 (全網最低價優先)</option>
-            <option value="discount_desc">折扣幅度最高優先</option>
+            <option value="price_desc">價格由高到低</option>
             <option value="rating_desc">評分滿意度最高優先</option>
           </select>
         </div>
