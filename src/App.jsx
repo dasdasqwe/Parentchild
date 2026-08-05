@@ -13,7 +13,7 @@ import { mockCities } from '../server/mockData.js';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('stays'); // 'stays' | 'packages' | 'family' | 'theaters' | 'trends'
-  const [selectedCity, setSelectedCity] = useState('taipei');
+  const [selectedCity, setSelectedCity] = useState('沖繩');
   const [stayType, setStayType] = useState('all');
   const [maxPrice, setMaxPrice] = useState(10000);
   const [sortBy, setSortBy] = useState('price_asc');
