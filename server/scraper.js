@@ -480,9 +480,9 @@ export async function runScraperJob(query, onLog) {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        // Agoda: use searchText param (global search box, NOT the city filter)
-        // This routes through Agoda's universal search which auto-detects hotel vs city
-        url: `https://www.agoda.com/search?searchText=${encodedEn}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}&los=2&origin=searchbox&locale=zh-TW`
+        // Agoda: city param anchors the city, textToSearch filters for the specific hotel
+        // This is the ONLY URL format that doesn't get server-side redirected to homepage
+        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&textToSearch=${encodedEn}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
       },
       {
         name: 'Trip.com',
