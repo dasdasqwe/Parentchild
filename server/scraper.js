@@ -271,10 +271,15 @@ export async function runScraperJob(query, onLog) {
     });
   }
 
-  // Build 1:1 exact deep-links for all extracted stay items using verified Agoda numerical city IDs
+  // Build 1:1 exact deep-links prioritizing target hotel as #1 result on Agoda & Booking
   const agodaCityId = agodaCityIdMap[normCityId] || agodaCityIdMap['okinawa'];
 
   liveStays.forEach(stay => {
+    // Prefer English name in parentheses for Agoda's global search engine
+    const englishMatch = stay.name.match(/\(([^)]+)\)/);
+    const agodaSearchName = englishMatch ? englishMatch[1].trim() : stay.name.split(' (')[0].trim();
+    const encodedKwAgoda = encodeURIComponent(agodaSearchName);
+
     const bookingSearchName = stay.name.split(' (')[0].trim();
     const encodedKwBooking = encodeURIComponent(bookingSearchName);
 
@@ -289,7 +294,7 @@ export async function runScraperJob(query, onLog) {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
+        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&text=${encodedKwAgoda}&textToSearch=${encodedKwAgoda}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
       },
       {
         name: 'Trip.com',
