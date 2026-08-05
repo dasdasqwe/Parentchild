@@ -54,6 +54,44 @@ const agodaCityIdMap = {
 };
 
 /**
+ * City Keywords List to filter out cross-city sponsored ads from live scraping results
+ */
+const cityKeywords = [
+  { key: 'taipei', names: ['台北', '新北', '板橋', '三重', '淡水', 'TAIPEI'] },
+  { key: 'taichung', names: ['台中', '逢甲', '草悟道', 'TAICHUNG'] },
+  { key: 'kaohsiung', names: ['高雄', '駁二', '六合', 'KAOHSIUNG'] },
+  { key: 'okinawa', names: ['沖繩', '那霸', '北谷', '恩納', 'OKINAWA', 'NAHA'] },
+  { key: 'yilan', names: ['宜蘭', '礁溪', '羅東', 'YILAN'] },
+  { key: 'tainan', names: ['台南', 'TAINAN'] },
+  { key: 'hualien', names: ['花蓮', 'HUALIEN'] },
+  { key: 'tokyo', names: ['東京', '新宿', '上野', 'TOKYO'] },
+  { key: 'kyoto', names: ['京都', 'KYOTO'] },
+  { key: 'osaka', names: ['大阪', '難波', '心齋橋', 'OSAKA'] }
+];
+
+function isHotelMatchingCity(hotelName, normCityId) {
+  const nameUpper = hotelName.toUpperCase();
+  for (const c of cityKeywords) {
+    if (c.key !== normCityId) {
+      if (c.names.some(n => nameUpper.includes(n))) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function getHotelCityId(hotelName, fallbackCityId) {
+  const nameUpper = hotelName.toUpperCase();
+  for (const c of cityKeywords) {
+    if (c.names.some(n => nameUpper.includes(n))) {
+      return c.key;
+    }
+  }
+  return fallbackCityId;
+}
+
+/**
  * 100% Real Authentic Registered Hotel Database (15 Real Hotels per City, strictly scoped)
  * Dual-language titles (Chinese + English) for 1:1 precision deep-linking on Agoda & Booking
  */
@@ -224,24 +262,28 @@ export async function runScraperJob(query, onLog) {
 
       if (name) {
         const cleanName = name.replace(/【.*?】/g, '').trim();
-        liveStays.push({
-          id: `live-${normCityId}-${idx}`,
-          cityId: normCityId,
-          cityName: normCityName,
-          name: cleanName,
-          type: cleanName.includes('民宿') || cleanName.includes('B&B') ? 'B&B' : (cleanName.includes('親子') || cleanName.includes('Family') ? 'Family Hotel' : 'Hotel'),
-          image: gallery[0],
-          images: gallery,
-          rating: parsedRating || 4.7,
-          reviewsCount: 300 + idx * 180,
-          address: address || `${searchQuery} 核心特區`,
-          tags: ['實景圖集', '即時線上房價', '景點周邊', '無障礙空間'],
-          lowestPriceProvider: idx % 2 === 0 ? 'Booking.com' : 'Agoda',
-          price: parsedPrice,
-          originalPrice: Math.round(parsedPrice * 1.5),
-          discountPercent: 33,
-          providers: []
-        });
+        // Strict city filter: skip cross-city sponsored items returned by Booking.com
+        if (isHotelMatchingCity(cleanName, normCityId)) {
+          const stayCityId = getHotelCityId(cleanName, normCityId);
+          liveStays.push({
+            id: `live-${stayCityId}-${idx}`,
+            cityId: stayCityId,
+            cityName: normCityName,
+            name: cleanName,
+            type: cleanName.includes('民宿') || cleanName.includes('B&B') ? 'B&B' : (cleanName.includes('親子') || cleanName.includes('Family') ? 'Family Hotel' : 'Hotel'),
+            image: gallery[0],
+            images: gallery,
+            rating: parsedRating || 4.7,
+            reviewsCount: 300 + idx * 180,
+            address: address || `${searchQuery} 核心特區`,
+            tags: ['實景圖集', '即時線上房價', '景點周邊', '無障礙空間'],
+            lowestPriceProvider: idx % 2 === 0 ? 'Booking.com' : 'Agoda',
+            price: parsedPrice,
+            originalPrice: Math.round(parsedPrice * 1.5),
+            discountPercent: 33,
+            providers: []
+          });
+        }
       }
     });
 
@@ -282,7 +324,7 @@ export async function runScraperJob(query, onLog) {
 
   // Build 1:1 exact deep-links prioritizing target hotel as #1 result on Agoda & Booking
   liveStays.forEach(stay => {
-    // ALWAYS scope Agoda City ID to the specific hotel's cityId
+    // Strictly map stay.cityId to its specific Agoda City ID
     const targetCityKey = (stay.cityId || normCityId).toLowerCase();
     const agodaCityId = agodaCityIdMap[targetCityKey] || agodaCityIdMap[normCityId] || 717899;
 
