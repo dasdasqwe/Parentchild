@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
-import { Star, MapPin, ExternalLink, Heart, Check, Tag, ChevronDown, ChevronUp } from 'lucide-react';
+import { Star, MapPin, ExternalLink, Heart, Tag, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function StayCard({ stay, isSaved, onToggleSave }) {
   const [showProviders, setShowProviders] = useState(false);
+  const [currentImgIdx, setCurrentImgIdx] = useState(0);
+
+  const gallery = (stay.images && stay.images.length > 0) ? stay.images : [stay.image];
+  const activeImage = gallery[currentImgIdx] || stay.image;
 
   const lowestProvider = stay.providers?.find(p => p.isLowest || p.name === stay.lowestPriceProvider) || stay.providers?.[0];
   const targetUrl = lowestProvider?.url || stay.url || 'https://www.agoda.com';
   const providerName = stay.lowestPriceProvider || lowestProvider?.name || 'Agoda';
+
+  const handlePrevImg = (e) => {
+    e.stopPropagation();
+    setCurrentImgIdx(prev => (prev === 0 ? gallery.length - 1 : prev - 1));
+  };
+
+  const handleNextImg = (e) => {
+    e.stopPropagation();
+    setCurrentImgIdx(prev => (prev === gallery.length - 1 ? 0 : prev + 1));
+  };
 
   return (
     <div className="glass-panel" style={{
@@ -17,21 +31,103 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
       position: 'relative'
     }}>
       
-      {/* Top Media Banner & Tags */}
+      {/* Top Media Banner & Gallery Carousel */}
       <div style={{ position: 'relative', height: '200px', width: '100%', overflow: 'hidden' }}>
         <img
-          src={stay.image}
+          src={activeImage}
           alt={stay.name}
           style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
           onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
           onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
         />
+
+        {/* Carousel Navigation Arrows if multiple photos */}
+        {gallery.length > 1 && (
+          <>
+            <button
+              onClick={handlePrevImg}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '8px',
+                transform: 'translateY(-50%)',
+                background: 'rgba(15, 23, 42, 0.65)',
+                backdropFilter: 'blur(4px)',
+                border: '1px solid var(--border-glass)',
+                borderRadius: '50%',
+                width: '28px',
+                height: '28px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff',
+                cursor: 'pointer',
+                zIndex: 2
+              }}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={handleNextImg}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '8px',
+                transform: 'translateY(-50%)',
+                background: 'rgba(15, 23, 42, 0.65)',
+                backdropFilter: 'blur(4px)',
+                border: '1px solid var(--border-glass)',
+                borderRadius: '50%',
+                width: '28px',
+                height: '28px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff',
+                cursor: 'pointer',
+                zIndex: 2
+              }}
+            >
+              <ChevronRight size={16} />
+            </button>
+
+            {/* Thumbnail Dots Indicator */}
+            <div style={{
+              position: 'absolute',
+              top: '44px',
+              right: '12px',
+              display: 'flex',
+              gap: '4px',
+              background: 'rgba(15, 23, 42, 0.6)',
+              padding: '3px 8px',
+              borderRadius: '999px',
+              zIndex: 2
+            }}>
+              {gallery.map((_, dotIdx) => (
+                <span
+                  key={dotIdx}
+                  onClick={(e) => { e.stopPropagation(); setCurrentImgIdx(dotIdx); }}
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    background: currentImgIdx === dotIdx ? '#34d399' : 'rgba(255, 255, 255, 0.4)',
+                    cursor: 'pointer'
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Top Badges */}
         <div style={{
           position: 'absolute',
           top: '12px',
           left: '12px',
           display: 'flex',
-          gap: '6px'
+          gap: '6px',
+          zIndex: 2
         }}>
           {stay.type === 'Family Hotel' && <span className="badge-amber">👨‍👩‍👧‍👦 親子旅館</span>}
           {stay.type === 'Hotel' && <span className="badge-purple">🏨 平價飯店</span>}
@@ -59,7 +155,8 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            transition: 'transform 0.2s ease'
+            transition: 'transform 0.2s ease',
+            zIndex: 3
           }}
         >
           <Heart size={18} color="#f43f5e" fill={isSaved ? "#f43f5e" : "transparent"} />
@@ -75,7 +172,8 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           padding: '12px 16px 8px 16px',
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'flex-end'
+          alignItems: 'flex-end',
+          zIndex: 2
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#fbbf24', fontSize: '0.85rem', fontWeight: '700' }}>
             <Star size={14} fill="#fbbf24" /> {stay.rating} <span style={{ color: 'var(--text-muted)', fontWeight: '400' }}>({stay.reviewsCount} 則評價)</span>
