@@ -282,7 +282,7 @@ export default function SearchHeader({
           </div>
         </div>
 
-        {/* Col 4: Stay Type, Budget Cap & Sort Order (Budget & Sort aligned underneath Stay Type) */}
+        {/* Col 4: Stay Type, Budget Cap (Left) & Sort Order (Right) horizontally aligned */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           
           {/* Accommodation Type */}
@@ -314,48 +314,53 @@ export default function SearchHeader({
             </div>
           )}
 
-          {/* Max Budget Slider (Aligned underneath Stay Type) */}
-          {activeTab === 'stays' && (
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px', fontWeight: '600' }}>
-                <span>最高預算上限</span>
-                <span style={{ color: 'var(--primary)', fontWeight: '700' }}>NT$ {maxPrice.toLocaleString()} /晚</span>
+          {/* Horizontally aligned Budget Cap (Left) & Sort Order (Right) */}
+          <div style={{ display: 'grid', gridTemplateColumns: activeTab === 'stays' ? '1fr 1fr' : '1fr', gap: '12px', alignItems: 'center' }}>
+            
+            {/* Max Budget Slider (Left) */}
+            {activeTab === 'stays' && (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px', fontWeight: '600' }}>
+                  <span>最高預算</span>
+                  <span style={{ color: 'var(--primary)', fontWeight: '700' }}>NT$ {maxPrice.toLocaleString()}</span>
+                </div>
+                <input
+                  type="range"
+                  min="500"
+                  max="10000"
+                  step="250"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(Number(e.target.value))}
+                  style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer' }}
+                />
               </div>
-              <input
-                type="range"
-                min="500"
-                max="10000"
-                step="250"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer' }}
-              />
-            </div>
-          )}
+            )}
 
-          {/* Sort Selector (Aligned underneath Budget Slider) */}
-          <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-              排序方式
-            </label>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '9px 12px',
-                borderRadius: '8px',
-                background: 'rgba(30, 41, 59, 0.9)',
-                color: '#ffffff',
-                border: '1px solid var(--border-glass)',
-                outline: 'none',
-                fontSize: '0.85rem'
-              }}
-            >
-              <option value="price_asc">價格由低到高 (全網最低價優先)</option>
-              <option value="price_desc">價格由高到低</option>
-              <option value="rating_desc">評分滿意度最高優先</option>
-            </select>
+            {/* Sort Selector (Right) */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
+                排序方式
+              </label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '9px 10px',
+                  borderRadius: '8px',
+                  background: 'rgba(30, 41, 59, 0.9)',
+                  color: '#ffffff',
+                  border: '1px solid var(--border-glass)',
+                  outline: 'none',
+                  fontSize: '0.85rem'
+                }}
+              >
+                <option value="price_asc">價格由低到高 (全網最低價優先)</option>
+                <option value="price_desc">價格由高到低</option>
+                <option value="rating_desc">評分滿意度最高優先</option>
+              </select>
+            </div>
+
           </div>
 
         </div>
