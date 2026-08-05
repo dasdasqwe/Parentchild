@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, MapPin, RefreshCw, Sparkles } from 'lucide-react';
+import { Search, RefreshCw, MapPin } from 'lucide-react';
 
 export default function SearchHeader({
   cities,
@@ -23,21 +23,38 @@ export default function SearchHeader({
   isScraping,
   activeTab
 }) {
-  const quickCities = [
-    { name: '沖繩', value: '沖繩' },
-    { name: '台北', value: '台北' },
-    { name: '東京', value: '東京' },
-    { name: '京都', value: '京都' },
-    { name: '首爾', value: '首爾' },
-    { name: '台中', value: '台中' },
-    { name: '曼谷', value: '曼谷' },
-    { name: '宜蘭', value: '宜蘭' },
-    { name: '大阪', value: '大阪' }
-  ];
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
     onTriggerScrape();
+  };
+
+  const calculateNights = () => {
+    try {
+      const d1 = new Date(checkInDate);
+      const d2 = new Date(checkOutDate);
+      const diff = Math.round((d2 - d1) / (1000 * 3600 * 24));
+      return diff > 0 ? diff : 1;
+    } catch {
+      return 2;
+    }
+  };
+
+  const handleNightsChange = (nights) => {
+    try {
+      const target = new Date(checkInDate);
+      target.setDate(target.getDate() + nights);
+      setCheckOutDate(target.toISOString().split('T')[0]);
+    } catch (err) {}
+  };
+
+  const handleCheckInChange = (newCheckIn) => {
+    setCheckInDate(newCheckIn);
+    try {
+      const nights = calculateNights();
+      const target = new Date(newCheckIn);
+      target.setDate(target.getDate() + nights);
+      setCheckOutDate(target.toISOString().split('T')[0]);
+    } catch (err) {}
   };
 
   return (
@@ -72,18 +89,18 @@ export default function SearchHeader({
       {/* Filter Form Controls */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '16px',
-        background: 'rgba(15, 23, 42, 0.6)',
-        padding: '16px',
-        borderRadius: '12px',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+        gap: '20px',
+        background: 'rgba(15, 23, 42, 0.65)',
+        padding: '20px',
+        borderRadius: '14px',
         border: '1px solid var(--border-glass)',
         marginBottom: '16px'
       }}>
         
-        {/* Destination City Input */}
-        <form onSubmit={handleFormSubmit} style={{ gridColumn: 'span 1' }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
+        {/* Col 1: Destination City Input */}
+        <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: '600' }}>
             目的地 / 城市
           </label>
           <div style={{ display: 'flex', gap: '6px' }}>
@@ -129,69 +146,69 @@ export default function SearchHeader({
           </div>
         </form>
 
-        {/* Unified Dates & Stay Duration Selector (Check-In, Nights, Check-Out) */}
-        <div style={{ gridColumn: 'span 2' }}>
-          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-            📅 住宿日期與天數 (入住 / 晚數 / 退房)
+        {/* Col 2: Dates (Check-Out directly underneath Check-In aligned, Nights on right) */}
+        <div>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: '600' }}>
+            📅 住宿日期與天數
           </label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 110px 1fr', gap: '8px', alignItems: 'center' }}>
-            <div>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>入住日期</span>
-              <input
-                type="date"
-                value={checkInDate}
-                onChange={(e) => {
-                  const newCheckIn = e.target.value;
-                  setCheckInDate(newCheckIn);
-                  try {
-                    const d1 = new Date(checkInDate);
-                    const d2 = new Date(checkOutDate);
-                    const nights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24)));
-                    const target = new Date(newCheckIn);
-                    target.setDate(target.getDate() + (nights || 2));
-                    setCheckOutDate(target.toISOString().split('T')[0]);
-                  } catch (err) {}
-                }}
-                style={{
-                  width: '100%',
-                  padding: '8px 10px',
-                  borderRadius: '8px',
-                  background: 'rgba(30, 41, 59, 0.9)',
-                  color: '#ffffff',
-                  border: '1px solid var(--border-glass)',
-                  outline: 'none',
-                  fontSize: '0.85rem',
-                  fontWeight: '500'
-                }}
-              />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 90px', gap: '10px', alignItems: 'center' }}>
+            
+            {/* Stacked Check-In and Check-Out aligned */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>入住日期</span>
+                <input
+                  type="date"
+                  value={checkInDate}
+                  onChange={(e) => handleCheckInChange(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '7px 10px',
+                    borderRadius: '8px',
+                    background: 'rgba(30, 41, 59, 0.9)',
+                    color: '#ffffff',
+                    border: '1px solid var(--border-glass)',
+                    outline: 'none',
+                    fontSize: '0.85rem',
+                    fontWeight: '500'
+                  }}
+                />
+              </div>
+
+              <div>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>退房日期</span>
+                <input
+                  type="date"
+                  value={checkOutDate}
+                  onChange={(e) => setCheckOutDate(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '7px 10px',
+                    borderRadius: '8px',
+                    background: 'rgba(30, 41, 59, 0.9)',
+                    color: '#ffffff',
+                    border: '1px solid var(--border-glass)',
+                    outline: 'none',
+                    fontSize: '0.85rem',
+                    fontWeight: '500'
+                  }}
+                />
+              </div>
             </div>
 
-            <div>
-              <span style={{ fontSize: '0.72rem', color: '#34d399', fontWeight: '700', display: 'block', marginBottom: '2px', textAlign: 'center' }}>
+            {/* Stay Duration Selector */}
+            <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: 'rgba(16, 185, 129, 0.08)', padding: '8px', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
+              <span style={{ fontSize: '0.72rem', color: '#34d399', fontWeight: '700', display: 'block', marginBottom: '4px', textAlign: 'center' }}>
                 住宿天數
               </span>
               <select
-                value={(() => {
-                  try {
-                    const d1 = new Date(checkInDate);
-                    const d2 = new Date(checkOutDate);
-                    const diff = Math.round((d2 - d1) / (1000 * 3600 * 24));
-                    return diff > 0 ? diff : 1;
-                  } catch { return 2; }
-                })()}
-                onChange={(e) => {
-                  const nights = Number(e.target.value);
-                  try {
-                    const target = new Date(checkInDate);
-                    target.setDate(target.getDate() + nights);
-                    setCheckOutDate(target.toISOString().split('T')[0]);
-                  } catch (err) {}
-                }}
+                value={calculateNights()}
+                onChange={(e) => handleNightsChange(Number(e.target.value))}
                 style={{
                   width: '100%',
-                  padding: '8px 4px',
-                  borderRadius: '8px',
-                  background: 'rgba(16, 185, 129, 0.15)',
+                  padding: '8px 2px',
+                  borderRadius: '6px',
+                  background: 'rgba(16, 185, 129, 0.2)',
                   color: '#34d399',
                   border: '1px solid var(--primary)',
                   outline: 'none',
@@ -213,39 +230,20 @@ export default function SearchHeader({
               </select>
             </div>
 
-            <div>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>退房日期</span>
-              <input
-                type="date"
-                value={checkOutDate}
-                onChange={(e) => setCheckOutDate(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px 10px',
-                  borderRadius: '8px',
-                  background: 'rgba(30, 41, 59, 0.9)',
-                  color: '#ffffff',
-                  border: '1px solid var(--border-glass)',
-                  outline: 'none',
-                  fontSize: '0.85rem',
-                  fontWeight: '500'
-                }}
-              />
-            </div>
           </div>
         </div>
 
-        {/* Adults & Children Count */}
+        {/* Col 3: Adults & Children Count */}
         <div>
-          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: '600' }}>
             👨‍👩‍👧 人數設定 (大人 / 小孩)
           </label>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <select
               value={adultsCount}
               onChange={(e) => setAdultsCount(Number(e.target.value))}
               style={{
-                flex: 1,
+                width: '100%',
                 padding: '9px 10px',
                 borderRadius: '8px',
                 background: 'rgba(30, 41, 59, 0.9)',
@@ -266,7 +264,7 @@ export default function SearchHeader({
               value={childrenCount}
               onChange={(e) => setChildrenCount(Number(e.target.value))}
               style={{
-                flex: 1,
+                width: '100%',
                 padding: '9px 10px',
                 borderRadius: '8px',
                 background: 'rgba(30, 41, 59, 0.9)',
@@ -284,15 +282,65 @@ export default function SearchHeader({
           </div>
         </div>
 
-        {/* Accommodation Type Filter */}
-        {activeTab === 'stays' && (
+        {/* Col 4: Stay Type, Budget Cap & Sort Order (Budget & Sort aligned underneath Stay Type) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          
+          {/* Accommodation Type */}
+          {activeTab === 'stays' && (
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
+                住宿類型
+              </label>
+              <select
+                value={stayType}
+                onChange={(e) => setStayType(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '9px 12px',
+                  borderRadius: '8px',
+                  background: 'rgba(30, 41, 59, 0.9)',
+                  color: '#ffffff',
+                  border: '1px solid var(--border-glass)',
+                  outline: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: '500'
+                }}
+              >
+                <option value="all">所有類型 (飯店/親子/民宿)</option>
+                <option value="Hotel">平價飯店 (Hotel)</option>
+                <option value="Family Hotel">親子旅館 (Family Hotel)</option>
+                <option value="B&B">特色民宿 (B&B)</option>
+              </select>
+            </div>
+          )}
+
+          {/* Max Budget Slider (Aligned underneath Stay Type) */}
+          {activeTab === 'stays' && (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px', fontWeight: '600' }}>
+                <span>最高預算上限</span>
+                <span style={{ color: 'var(--primary)', fontWeight: '700' }}>NT$ {maxPrice.toLocaleString()} /晚</span>
+              </div>
+              <input
+                type="range"
+                min="500"
+                max="10000"
+                step="250"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
+                style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer' }}
+              />
+            </div>
+          )}
+
+          {/* Sort Selector (Aligned underneath Budget Slider) */}
           <div>
             <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-              住宿類型
+              排序方式
             </label>
             <select
-              value={stayType}
-              onChange={(e) => setStayType(e.target.value)}
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
               style={{
                 width: '100%',
                 padding: '9px 12px',
@@ -301,99 +349,45 @@ export default function SearchHeader({
                 color: '#ffffff',
                 border: '1px solid var(--border-glass)',
                 outline: 'none',
-                fontSize: '0.9rem',
-                fontWeight: '500'
+                fontSize: '0.85rem'
               }}
             >
-              <option value="all">所有類型 (飯店/親子/民宿)</option>
-              <option value="Hotel">平價飯店 (Hotel)</option>
-              <option value="Family Hotel">親子旅館 (Family Hotel)</option>
-              <option value="B&B">特色民宿 (B&B)</option>
+              <option value="price_asc">價格由低到高 (全網最低價優先)</option>
+              <option value="price_desc">價格由高到低</option>
+              <option value="rating_desc">評分滿意度最高優先</option>
             </select>
           </div>
-        )}
 
-        {/* Max Budget Slider */}
-        {activeTab === 'stays' && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-              <span>最高預算上限</span>
-              <span style={{ color: 'var(--primary)', fontWeight: '700' }}>NT$ {maxPrice.toLocaleString()} /晚</span>
-            </div>
-            <input
-              type="range"
-              min="500"
-              max="10000"
-              step="250"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer', marginTop: '6px' }}
-            />
-          </div>
-        )}
-
-        {/* Sort Selector */}
-        <div>
-          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-            排序方式
-          </label>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '9px 12px',
-              borderRadius: '8px',
-              background: 'rgba(30, 41, 59, 0.9)',
-              color: '#ffffff',
-              border: '1px solid var(--border-glass)',
-              outline: 'none',
-              fontSize: '0.9rem',
-              fontWeight: '500'
-            }}
-          >
-            <option value="price_asc">價格由低到高 (全網最低價優先)</option>
-            <option value="price_desc">價格由高到低</option>
-            <option value="rating_desc">評分滿意度最高優先</option>
-          </select>
         </div>
 
       </div>
 
-      {/* Quick City Pills Selection Strip */}
+      {/* Popular City Hot Pills */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <Sparkles size={14} color="var(--primary)" /> 熱門快速選擇:
+        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>
+          ✨ 熱門快速選擇：
         </span>
-        {quickCities.map(qc => (
+        {cities.map((city) => (
           <button
-            key={qc.value}
-            onClick={() => {
-              setSelectedCity(qc.value);
-            }}
+            key={city.id}
+            onClick={() => setSelectedCity(city.id)}
             style={{
-              background: selectedCity === qc.value ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-              border: selectedCity === qc.value ? '1px solid var(--primary)' : '1px solid var(--border-glass)',
-              color: selectedCity === qc.value ? '#34d399' : 'var(--text-muted)',
-              padding: '4px 12px',
+              background: selectedCity === city.id ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+              color: selectedCity === city.id ? '#34d399' : 'var(--text-muted)',
+              border: selectedCity === city.id ? '1px solid var(--primary)' : '1px solid var(--border-glass)',
               borderRadius: '999px',
-              fontSize: '0.8rem',
+              padding: '4px 14px',
+              fontSize: '0.85rem',
+              fontWeight: selectedCity === city.id ? '700' : '500',
               cursor: 'pointer',
-              fontWeight: selectedCity === qc.value ? '700' : '400',
               transition: 'all 0.2s ease'
             }}
           >
-            {qc.name}
+            {city.name.split(' ')[0]}
           </button>
         ))}
       </div>
 
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }
