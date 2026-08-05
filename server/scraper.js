@@ -247,6 +247,10 @@ export async function runScraperJob(query, onLog) {
   }
 
   // Build 1:1 exact deep-links for all extracted stay items using official hotel name
+  const d1 = new Date(checkIn);
+  const d2 = new Date(checkOut);
+  const nights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
+
   liveStays.forEach(stay => {
     // Extract exact hotel name without parenthetical English for precise OTA query match
     const cleanHotelSearchName = stay.name.split(' (')[0].trim();
@@ -263,7 +267,7 @@ export async function runScraperJob(query, onLog) {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        url: `https://www.agoda.com/zh-tw/search?headerKeyword=${encodedKw}&text=${encodedKw}&kw=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`
+        url: `https://www.agoda.com/zh-tw/search?text=${encodedKw}&headerKeyword=${encodedKw}&kw=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${nights}&rooms=1&adults=${adults}&children=${children}`
       },
       {
         name: 'Trip.com',
