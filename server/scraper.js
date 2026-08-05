@@ -449,12 +449,17 @@ export async function runScraperJob(query, onLog) {
     }
   }
 
-  // Build 1:1 rock-solid URLs for Booking, Agoda, Trip.com
+  // Build 1:1 exact deep-links prioritizing target hotel as #1 result on Agoda & Booking
   const mainAgodaCityId = resolveAgodaCityId(searchQuery) || resolveAgodaCityId(normCityId);
 
   liveStays.forEach(stay => {
     const targetCityKey = (stay.cityId || normCityId).toLowerCase();
     const agodaCityId = resolveAgodaCityId(targetCityKey) || mainAgodaCityId;
+
+    // Prefer English name in parentheses for Agoda's global search engine to ensure #1 card placement
+    const englishMatch = stay.name.match(/\(([^)]+)\)/);
+    const agodaSearchName = englishMatch ? englishMatch[1].trim() : stay.name.split(' (')[0].trim();
+    const encodedKwAgoda = encodeURIComponent(agodaSearchName);
 
     const bookingSearchName = stay.name.split(' (')[0].trim();
 
@@ -469,7 +474,7 @@ export async function runScraperJob(query, onLog) {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
+        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&text=${encodedKwAgoda}&textToSearch=${encodedKwAgoda}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
       },
       {
         name: 'Trip.com',
