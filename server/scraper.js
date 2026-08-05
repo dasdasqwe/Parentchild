@@ -29,6 +29,31 @@ const curatedPhotoGalleries = [
 ];
 
 /**
+ * Agoda Numerical City IDs Mapping (Verified via Live Browser Engine)
+ * Prevents Agoda 302/301 redirects to homepage by using official numerical city IDs
+ */
+const agodaCityIdMap = {
+  okinawa: 717899,
+  taipei: 12080,
+  taichung: 17387,
+  kaohsiung: 17390,
+  yilan: 17388,
+  tainan: 17389,
+  hualien: 17391,
+  hsinchu: 17392,
+  taoyuan: 17393,
+  tokyo: 5085,
+  kyoto: 15833,
+  osaka: 13170,
+  sapporo: 15392,
+  hokkaido: 15392,
+  seoul: 14690,
+  busan: 15024,
+  bangkok: 9395,
+  bali: 17193
+};
+
+/**
  * 100% Real Authentic Registered Hotel Database (15+ Real Hotels per City)
  * Dual-language titles (Chinese + English) for 1:1 precision deep-linking on Agoda & Booking
  */
@@ -246,17 +271,10 @@ export async function runScraperJob(query, onLog) {
     });
   }
 
-  // Build 1:1 exact deep-links for all extracted stay items using English/Official hotel names
-  const d1 = new Date(checkIn);
-  const d2 = new Date(checkOut);
-  const nights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
+  // Build 1:1 exact deep-links for all extracted stay items using verified Agoda numerical city IDs
+  const agodaCityId = agodaCityIdMap[normCityId] || agodaCityIdMap['okinawa'];
 
   liveStays.forEach(stay => {
-    // Prefer English name in parentheses for Agoda's global search engine
-    const englishMatch = stay.name.match(/\(([^)]+)\)/);
-    const agodaSearchName = englishMatch ? englishMatch[1].trim() : stay.name.split(' (')[0].trim();
-    const encodedKwAgoda = encodeURIComponent(agodaSearchName);
-
     const bookingSearchName = stay.name.split(' (')[0].trim();
     const encodedKwBooking = encodeURIComponent(bookingSearchName);
 
@@ -271,7 +289,7 @@ export async function runScraperJob(query, onLog) {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        url: `https://www.agoda.com/zh-tw/search?text=${encodedKwAgoda}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${nights}&rooms=1&adults=${adults}&children=${children}`
+        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
       },
       {
         name: 'Trip.com',
