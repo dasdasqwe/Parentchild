@@ -89,17 +89,17 @@ export default function SearchHeader({
       {/* Filter Form Controls */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-        gap: '20px',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: '16px',
         background: 'rgba(15, 23, 42, 0.65)',
-        padding: '20px',
+        padding: '18px',
         borderRadius: '14px',
         border: '1px solid var(--border-glass)',
         marginBottom: '16px'
       }}>
         
         {/* Col 1: Destination City Input */}
-        <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+        <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
           <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: '600' }}>
             目的地 / 城市
           </label>
@@ -282,115 +282,108 @@ export default function SearchHeader({
           </div>
         </div>
 
-        {/* Col 4: Stay Type, Budget Cap (Left) & Sort Order (Right) horizontally aligned */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          
-          {/* Accommodation Type */}
-          {activeTab === 'stays' && (
-            <div>
-              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-                住宿類型
-              </label>
-              <select
-                value={stayType}
-                onChange={(e) => setStayType(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '9px 12px',
-                  borderRadius: '8px',
-                  background: 'rgba(30, 41, 59, 0.9)',
-                  color: '#ffffff',
-                  border: '1px solid var(--border-glass)',
-                  outline: 'none',
-                  fontSize: '0.85rem',
-                  fontWeight: '500'
-                }}
-              >
-                <option value="all">所有類型 (飯店/親子/民宿)</option>
-                <option value="Hotel">平價飯店 (Hotel)</option>
-                <option value="Family Hotel">親子旅館 (Family Hotel)</option>
-                <option value="B&B">特色民宿 (B&B)</option>
-              </select>
-            </div>
-          )}
-
-          {/* Horizontally aligned Budget Cap (Left) & Sort Order (Right) */}
-          <div style={{ display: 'grid', gridTemplateColumns: activeTab === 'stays' ? '1fr 1fr' : '1fr', gap: '12px', alignItems: 'center' }}>
-            
-            {/* Max Budget Slider (Left) */}
-            {activeTab === 'stays' && (
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px', fontWeight: '600' }}>
-                  <span>最高預算</span>
-                  <span style={{ color: 'var(--primary)', fontWeight: '700' }}>NT$ {maxPrice.toLocaleString()}</span>
-                </div>
-                <input
-                  type="range"
-                  min="500"
-                  max="10000"
-                  step="250"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer' }}
-                />
-              </div>
-            )}
-
-            {/* Sort Selector (Right) */}
-            <div>
-              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-                排序方式
-              </label>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '9px 10px',
-                  borderRadius: '8px',
-                  background: 'rgba(30, 41, 59, 0.9)',
-                  color: '#ffffff',
-                  border: '1px solid var(--border-glass)',
-                  outline: 'none',
-                  fontSize: '0.85rem'
-                }}
-              >
-                <option value="price_asc">價格由低到高 (全網最低價優先)</option>
-                <option value="price_desc">價格由高到低</option>
-                <option value="rating_desc">評分滿意度最高優先</option>
-              </select>
-            </div>
-
-          </div>
-
+        {/* Col 4: Accommodation Type */}
+        <div>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', fontWeight: '600' }}>
+            住宿類型
+          </label>
+          <select
+            value={stayType}
+            onChange={(e) => setStayType(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '9px 12px',
+              borderRadius: '8px',
+              background: 'rgba(30, 41, 59, 0.9)',
+              color: '#ffffff',
+              border: '1px solid var(--border-glass)',
+              outline: 'none',
+              fontSize: '0.85rem',
+              fontWeight: '500'
+            }}
+          >
+            <option value="all">所有類型 (飯店/親子/民宿)</option>
+            <option value="Hotel">平價飯店 (Hotel)</option>
+            <option value="Family Hotel">親子旅館 (Family Hotel)</option>
+            <option value="B&B">特色民宿 (B&B)</option>
+          </select>
         </div>
 
       </div>
 
-      {/* Popular City Hot Pills */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>
-          ✨ 熱門快速選擇：
-        </span>
-        {cities.map((city) => (
-          <button
-            key={city.id}
-            onClick={() => setSelectedCity(city.id)}
-            style={{
-              background: selectedCity === city.id ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-              color: selectedCity === city.id ? '#34d399' : 'var(--text-muted)',
-              border: selectedCity === city.id ? '1px solid var(--primary)' : '1px solid var(--border-glass)',
-              borderRadius: '999px',
-              padding: '4px 14px',
-              fontSize: '0.85rem',
-              fontWeight: selectedCity === city.id ? '700' : '500',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            {city.name.split(' ')[0]}
-          </button>
-        ))}
+      {/* Bottom Bar: Popular City Quick Pills (Left) + Budget Cap & Sort Selector (Far Right) */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+        
+        {/* Popular City Hot Pills (Left) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>
+            ✨ 熱門快速選擇：
+          </span>
+          {cities.map((city) => (
+            <button
+              key={city.id}
+              onClick={() => setSelectedCity(city.id)}
+              style={{
+                background: selectedCity === city.id ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                color: selectedCity === city.id ? '#34d399' : 'var(--text-muted)',
+                border: selectedCity === city.id ? '1px solid var(--primary)' : '1px solid var(--border-glass)',
+                borderRadius: '999px',
+                padding: '4px 14px',
+                fontSize: '0.85rem',
+                fontWeight: selectedCity === city.id ? '700' : '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {city.name.split(' ')[0]}
+            </button>
+          ))}
+        </div>
+
+        {/* Far Right: Budget Cap Slider & Sort Order Dropdown */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          
+          {/* Max Budget Slider */}
+          {activeTab === 'stays' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(15, 23, 42, 0.7)', padding: '6px 14px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600', whiteSpace: 'nowrap' }}>最高預算:</span>
+              <span style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>NT$ {maxPrice.toLocaleString()}</span>
+              <input
+                type="range"
+                min="500"
+                max="10000"
+                step="250"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
+                style={{ width: '110px', accentColor: 'var(--primary)', cursor: 'pointer' }}
+              />
+            </div>
+          )}
+
+          {/* Sort Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(15, 23, 42, 0.7)', padding: '6px 14px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600', whiteSpace: 'nowrap' }}>排序方式:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{
+                background: 'transparent',
+                color: '#ffffff',
+                border: 'none',
+                outline: 'none',
+                fontSize: '0.85rem',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="price_asc" style={{ background: '#0f172a' }}>價格由低到高 (全網最低價優先)</option>
+              <option value="price_desc" style={{ background: '#0f172a' }}>價格由高到低</option>
+              <option value="rating_desc" style={{ background: '#0f172a' }}>評分滿意度最高優先</option>
+            </select>
+          </div>
+
+        </div>
+
       </div>
 
     </div>
