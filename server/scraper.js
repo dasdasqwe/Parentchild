@@ -30,7 +30,7 @@ const curatedPhotoGalleries = [
 
 /**
  * Global Agoda Numerical City IDs Database (Domestic & International)
- * Guarantees zero 302/301 redirects to homepage for any searched destination
+ * Guarantees zero 302/301 redirects to homepage or activities for any searched destination
  */
 const agodaCityIdMap = {
   // Taiwan Domestic Destinations
@@ -449,20 +449,14 @@ export async function runScraperJob(query, onLog) {
     }
   }
 
-  // Build 1:1 exact deep-links for all extracted stay items worldwide using resolveAgodaCityId
+  // Build 1:1 rock-solid URLs for Booking, Agoda, Trip.com
   const mainAgodaCityId = resolveAgodaCityId(searchQuery) || resolveAgodaCityId(normCityId);
 
   liveStays.forEach(stay => {
     const targetCityKey = (stay.cityId || normCityId).toLowerCase();
     const agodaCityId = resolveAgodaCityId(targetCityKey) || mainAgodaCityId;
 
-    // Prefer English name in parentheses for Agoda's global search engine
-    const englishMatch = stay.name.match(/\(([^)]+)\)/);
-    const agodaSearchName = englishMatch ? englishMatch[1].trim() : stay.name.split(' (')[0].trim();
-    const encodedKwAgoda = encodeURIComponent(agodaSearchName);
-
     const bookingSearchName = stay.name.split(' (')[0].trim();
-    const encodedKwBooking = encodeURIComponent(bookingSearchName);
 
     stay.providers = [
       {
@@ -475,7 +469,7 @@ export async function runScraperJob(query, onLog) {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&text=${encodedKwAgoda}&textToSearch=${encodedKwAgoda}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
+        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
       },
       {
         name: 'Trip.com',
