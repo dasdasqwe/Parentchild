@@ -129,50 +129,110 @@ export default function SearchHeader({
           </div>
         </form>
 
-        {/* Check-In Date */}
-        <div>
+        {/* Unified Dates & Stay Duration Selector (Check-In, Nights, Check-Out) */}
+        <div style={{ gridColumn: 'span 2' }}>
           <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-            📅 入住日期 (Check-In)
+            📅 住宿日期與天數 (入住 / 晚數 / 退房)
           </label>
-          <input
-            type="date"
-            value={checkInDate}
-            onChange={(e) => setCheckInDate(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '9px 12px',
-              borderRadius: '8px',
-              background: 'rgba(30, 41, 59, 0.9)',
-              color: '#ffffff',
-              border: '1px solid var(--border-glass)',
-              outline: 'none',
-              fontSize: '0.9rem',
-              fontWeight: '500'
-            }}
-          />
-        </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 110px 1fr', gap: '8px', alignItems: 'center' }}>
+            <div>
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>入住日期</span>
+              <input
+                type="date"
+                value={checkInDate}
+                onChange={(e) => {
+                  const newCheckIn = e.target.value;
+                  setCheckInDate(newCheckIn);
+                  try {
+                    const d1 = new Date(checkInDate);
+                    const d2 = new Date(checkOutDate);
+                    const nights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24)));
+                    const target = new Date(newCheckIn);
+                    target.setDate(target.getDate() + (nights || 2));
+                    setCheckOutDate(target.toISOString().split('T')[0]);
+                  } catch (err) {}
+                }}
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  borderRadius: '8px',
+                  background: 'rgba(30, 41, 59, 0.9)',
+                  color: '#ffffff',
+                  border: '1px solid var(--border-glass)',
+                  outline: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: '500'
+                }}
+              />
+            </div>
 
-        {/* Check-Out Date */}
-        <div>
-          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-            📅 退房日期 (Check-Out)
-          </label>
-          <input
-            type="date"
-            value={checkOutDate}
-            onChange={(e) => setCheckOutDate(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '9px 12px',
-              borderRadius: '8px',
-              background: 'rgba(30, 41, 59, 0.9)',
-              color: '#ffffff',
-              border: '1px solid var(--border-glass)',
-              outline: 'none',
-              fontSize: '0.9rem',
-              fontWeight: '500'
-            }}
-          />
+            <div>
+              <span style={{ fontSize: '0.72rem', color: '#34d399', fontWeight: '700', display: 'block', marginBottom: '2px', textAlign: 'center' }}>
+                住宿天數
+              </span>
+              <select
+                value={(() => {
+                  try {
+                    const d1 = new Date(checkInDate);
+                    const d2 = new Date(checkOutDate);
+                    const diff = Math.round((d2 - d1) / (1000 * 3600 * 24));
+                    return diff > 0 ? diff : 1;
+                  } catch { return 2; }
+                })()}
+                onChange={(e) => {
+                  const nights = Number(e.target.value);
+                  try {
+                    const target = new Date(checkInDate);
+                    target.setDate(target.getDate() + nights);
+                    setCheckOutDate(target.toISOString().split('T')[0]);
+                  } catch (err) {}
+                }}
+                style={{
+                  width: '100%',
+                  padding: '8px 4px',
+                  borderRadius: '8px',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  color: '#34d399',
+                  border: '1px solid var(--primary)',
+                  outline: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: '700',
+                  textAlign: 'center',
+                  cursor: 'pointer'
+                }}
+              >
+                <option value={1}>1 晚</option>
+                <option value={2}>2 晚</option>
+                <option value={3}>3 晚</option>
+                <option value={4}>4 晚</option>
+                <option value={5}>5 晚</option>
+                <option value={6}>6 晚</option>
+                <option value={7}>7 晚 (1週)</option>
+                <option value={10}>10 晚</option>
+                <option value={14}>14 晚 (2週)</option>
+              </select>
+            </div>
+
+            <div>
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block', marginBottom: '2px' }}>退房日期</span>
+              <input
+                type="date"
+                value={checkOutDate}
+                onChange={(e) => setCheckOutDate(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  borderRadius: '8px',
+                  background: 'rgba(30, 41, 59, 0.9)',
+                  color: '#ffffff',
+                  border: '1px solid var(--border-glass)',
+                  outline: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: '500'
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Adults & Children Count */}
