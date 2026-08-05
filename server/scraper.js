@@ -456,31 +456,39 @@ export async function runScraperJob(query, onLog) {
     const targetCityKey = (stay.cityId || normCityId).toLowerCase();
     const agodaCityId = resolveAgodaCityId(targetCityKey) || mainAgodaCityId;
 
-    // Prefer English name in parentheses for Agoda's global search engine to ensure #1 card placement
+    // Use English hotel name (inside parentheses) for direct hotel search on all platforms
     const englishMatch = stay.name.match(/\(([^)]+)\)/);
-    const agodaSearchName = englishMatch ? englishMatch[1].trim() : stay.name.split(' (')[0].trim();
-    const encodedKwAgoda = encodeURIComponent(agodaSearchName);
+    // English name (most universally recognized by both platforms)
+    const englishName = englishMatch ? englishMatch[1].trim() : stay.name.replace(/【.*?】/g, '').trim();
+    // Chinese name only (before parenthesis, no city prefix brackets)
+    const chineseName = stay.name.split(' (')[0].replace(/【.*?】/g, '').trim();
 
-    const bookingSearchName = stay.name.split(' (')[0].trim();
+    const encodedEn = encodeURIComponent(englishName);
+    const encodedZh = encodeURIComponent(chineseName);
+    // Combined: Chinese + English name for best matching (e.g. "台北寒舍艾美酒店 Le Meridien Taipei")
+    const encodedCombined = encodeURIComponent(`${chineseName} ${englishName}`);
 
     stay.providers = [
       {
         name: 'Booking.com',
         price: stay.price,
         isLowest: stay.lowestPriceProvider === 'Booking.com',
-        url: `https://www.booking.com/searchresults.zh-tw.html?ss=${encodeURIComponent(searchQuery + ' ' + bookingSearchName)}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}`
+        // Booking.com: use English name as ss param — most precise for global hotel matching
+        url: `https://www.booking.com/searchresults.zh-tw.html?ss=${encodedEn}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=index&src_elem=sb`
       },
       {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        url: `https://www.agoda.com/zh-tw/search?text=${encodedKwAgoda}&textToSearch=${encodedKwAgoda}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
+        // Agoda: use searchText param (global search box, NOT the city filter)
+        // This routes through Agoda's universal search which auto-detects hotel vs city
+        url: `https://www.agoda.com/search?searchText=${encodedEn}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}&los=2&origin=searchbox&locale=zh-TW`
       },
       {
         name: 'Trip.com',
         price: stay.price + 110,
         isLowest: false,
-        url: `https://tw.trip.com/hotels/list?keyword=${encodeURIComponent(searchQuery + ' ' + bookingSearchName)}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`
+        url: `https://tw.trip.com/hotels/list?keyword=${encodedEn}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`
       }
     ];
   });
