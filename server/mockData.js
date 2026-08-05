@@ -384,6 +384,66 @@ export const mockStays = [
       { name: 'Booking.com', price: 1490, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Okinawa+Myrica+Family+Inn' }
     ]
   },
+  {
+    id: 'oki-4',
+    cityId: 'okinawa',
+    cityName: '沖繩',
+    name: '沖繩美國村坎帕納船舶飯店 (Vessel Hotel Campana Okinawa)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 3800,
+    address: '沖繩縣中頭郡北谷町美濱9-22 (美國村日落海灘旁)',
+    tags: ['美國村日落海景', '海景大浴場', '18歲以下不加床免費', '親子推車借用'],
+    lowestPriceProvider: 'Agoda',
+    price: 2480,
+    originalPrice: 4200,
+    discountPercent: 41,
+    providers: [
+      { name: 'Agoda', price: 2480, url: 'https://www.agoda.com/zh-tw/search?kw=Vessel+Hotel+Campana+Okinawa', isLowest: true },
+      { name: 'Booking.com', price: 2590, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Vessel+Hotel+Campana+Okinawa' }
+    ]
+  },
+  {
+    id: 'oki-5',
+    cityId: 'okinawa',
+    cityName: '沖繩',
+    name: '那霸阿札特飯店 (Hotel Azat Okinawa)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.6,
+    reviewsCount: 2100,
+    address: '沖繩縣那霸市安里2-8-8 (單軌列車安里站 步行30秒)',
+    tags: ['單軌站旁30秒', '超市24H旁', '平價乾淨', 'CP值極高'],
+    lowestPriceProvider: 'Booking.com',
+    price: 1250,
+    originalPrice: 2100,
+    discountPercent: 40,
+    providers: [
+      { name: 'Booking.com', price: 1250, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Hotel+Azat+Okinawa', isLowest: true },
+      { name: 'Agoda', price: 1310, url: 'https://www.agoda.com/zh-tw/search?kw=Hotel+Azat+Okinawa' }
+    ]
+  },
+  {
+    id: 'oki-6',
+    cityId: 'okinawa',
+    cityName: '沖繩',
+    name: '沖繩那霸日航都市飯店 (Hotel JAL City Naha)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 2950,
+    address: '沖繩縣那霸市牧志1-3-70 (國際通正中央門口)',
+    tags: ['國際通正中央', '日航星級服務', '豐富日式早餐', '親子舒適'],
+    lowestPriceProvider: 'Agoda',
+    price: 2150,
+    originalPrice: 3500,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 2150, url: 'https://www.agoda.com/zh-tw/search?kw=Hotel+JAL+City+Naha', isLowest: true },
+      { name: 'Booking.com', price: 2240, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Hotel+JAL+City+Naha' }
+    ]
+  },
 
   // 東京 (Tokyo)
   {
