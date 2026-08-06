@@ -187,12 +187,12 @@ const cityRealHotelsMap = {
     { name: '沖繩美國村坎帕納船舶飯店 (Vessel Hotel Campana Okinawa)', agodaSlug: 'vessel-hotel-campana-okinawa/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣北谷町美濱9-22 (美國村日落海灘旁)', price: 2480, origPrice: 4100, rating: 4.9, tags: ['美國村日落海景', '海景大浴場', '18歲以下免費住宿'] },
     { name: '那霸阿札特飯店 (Hotel Azat Okinawa)', agodaSlug: 'hotel-azat/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市安里2-8-8 (單軌列車安里站 30秒)', price: 1250, origPrice: 2100, rating: 4.6, tags: ['單軌站旁30秒', '24H超市旁', 'CP值極高'] },
     { name: '沖繩那霸日航都市飯店 (Hotel JAL City Naha)', agodaSlug: 'hotel-jal-city-naha/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市牧志1-3-70 (國際通正中央門口)', price: 2150, origPrice: 3500, rating: 4.8, tags: ['國際通正中央', '日航星級服務', '豐富日式早餐'] },
-    { name: '沖繩南海海灘渡假飯店 (Southern Beach Hotel & Resort Okinawa)', type: 'Family Hotel', address: '沖繩縣糸滿市西崎町1-6-1 (美美海灘門前)', price: 2890, origPrice: 4600, rating: 4.9, tags: ['室內外雙泳池', '美美海灘旁', '親子水上活動'] },
+    { name: '沖繩南海海灘渡假飯店 (Southern Beach Hotel & Resort Okinawa)', agodaSlug: 'southern-beach-hotel-resort-okinawa/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣糸滿市西崎町1-6-1 (美美海灘門前)', price: 2890, origPrice: 4600, rating: 4.9, tags: ['室內外雙泳池', '美美海灘旁', '親子水上活動'] },
     { name: '沖繩海港景致飯店 (Okinawa Harborview Hotel)', agodaSlug: 'okinawa-harborview-hotel/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市泉崎2-46 (那霸市政廳旁)', price: 1980, origPrice: 3200, rating: 4.7, tags: ['那霸市中心', '典雅花園庭園', '豐富Buffet早餐'] },
     { name: '那霸歌町皇家 ORION 飯店 (Hotel Royal Orion Naha)', agodaSlug: 'hotel-royal-orion-naha/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市安里1-2-21 (單軌牧志站旁)', price: 1680, origPrice: 2800, rating: 4.7, tags: ['單軌牧志站旁', '國際通起點', '附精緻早餐'] },
     { name: '沖繩北谷希爾頓渡假飯店 (Hilton Okinawa Chatan Resort)', agodaSlug: 'hilton-okinawa-chatan-resort/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣北谷町美濱40-1 (美國村核心特區)', price: 4200, origPrice: 6500, rating: 4.9, tags: ['美國村第一排', '豪華水上樂園', '雙泳池設施'] },
     { name: '沖繩那霸 STRATA 飯店 (HOTEL STRATA NAHA)', type: 'Hotel', address: '沖繩縣那霸市美榮橋1-19-8 (單軌美榮橋站 1分)', price: 2100, origPrice: 3300, rating: 4.8, tags: ['戶外綠意泳池', '設計師美學', '單軌站旁'] },
-    { name: '沖繩蒙特利水療渡假飯店 (Hotel Monterey Okinawa Spa & Resort)', type: 'Family Hotel', address: '沖繩縣恩納村富着1550 (老虎海灘第一排)', price: 3800, origPrice: 5900, rating: 4.9, tags: ['老虎海灘直達', '造浪池與水上滑梯', '無邊際泳池'] },
+    { name: '沖繩蒙特利水療渡假飯店 (Hotel Monterey Okinawa Spa & Resort)', agodaSlug: 'hotel-monterey-okinawa-spa-resort/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣恩納村富着1550 (老虎海灘第一排)', price: 3800, origPrice: 5900, rating: 4.9, tags: ['老虎海灘直達', '造浪池與水上滑梯', '無邊際泳池'] },
     { name: '沖繩全日空萬座海濱洲際酒店 (ANA InterContinental Manza Beach Resort)', agodaSlug: 'ana-intercontinental-manza-beach-resort/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣恩納村瀨良垣2260 (萬座毛海角勝景)', price: 4500, origPrice: 7200, rating: 4.9, tags: ['萬座海灘海上樂園', '洲際奢華服務', '全海景客房'] },
     { name: '那霸首里城雙樹希爾頓酒店 (DoubleTree by Hilton Naha Shuri Castle)', agodaSlug: 'doubletree-by-hilton-naha-shuri-castle/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市首里山川町1-132 (首里城景區)', price: 2300, origPrice: 3700, rating: 4.7, tags: ['俯瞰首里城夜景', '花園泳池', '家庭寬敞房'] },
     { name: '沖繩琉球溫泉瀨長島飯店 (Ryukyu Onsen Senagajima Hotel)', agodaSlug: 'ryukyu-onsen-senagajima-hotel/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣豐見城市瀨長174-5 (瀨長島陽台露台旁)', price: 3900, origPrice: 6100, rating: 4.9, tags: ['天然海景溫泉', '近距離看飛機起降', '美景夕陽'] },
@@ -465,25 +465,29 @@ export async function runScraperJob(query, onLog) {
     const chineseName = stay.name.split(' (')[0].replace(/【.*?】/g, '').trim();
 
     const encodedEn = encodeURIComponent(englishName);
-    const encodedZh = encodeURIComponent(chineseName);
-    // Combined: Chinese + English name for best matching (e.g. "台北寒舍艾美酒店 Le Meridien Taipei")
-    const encodedCombined = encodeURIComponent(`${chineseName} ${englishName}`);
+
+    // Agoda URL strategy:
+    // 1. If hotel has agodaSlug -> direct hotel detail page (100% accurate)
+    // 2. Fallback -> city + textToSearch search URL
+    let agodaUrl;
+    if (stay.agodaSlug) {
+      agodaUrl = `https://www.agoda.com/zh-tw/${stay.agodaSlug}?checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`;
+    } else {
+      agodaUrl = `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&textToSearch=${encodedEn}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`;
+    }
 
     stay.providers = [
       {
         name: 'Booking.com',
         price: stay.price,
         isLowest: stay.lowestPriceProvider === 'Booking.com',
-        // Booking.com: use English name as ss param — most precise for global hotel matching
         url: `https://www.booking.com/searchresults.zh-tw.html?ss=${encodedEn}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=index&src_elem=sb`
       },
       {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        // Agoda: city param anchors the city, textToSearch filters for the specific hotel
-        // This is the ONLY URL format that doesn't get server-side redirected to homepage
-        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&textToSearch=${encodedEn}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
+        url: agodaUrl
       },
       {
         name: 'Trip.com',
