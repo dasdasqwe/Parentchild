@@ -1,7 +1,7 @@
 import React from 'react';
-import { Baby, Star, MapPin, Check, Heart, Compass, Sparkles } from 'lucide-react';
+import { Baby, Star, MapPin, Heart } from 'lucide-react';
 
-export default function FamilyAttractionList({ attractions, savedItems, onToggleSave, onJumpToStay }) {
+export default function FamilyAttractionList({ attractions, savedItems, onToggleSave }) {
   const savedIds = new Set(savedItems.map(s => s.id));
 
   return (
@@ -10,21 +10,23 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
         <div>
           <h2 style={{ fontSize: '1.3rem', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Baby color="var(--accent-amber)" size={22} />
-            最新熱門親子景點與周邊平價住宿推薦
+            最新熱門親子景點
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
-            收錄各地最新熱門親子目的地、推車設施標籤、育嬰室與親民門票情報
+            精選各地熱門親子景點，提供景點圖片、地點、設施服務與特色亮點
           </p>
         </div>
       </div>
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
         gap: '24px'
       }}>
         {attractions.map(item => {
           const isSaved = savedIds.has(item.id);
+          const locationText = item.location || item.address || `${item.cityName || item.cityId || ''} 熱門觀光景點區`;
+
           return (
             <div key={item.id} className="glass-panel" style={{
               display: 'flex',
@@ -32,17 +34,33 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
               overflow: 'hidden'
             }}>
               
-              {/* Media Image */}
-              <div style={{ position: 'relative', height: '190px', width: '100%' }}>
+              {/* 1. 圖片 */}
+              <div style={{ position: 'relative', height: '200px', width: '100%' }}>
                 <img
                   src={item.image}
                   alt={item.name}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
                 
-                <div style={{ position: 'absolute', top: '12px', left: '12px' }}>
-                  <span className="badge-amber">{item.ageRecommendation}</span>
-                </div>
+                {item.rating && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '12px',
+                    left: '12px',
+                    background: 'rgba(15, 23, 42, 0.8)',
+                    backdropFilter: 'blur(8px)',
+                    padding: '4px 10px',
+                    borderRadius: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    color: '#fbbf24',
+                    fontSize: '0.8rem',
+                    fontWeight: '700'
+                  }}>
+                    <Star size={14} fill="#fbbf24" /> {item.rating}
+                  </div>
+                )}
 
                 <button
                   onClick={() => onToggleSave(item)}
@@ -66,83 +84,67 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                 </button>
               </div>
 
-              {/* Details Body */}
+              {/* 詳情內文 */}
               <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                    <h3 style={{ fontSize: '1.1rem', fontWeight: '800', lineHeight: '1.4' }}>
-                      {item.name}
-                    </h3>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#fbbf24', fontSize: '0.85rem', fontWeight: '700' }}>
-                      <Star size={14} fill="#fbbf24" /> {item.rating}
-                    </div>
-                  </div>
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '8px' }}>
+                    {item.name}
+                  </h3>
 
-                  <div style={{ color: 'var(--accent-amber)', fontSize: '0.8rem', fontWeight: '600', marginBottom: '10px' }}>
-                    🎟️ {item.ticketPrice}
-                  </div>
-
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '14px', lineHeight: '1.5' }}>
-                    {item.description}
-                  </p>
-
-                  {/* Amenities Tags */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
-                    {item.features.map((feat, fIdx) => (
-                      <span key={fIdx} style={{
-                        background: 'rgba(245, 158, 11, 0.1)',
-                        color: '#fbbf24',
-                        border: '1px solid rgba(245, 158, 11, 0.2)',
-                        fontSize: '0.75rem',
-                        padding: '3px 8px',
-                        borderRadius: '6px'
-                      }}>
-                        ✓ {feat}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Highlight Callout */}
+                  {/* 2. 地點 */}
                   <div style={{
-                    background: 'rgba(16, 185, 129, 0.08)',
-                    borderLeft: '3px solid var(--primary)',
-                    padding: '8px 12px',
-                    borderRadius: '0 8px 8px 0',
-                    fontSize: '0.8rem',
-                    color: '#a7f3d0',
-                    marginBottom: '16px'
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    color: 'var(--text-muted)',
+                    fontSize: '0.85rem',
+                    marginBottom: '14px'
                   }}>
-                    💡 親子亮點: {item.highlights}
+                    <MapPin size={16} color="var(--accent-amber)" style={{ flexShrink: 0 }} />
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {locationText}
+                    </span>
                   </div>
-                </div>
 
-                {/* Nearby Budget Stays Link */}
-                <div style={{ paddingTop: '12px', borderTop: '1px solid var(--border-glass)' }}>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: '600' }}>
-                    🏠 推薦周邊平價住宿:
+                  {/* 3. 特色 */}
+                  <div style={{
+                    background: 'rgba(245, 158, 11, 0.08)',
+                    borderLeft: '3px solid var(--accent-amber)',
+                    padding: '10px 12px',
+                    borderRadius: '0 8px 8px 0',
+                    fontSize: '0.85rem',
+                    color: '#fef3c7',
+                    marginBottom: '14px',
+                    lineHeight: '1.5'
+                  }}>
+                    <span style={{ fontWeight: '700', color: 'var(--accent-amber)', marginRight: '6px' }}>
+                      💡 特色:
+                    </span>
+                    {item.highlights || item.description}
                   </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {item.nearbyStays.map((ns, nIdx) => (
-                      <button
-                        key={nIdx}
-                        onClick={onJumpToStay}
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.05)',
-                          border: '1px solid var(--border-glass)',
-                          color: 'var(--primary)',
-                          borderRadius: '6px',
-                          padding: '4px 10px',
-                          fontSize: '0.75rem',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px'
-                        }}
-                      >
-                        <Compass size={12} /> {ns}
-                      </button>
-                    ))}
-                  </div>
+
+                  {/* 4. 設施 */}
+                  {item.features && item.features.length > 0 && (
+                    <div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '700', marginBottom: '6px' }}>
+                        🛠️ 設施服務:
+                      </div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                        {item.features.map((feat, fIdx) => (
+                          <span key={fIdx} style={{
+                            background: 'rgba(16, 185, 129, 0.1)',
+                            color: '#6ee7b7',
+                            border: '1px solid rgba(16, 185, 129, 0.2)',
+                            fontSize: '0.75rem',
+                            padding: '4px 8px',
+                            borderRadius: '6px'
+                          }}>
+                            ✓ {feat}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
               </div>
@@ -154,3 +156,4 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
     </div>
   );
 }
+

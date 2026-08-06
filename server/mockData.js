@@ -531,6 +531,7 @@ export const mockFamilyAttractions = [
     cityId: 'yilan',
     cityName: '宜蘭',
     name: '宜蘭斑比山丘 (Bambi Land 偽奈良親近小鹿樂園)',
+    location: '宜蘭縣冬山鄉下湖路206號 (梅花湖風景區旁)',
     category: '戶外動物親近園區',
     image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
     ageRecommendation: '0-12歲 (全家療癒體驗)',
@@ -538,14 +539,14 @@ export const mockFamilyAttractions = [
     ticketPrice: '全票 NT$200 (附贈紅蘿蔔餵食胡蘿蔔杯)',
     features: ['親近水豚與梅花鹿', '平坦推車步道', '美美子霜淇淋', '親子洗手間'],
     description: '宜蘭最火爆的親子動物樂園！近距離餵食溫馴梅花鹿與萌萌水豚君，園區設有綠油油草地與無障礙坡道。',
-    nearbyStays: ['礁溪溫泉親子主題飯店 (車程20分)', '冬山河風情民宿 (車程10分)'],
-    highlights: '小朋友能親手喂食水豚與小鹿，園內點心精緻優雅。'
+    highlights: '小朋友能親手喂食水豚與小鹿，園內點心精緻優雅，步道推車友善。'
   },
   {
     id: 'fam-oki-1',
     cityId: 'okinawa',
     cityName: '沖繩',
     name: '沖繩美美麗海水族館 & 鯨鯊海豚劇場 (Churaumi Aquarium)',
+    location: '沖繩縣國頭郡本部町字石川424番地 (海洋博公園內)',
     category: '海洋水族館 / 自然公園',
     image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
     ageRecommendation: '0-15歲 (全家必訪第一名)',
@@ -553,8 +554,7 @@ export const mockFamilyAttractions = [
     ticketPrice: '約 JPY 2,180 (6歲以下免費)',
     features: ['黑潮之海巨型鯨鯊池', '免費海豚表演', '無障礙坡道', '五星育嬰室', '推車免費租借'],
     description: '亞洲最雄偉的水族館之一！觀賞巨大鯨鯊與鬼蝠魟在「黑潮之海」水槽游動。',
-    nearbyStays: ['沖繩國際通親子主題渡假旅館 (車程直達)'],
-    highlights: '推車全館暢行無阻。'
+    highlights: '推車全館暢行無阻，設有巨型黑潮之海鯨鯊水槽與免費海豚表演。'
   }
 ];
 
