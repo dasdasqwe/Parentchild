@@ -12,6 +12,12 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
   const targetUrl = lowestProvider?.url || stay.url || 'https://www.agoda.com';
   const providerName = stay.lowestPriceProvider || lowestProvider?.name || 'Agoda';
 
+  // 1. 官網/官方介紹連結
+  const officialUrl = stay.websiteUrl || stay.url || `https://www.google.com/search?q=${encodeURIComponent(stay.name + ' 官網')}`;
+  
+  // 2. 地圖導覽連結
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stay.name + ' ' + (stay.address || stay.cityName || ''))}`;
+
   const handlePrevImg = (e) => {
     e.stopPropagation();
     setCurrentImgIdx(prev => (prev === 0 ? gallery.length - 1 : prev - 1));
@@ -31,15 +37,25 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
       position: 'relative'
     }}>
       
-      {/* Top Media Banner & Gallery Carousel */}
+      {/* Top Media Banner & Gallery Carousel (連結至官網) */}
       <div style={{ position: 'relative', height: '200px', width: '100%', overflow: 'hidden' }}>
-        <img
-          src={activeImage}
-          alt={stay.name}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
-        />
+        <a
+          href={officialUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'block', width: '100%', height: '100%' }}
+          title="點擊查看飯店官網 / 介紹"
+        >
+          <img
+            src={activeImage}
+            alt={stay.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
+          />
+        </a>
+
+        {/* Carousel Navigation Arrows if multiple photos */}
 
         {/* Carousel Navigation Arrows if multiple photos */}
         {gallery.length > 1 && (
@@ -196,12 +212,54 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
       {/* Card Content Details */}
       <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
         <div>
+          {/* 大標題: 飯店官網/介紹 */}
           <h3 style={{ fontSize: '1.05rem', fontWeight: '700', lineHeight: '1.4', marginBottom: '6px' }}>
-            {stay.name}
+            <a
+              href={officialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#ffffff',
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
+              title="點擊開啟飯店官網 / 介紹"
+            >
+              <span>{stay.name}</span> 🌐
+            </a>
           </h3>
 
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '12px' }}>
-            <MapPin size={14} color="var(--primary)" /> {stay.address}
+          {/* 下方地址: Google Maps 地圖超連結 */}
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+            <a
+              href={mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'var(--text-muted)',
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                maxWidth: '100%'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+              title="點擊開啟 Google Maps 地圖導覽"
+            >
+              <MapPin size={14} color="var(--primary)" style={{ flexShrink: 0 }} />
+              <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {stay.address} 📍
+              </span>
+            </a>
           </p>
 
           {/* Amenity Tags */}

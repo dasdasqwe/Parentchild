@@ -25,6 +25,13 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
       }}>
         {packages.map(pkg => {
           const isSaved = savedIds.has(pkg.id);
+          
+          // 1. 官網/行程連結 (標題與圖片)
+          const officialUrl = pkg.websiteUrl || pkg.url || `https://www.google.com/search?q=${encodeURIComponent(pkg.title + ' 官網')}`;
+          
+          // 2. 地圖導覽連結 (住宿/地點列)
+          const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(pkg.stayIncluded || pkg.title + ' ' + (pkg.cityName || ''))}`;
+
           return (
             <div key={pkg.id} className="glass-panel" style={{
               display: 'flex',
@@ -33,13 +40,21 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
               position: 'relative'
             }}>
               
-              {/* Media Image Banner */}
+              {/* Media Image Banner (連結至官網/行程) */}
               <div style={{ position: 'relative', height: '190px', width: '100%' }}>
-                <img
-                  src={pkg.image}
-                  alt={pkg.title}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
+                <a
+                  href={officialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'block', width: '100%', height: '100%' }}
+                  title="點擊查看行程官網 / 介紹"
+                >
+                  <img
+                    src={pkg.image}
+                    alt={pkg.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </a>
                 
                 {/* Savings Callout Tag */}
                 <div style={{
@@ -82,8 +97,27 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
               {/* Package Info Content */}
               <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                 <div>
+                  {/* 大標題: 行程/官網 */}
                   <h3 style={{ fontSize: '1.1rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '10px' }}>
-                    {pkg.title}
+                    <a
+                      href={officialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: '#ffffff',
+                        textDecoration: 'none',
+                        transition: 'color 0.2s ease',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-purple)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
+                      title="點擊開啟包套行程官網 / 介紹"
+                    >
+                      <span>{pkg.title}</span> 🌐
+                    </a>
                   </h3>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#fbbf24', fontSize: '0.85rem', marginBottom: '14px' }}>
@@ -91,7 +125,7 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                     <span style={{ color: 'var(--text-muted)' }}>({pkg.reviewsCount} 人已預訂)</span>
                   </div>
 
-                  {/* Included Stay & Tours Breakdown */}
+                  {/* Included Stay & Tours Breakdown (住宿地圖導覽) */}
                   <div style={{
                     background: 'rgba(15, 23, 42, 0.7)',
                     padding: '12px',
@@ -100,8 +134,28 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                     marginBottom: '16px',
                     fontSize: '0.85rem'
                   }}>
-                    <div style={{ fontWeight: '700', color: 'var(--primary)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <CheckCircle2 size={16} /> 搭配住宿: {pkg.stayIncluded}
+                    <div style={{ fontWeight: '700', color: 'var(--primary)', marginBottom: '6px' }}>
+                      <a
+                        href={mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: 'var(--primary)',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          cursor: 'pointer'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = '#34d399'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--primary)'}
+                        title="點擊開啟 Google Maps 地圖導覽"
+                      >
+                        <CheckCircle2 size={16} />
+                        <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                          搭配住宿: {pkg.stayIncluded} 📍
+                        </span>
+                      </a>
                     </div>
 
                     <div style={{ color: 'var(--text-muted)', marginBottom: '4px', fontWeight: '600' }}>
