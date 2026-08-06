@@ -16,7 +16,28 @@ function normStr(str) {
 }
 
 /**
- * 從文化部 Open Data API 抓取符合搜尋縣市的展覽與親子景點活動
+ * 自動判斷展覽與活動是否已過期
+ */
+export function isExhibitionExpired(dateStr) {
+  if (!dateStr) return false;
+  const now = new Date();
+  
+  const dateMatches = dateStr.match(/\d{4}[.\-\/]\d{1,2}[.\-\/]\d{1,2}/g);
+  if (dateMatches && dateMatches.length > 0) {
+    const lastDateStr = dateMatches[dateMatches.length - 1].replace(/[.]/g, '/');
+    const endDate = new Date(lastDateStr);
+    if (!isNaN(endDate.getTime())) {
+      endDate.setHours(23, 59, 59, 999);
+      if (endDate < now) {
+        return true; // 已過期
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * 從文化部 Open Data API 抓取符合搜尋縣市的展覽與親子景點活動 (自動過濾過期展覽)
  */
 export async function scrapeOpenDataAttractions(cityName, onLog = console.log) {
   try {
@@ -49,9 +70,16 @@ export async function scrapeOpenDataAttractions(cityName, onLog = console.log) {
       });
 
       if (matchedShow) {
+        const timeRange = matchedShow.time || '即日起開放參觀';
+        const endTime = matchedShow.endTime || matchedShow.time || '';
+
+        // 1. 自動過濾已過期之展覽與活動
+        if (isExhibitionExpired(endTime) || isExhibitionExpired(timeRange)) {
+          return;
+        }
+
         const locationName = matchedShow.locationName || matchedShow.location || `${cityName} 展覽場館`;
         const fullLocation = matchedShow.location ? `${matchedShow.location} (${locationName})` : locationName;
-        const timeRange = matchedShow.time || '即日起開放參觀';
         const img = item.imageUrl || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length];
 
         attractions.push({
