@@ -22,7 +22,7 @@ export async function scrapeOpenDataAttractions(cityName, onLog = console.log) {
   try {
     onLog(`[OPEN-API] 正向文化部官方 Open Data API 請求「${cityName}」最新展覽與親子活動...`);
     const response = await axios.get(CULTURE_API_URL, {
-      timeout: 6000,
+      timeout: 15000,
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       }
@@ -55,8 +55,8 @@ export async function scrapeOpenDataAttractions(cityName, onLog = console.log) {
         const img = item.imageUrl || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length];
 
         attractions.push({
-          id: `fam-open-data-${idx}-${cityLower}`,
-          cityId: cityLower,
+          id: `fam-open-data-${idx}-${cityNorm}`,
+          cityId: cityNorm,
           cityName: cityName,
           name: title.replace(/【.*?】/g, '').trim(),
           location: fullLocation,
