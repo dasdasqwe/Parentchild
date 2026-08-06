@@ -801,6 +801,122 @@ export const mockFamilyAttractions = [
     features: ['Wonder Museum室內探索', '親手餵食大象與羊駝', '嬰兒推車租借', '五星親子哺乳室'],
     description: '沖繩唯一的市立動物園與科學體驗館，結合戶外動物親近與室內光影展。',
     highlights: '神奇博物館 (Wonder Museum) 提供豐富的體感與聲光互動，適合各年齡兒童。'
+  },
+  // 台南真實景點
+  {
+    id: 'fam-tn-1',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '台南奇美博物館 (絕美歐洲神殿大草坪)',
+    location: '台南市仁德區文華路二段66號',
+    category: '博物館 / 戶外藝術園區',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['超豐富動物標本展區', '嬰兒推車免費借用', '絕美歐洲羅馬廣場', '全區多功能哺乳室'],
+    description: '希臘神殿式華麗外觀與絕美繆思廣場，館內有豐富的動物標本展與兵器展。',
+    highlights: '戶外開闊的草坪與親水廣場極為適合野餐放電，且館內設有五星級哺乳設施。'
+  },
+  {
+    id: 'fam-tn-2',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '十鼓文創園區 (仁德糖廠極限體驗)',
+    location: '台南市仁德區文華路二段326號',
+    category: '文創遊樂園區',
+    image: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '2-15歲',
+    rating: 4.8,
+    features: ['幼兒專用超大球池', '室內五層樓滑梯體驗', '傳統打鼓樂趣DIY', '推車置放專屬區'],
+    description: '由舊糖廠改造的文創冒險園區，設有專為兒童設計的室內大型極限球池與煙囪滑梯。',
+    highlights: '孩子能親身體驗擊鼓樂趣，並在高度安全的幼兒滑梯室內遊戲室盡情玩耍。'
+  },
+  // 京都真實景點
+  {
+    id: 'fam-ky-1',
+    cityId: 'kyoto',
+    cityName: '京都',
+    name: '京都水族館 (梅小路公園內)',
+    location: '京都府京都市下京區觀音寺町56-3',
+    category: '水族館',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['京都特有大鯢觀察', '露天海豚表演秀', '平坦無障礙推車道', '親子多功能洗手間'],
+    description: '日本首家完全使用人工海水的水族館，展示大量日本大鯢（娃娃魚）及豐富海洋生物。',
+    highlights: '海豚秀以東寺五重塔為背景，景色壯麗。全館有無障礙推車動線，非常貼心。'
+  },
+  {
+    id: 'fam-ky-2',
+    cityId: 'kyoto',
+    cityName: '京都',
+    name: '京都鐵道博物館',
+    location: '京都府京都市下京區觀音寺町 (梅小路公園旁)',
+    category: '鐵道主題博物館',
+    image: 'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '2-12歲',
+    rating: 4.9,
+    features: ['實體蒸汽火車扇形車庫', '電車模擬駕駛體驗', '大尺寸鐵道模型展', '推車免費寄放服務'],
+    description: '日本最大的鐵道博物館之一，保存了多台古老實體蒸汽火車與新幹線車頭。',
+    highlights: '鐵道迷孩子的天堂！能與百年老火車拍照，並有非常平坦的推車參觀動線。'
+  },
+  // 首爾真實景點
+  {
+    id: 'fam-se-1',
+    cityId: 'seoul',
+    cityName: '首爾',
+    name: '首爾兒童大公園 (動物園與大型兒童遊樂場)',
+    location: '首爾特別市廣津區陵洞路216 (捷運兒童大公園站)',
+    category: '主題公園 / 親子公園',
+    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-15歲',
+    rating: 4.8,
+    features: ['完全免費免票入場', '附設戶外動物園區', '大型沙坑與溜滑梯', '推車友善洗手間'],
+    description: '首爾極受家長歡迎的免費大型公園，結合了動物園、植物園與多項遊樂設施。',
+    highlights: '免票入場且占地廣闊，動物園內能看到大象與老虎，是親民度滿分的放電景點。'
+  },
+  {
+    id: 'fam-se-2',
+    cityId: 'seoul',
+    cityName: '首爾',
+    name: '韓國愛寶樂園 (Everland Safari World)',
+    location: '京畿道龍仁市處仁區蒲谷邑愛寶樂園路199',
+    category: '大型主題樂園 / 動物園',
+    image: 'https://images.unsplash.com/photo-1561542320-9a18cd340469?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['水陸兩用野生動物車', '四季花卉慶典花園', '嬰兒推車付費租借', '五星母嬰育嬰中心'],
+    description: '韓國規模最大、最受家庭喜愛的主題樂園，結合遊樂設施與豐富的野生動物世界。',
+    highlights: '搭乘 Safari 巴士能近距離觀看熊、獅子與老虎，樂園對推嬰兒車的家庭支援相當完善。'
+  },
+  // 曼谷真實景點
+  {
+    id: 'fam-bk-1',
+    cityId: 'bangkok',
+    cityName: '曼谷',
+    name: '曼谷野生動物世界 (Safari World 長頸鹿餵食)',
+    location: '99 Panya Indra Rd, Sam Wa Tawan Tok, Khlong Sam Wa, Bangkok',
+    category: '野生動物園區 / 海洋公園',
+    image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['開車進入野生猛獸區', '超大型長頸鹿餵食台', '海豚與猩猩娛樂秀', '遮陽棚推車大通道'],
+    description: '泰國最具代表性的野生動物園，能近距離親手拿香蕉餵食上百隻溫馴的長頸鹿。',
+    highlights: '坐著遊覽車深入獅子與老虎棲息地，長頸鹿餵食台高度安全，孩子玩得超開心。'
+  },
+  {
+    id: 'fam-bk-2',
+    cityId: 'bangkok',
+    cityName: 'bangkok',
+    name: '暹羅海洋世界 (SEA LIFE Bangkok Ocean World)',
+    location: 'Siam Paragon B1-B2, 991 Rama I Rd, Pathum Wan, Bangkok (捷運Siam站直達)',
+    category: '室內水族館',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['大型百貨商場B1直達', '360度海底玻璃隧道', '推車寄放與輪椅坡道', '冷氣恆溫避暑首選'],
+    description: '東南亞最大的室內水族館之一，位於知名 Siam Paragon 百貨內，交通購物極佳。',
+    highlights: '炎熱曼谷的消暑避暑首選！館內設有美麗的玻璃海底隧道與企鵝觀察區，推車友善。'
   }
 ];
 
