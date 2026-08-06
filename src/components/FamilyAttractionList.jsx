@@ -125,7 +125,7 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
 
                   {/* 4. 設施 */}
                   {item.features && item.features.length > 0 && (
-                    <div>
+                    <div style={{ marginBottom: '16px' }}>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '700', marginBottom: '6px' }}>
                         🛠️ 設施服務:
                       </div>
@@ -143,6 +143,33 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                           </span>
                         ))}
                       </div>
+                    </div>
+                  )}
+
+                  {/* 5. 部落格原文連結 */}
+                  {item.blogUrl && (
+                    <div style={{ paddingTop: '12px', borderTop: '1px solid var(--border-glass)' }}>
+                      <a
+                        href={item.blogUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '6px',
+                          textDecoration: 'none',
+                          fontSize: '0.8rem',
+                          padding: '8px 12px',
+                          borderRadius: '8px',
+                          width: '100%',
+                          boxSizing: 'border-box',
+                          textAlign: 'center'
+                        }}
+                      >
+                        📖 閱讀部落格完整文章導覽
+                      </a>
                     </div>
                   )}
                 </div>
