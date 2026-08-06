@@ -274,7 +274,7 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
   }
 
   // 3. Fallback 機制：如該城市無足夠景點，再產出精細樣板
-  if (results.length === 0) {
+  if (results.length < 3) {
     results.push(
       {
         id: `fam-ext-1-${normCityId}`,

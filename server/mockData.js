@@ -728,6 +728,79 @@ export const mockFamilyAttractions = [
     features: ['無圍欄近距離動物互動', '光影藝術裝置', '大型LaLaport商場直通', '推車友善洗手間'],
     description: '打破傳統水族館與動物園界線，讓狐猴、企鵝在遊客身邊自由穿梭的感官空間。',
     highlights: '與大型 Shopping Mall 共構，吃飯、吹冷氣、育兒設備齊全，舒適度極高。'
+  },
+  // 台北額外真實景點
+  {
+    id: 'fam-tp-3',
+    cityId: 'taipei',
+    cityName: '台北',
+    name: '國立臺灣科學教育館 (科教館)',
+    location: '台北市士林區士商路189號 (兒童新樂園旁)',
+    category: '科學館 / 展覽館',
+    image: 'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '3-15歲',
+    rating: 4.8,
+    features: ['空中腳踏車與高空吊橋', '兒童室內科學遊戲室', '推車友善大型電梯', '附設收費地下停車場'],
+    description: '結合多項科學實驗、動手做體驗與高空刺激的科學教育館，雨天避暑首選。',
+    highlights: '全館推車無障礙通道，九層樓設計豐富，適合小學年齡層探索科學。'
+  },
+  {
+    id: 'fam-tp-4',
+    cityId: 'taipei',
+    cityName: '台北',
+    name: '華山1914文化創意產業園區 (華山大草坪)',
+    location: '台北市中正區八德路一段12號 (忠孝新生捷運站步行3分)',
+    category: '文創園區 / 戶外大草坪',
+    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.7,
+    features: ['戶外大草坪野餐', '豐富卡通親子主題展', '推車友善平坦通道', '育嬰哺乳室設備'],
+    description: '全台最受歡迎的藝文特區之一，定期舉辦親子特展，並擁有極為開闊的綠色草坪。',
+    highlights: '大草坪極為適合幼兒奔跑野餐，周邊設有多家設計感親子餐廳。'
+  },
+  // 宜蘭額外真實景點
+  {
+    id: 'fam-yil-3',
+    cityId: 'yilan',
+    cityName: '宜蘭',
+    name: '宜蘭傳藝園區 (國立傳統藝術中心)',
+    location: '宜蘭縣五結鄉五濱路二段201號',
+    category: '文化體驗園區',
+    image: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['紅磚復古老街DIY', '冬山河手搖船體驗', '嬰兒推車租借 (每次50元)', '超大型戶外停車場'],
+    description: '台灣最大的傳統藝術推廣園區，提供古法製作、捏麵人、DIY畫傘等手作課程。',
+    highlights: '步道寬敞、無障礙設施齊全，可帶孩子在水上搭乘特色手搖船。'
+  },
+  {
+    id: 'fam-yil-4',
+    cityId: 'yilan',
+    cityName: '宜蘭',
+    name: '蜡藝蜡筆城堡 (彩繪DIY觀光工廠)',
+    location: '宜蘭縣蘇澳鎮海山西路500號 (蘇澳交流道旁)',
+    category: '觀光工廠',
+    image: 'https://images.unsplash.com/photo-1561542320-9a18cd340469?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '2-12歲',
+    rating: 4.7,
+    features: ['4關卡彩繪手工DIY', '彩色筆裝配體驗', '巨型蠟筆地標打卡', '免費專屬停車場'],
+    description: '外型極為醒目的巨大蠟筆造型觀光工廠，提供製作蠟筆與彩色筆等實作。',
+    highlights: '全天候室內場館不受天候影響，孩子能親手做出自己名字的蠟筆帶回家。'
+  },
+  // 沖繩額外真實景點
+  {
+    id: 'fam-oki-3',
+    cityId: 'okinawa',
+    cityName: '沖繩',
+    name: '沖繩兒童王國 (Okinawa Zoo & Museum)',
+    location: '沖繩縣沖繩市胡屋5丁目7-1',
+    category: '動物園 / 科學博物館',
+    image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '1-12歲',
+    rating: 4.8,
+    features: ['Wonder Museum室內探索', '親手餵食大象與羊駝', '嬰兒推車租借', '五星親子哺乳室'],
+    description: '沖繩唯一的市立動物園與科學體驗館，結合戶外動物親近與室內光影展。',
+    highlights: '神奇博物館 (Wonder Museum) 提供豐富的體感與聲光互動，適合各年齡兒童。'
   }
 ];
 
