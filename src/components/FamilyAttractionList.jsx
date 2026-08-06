@@ -2,19 +2,79 @@ import React from 'react';
 import { Baby, Star, MapPin, Heart } from 'lucide-react';
 
 export default function FamilyAttractionList({ attractions, savedItems, onToggleSave }) {
+  const [subFilter, setSubFilter] = React.useState('all'); // 'all' | 'spots' | 'exhibitions'
   const savedIds = new Set(savedItems.map(s => s.id));
+
+  const filteredAttractions = attractions.filter(item => {
+    const isExhibitionItem = (item.category && item.category.includes('展覽')) || (item.exhibitionInfo && item.exhibitionInfo.name);
+    if (subFilter === 'spots') return !isExhibitionItem;
+    if (subFilter === 'exhibitions') return isExhibitionItem;
+    return true;
+  });
 
   return (
     <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <h2 style={{ fontSize: '1.3rem', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Baby color="var(--accent-amber)" size={22} />
-            最新熱門親子景點
+            熱門親子景點與展覽活動
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
-            精選各地熱門親子景點，提供景點圖片、地點、設施服務與特色亮點
+            提供即時動態抓取的各地景點圖片、地點、設施服務與官方展覽特展
           </p>
+        </div>
+
+        {/* 景點 vs 展覽 分離選擇列 */}
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => setSubFilter('all')}
+            style={{
+              padding: '6px 14px',
+              borderRadius: '20px',
+              fontSize: '0.85rem',
+              fontWeight: subFilter === 'all' ? '700' : '500',
+              background: subFilter === 'all' ? 'var(--accent-amber)' : 'rgba(255, 255, 255, 0.05)',
+              color: subFilter === 'all' ? '#0f172a' : 'var(--text-muted)',
+              border: subFilter === 'all' ? '1px solid var(--accent-amber)' : '1px solid var(--border-glass)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            🌟 全部項目 ({attractions.length})
+          </button>
+          <button
+            onClick={() => setSubFilter('spots')}
+            style={{
+              padding: '6px 14px',
+              borderRadius: '20px',
+              fontSize: '0.85rem',
+              fontWeight: subFilter === 'spots' ? '700' : '500',
+              background: subFilter === 'spots' ? 'var(--accent-amber)' : 'rgba(255, 255, 255, 0.05)',
+              color: subFilter === 'spots' ? '#0f172a' : 'var(--text-muted)',
+              border: subFilter === 'spots' ? '1px solid var(--accent-amber)' : '1px solid var(--border-glass)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            🎡 親子景點與樂園
+          </button>
+          <button
+            onClick={() => setSubFilter('exhibitions')}
+            style={{
+              padding: '6px 14px',
+              borderRadius: '20px',
+              fontSize: '0.85rem',
+              fontWeight: subFilter === 'exhibitions' ? '700' : '500',
+              background: subFilter === 'exhibitions' ? '#818cf8' : 'rgba(255, 255, 255, 0.05)',
+              color: subFilter === 'exhibitions' ? '#0f172a' : 'var(--text-muted)',
+              border: subFilter === 'exhibitions' ? '1px solid #818cf8' : '1px solid var(--border-glass)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            🎨 當期展覽 / 特展活動
+          </button>
         </div>
       </div>
 
@@ -23,7 +83,7 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
         gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
         gap: '24px'
       }}>
-        {attractions.map((item, idx) => {
+        {filteredAttractions.map((item, idx) => {
           const isSaved = savedIds.has(item.id);
           const locationText = item.location || item.address || `${item.cityName || item.cityId || ''} 熱門觀光景點區`;
           

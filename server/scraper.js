@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { mockCities, mockStays, mockPackageTours, mockFamilyAttractions, mockFamilyTheaters } from './mockData.js';
 import { scrapeBlogAttractions } from './blogScraper.js';
-import { scrapeOpenDataAttractions } from './openDataScraper.js';
+import { scrapeOpenDataAttractions, isExhibitionExpired } from './openDataScraper.js';
 
 /**
  * Robustly resolve city input to standardized city object
@@ -284,10 +284,27 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
     onLog(`[WARNING] 官方 Open Data API 串接略過: ${err.message}`);
   }
 
-  // 3. 限制上限為 20 個，且不足時不需補齊
-  const finalResults = results.slice(0, 20);
+  // 3. 自動篩選與過濾已過期之展覽與活動
+  const cleanedResults = results.map(item => {
+    const copy = { ...item };
+    if (copy.exhibitionInfo && copy.exhibitionInfo.date) {
+      if (isExhibitionExpired(copy.exhibitionInfo.date)) {
+        delete copy.exhibitionInfo; // 展覽已過期，自動移除
+      }
+    }
+    return copy;
+  }).filter(item => {
+    // 若屬於展覽項目且展覽已過期，過濾丟棄
+    if (item.category && item.category.includes('展覽') && !item.exhibitionInfo && item.id.includes('open-data')) {
+      return false;
+    }
+    return true;
+  });
 
-  onLog(`[SUCCESS] 成功獲取 ${finalResults.length} 個「${normCityName}」最新熱門親子景點`);
+  // 4. 限制上限為 20 個，且不足時不需補齊
+  const finalResults = cleanedResults.slice(0, 20);
+
+  onLog(`[SUCCESS] 成功獲取 ${finalResults.length} 個「${normCityName}」最新熱門親子景點與展覽 (已過濾過期展覽)`);
   return finalResults;
 }
 
