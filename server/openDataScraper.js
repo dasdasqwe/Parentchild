@@ -11,6 +11,10 @@ const FALLBACK_IMAGES = [
   'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80'
 ];
 
+function normStr(str) {
+  return (str || '').toLowerCase().replace(/臺/g, '台');
+}
+
 /**
  * 從文化部 Open Data API 抓取符合搜尋縣市的展覽與親子景點活動
  */
@@ -28,19 +32,20 @@ export async function scrapeOpenDataAttractions(cityName, onLog = console.log) {
       return [];
     }
 
-    const cityLower = (cityName || '').toLowerCase();
+    const cityNorm = normStr(cityName);
     const attractions = [];
 
     response.data.forEach((item, idx) => {
       const title = item.title || '';
+      const titleNorm = normStr(title);
       const description = item.descriptionFilterHtml || item.description || '';
       const showInfoList = item.showInfo || [];
 
       // 檢查 showInfo 中是否有地點匹配該縣市
       const matchedShow = showInfoList.find(show => {
-        const locName = (show.locationName || '').toLowerCase();
-        const locAddress = (show.location || '').toLowerCase();
-        return locName.includes(cityLower) || locAddress.includes(cityLower) || title.toLowerCase().includes(cityLower);
+        const locNameNorm = normStr(show.locationName);
+        const locAddressNorm = normStr(show.location);
+        return locNameNorm.includes(cityNorm) || locAddressNorm.includes(cityNorm) || titleNorm.includes(cityNorm);
       });
 
       if (matchedShow) {
