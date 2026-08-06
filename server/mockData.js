@@ -15,6 +15,8 @@ export const mockCities = [
   { id: 'hualien', name: '花蓮 (Hualien)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['花蓮', 'hualien', '花蓮縣', '花蓮市', '壽豐', '吉安', '太魯閣'] },
   { id: 'taitung', name: '台東 (Taitung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台東', 'taitung', '臺東', '台東縣', '卑南', '池上'] },
   { id: 'penghu', name: '澎湖 (Penghu)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['澎湖', 'penghu', '澎湖縣', '馬公', '白沙'] },
+  { id: 'kinmen', name: '金門 (Kinmen)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['金門', 'kinmen', '金門縣', '金城', '金沙', '金湖', '烈嶼'] },
+  { id: 'matsu', name: '馬祖 (Matsu)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['馬祖', 'matsu', '連江縣', '南竿', '北竿', '東引'] },
   { id: 'okinawa', name: '沖繩 (Okinawa)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['沖繩', 'okinawa', '那霸', '名護', '北谷'] },
   { id: 'tokyo', name: '東京 (Tokyo)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['東京', 'tokyo', '新宿', '上野', '淺草', '銀座'] },
   { id: 'osaka', name: '大阪 (Osaka)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['大阪', 'osaka', '難波', '心齋橋', '梅田'] },
@@ -1121,6 +1123,64 @@ export const mockFamilyAttractions = [
       name: '【海洋生態展】綠蠵龜保育特展與大水槽大魟魚餵食秀',
       date: '每日固定場次 (15:00 大水槽餵食)',
       description: '工作人員潛入大水槽餵食巨型龍膽石斑與魟魚，並設有綠蠵龜生態解說互動館。'
+    }
+  },
+  // 金門真實景點
+  {
+    id: 'fam-km-1',
+    cityId: 'kinmen',
+    cityName: '金門',
+    name: '金門獅山砲陣地 (坑道榴砲操演出)',
+    location: '金門縣金沙鎮山后村陽沙路 (山后民俗文化村旁)',
+    category: '坑道軍事遺址 / 親子公園',
+    image: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['全台唯一坑道砲陣地', '實境砲操發射演練表演', '平坦無障礙坑道步道', '免費專屬停車場'],
+    description: '全台唯一的坑道式震東砲陣地，保存珍貴的八吋榴砲與軍事設施。',
+    highlights: '每日定時有充滿震撼力與趣味的砲操操演，花崗岩坑道涼爽防暑，推車友善。',
+    exhibitionInfo: {
+      name: '【坑道表演展】獅山砲陣地實境八吋榴砲操發射演練秀',
+      date: '每日固定表演場次 (10:00 / 11:00 / 13:30 / 14:30 / 15:30)',
+      description: '由訓練有素的砲班人員進行口令動作實境演練，發射瞬間聲光效果極具臨場感。'
+    }
+  },
+  {
+    id: 'fam-km-2',
+    cityId: 'kinmen',
+    cityName: '金門',
+    name: '山后民俗文化村 (18間雙落閩南古厝)',
+    location: '金門縣金沙鎮山后民俗文化村',
+    category: '閩南傳統聚落 / 文化體驗',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['傳統紅磚古厝巷弄', '古裝漢服體驗拍照', '在地蚵仔煎石花凍美食', '推車友善石板大道'],
+    description: '金門保存最完整的 18 棟古厝聚落，展現傳統燕尾飛簷與紅磚建築美學。',
+    highlights: '可以帶小朋友體驗傳統古裝體驗拍照，並享用古厝內現做蚵仔煎與高粱香腸。',
+    exhibitionInfo: {
+      name: '【古厝文化展】金門經典閩南采風與文物故事歷史展',
+      date: '每日 08:00 - 17:00 (免費入場)',
+      description: '展出金門僑鄉文化、建築工法與古民居生活器具，充滿古樸人文風情。'
+    }
+  },
+  {
+    id: 'fam-km-3',
+    cityId: 'kinmen',
+    cityName: '金門',
+    name: '莒光樓 (金門經典地標公園)',
+    location: '金門縣金城鎮賢城路1號',
+    category: '地標建築 / 公園大草坪',
+    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['觀景台俯瞰廈門天際線', '開闊戶外綠意草坪', '金門電話亭打卡地標', '親子哺乳室與洗手間'],
+    description: '金門最具代表性的地標建築，樓高三層，登上頂樓可眺望金烈大橋與廈門夜景。',
+    highlights: '門口有超可愛的「金門」造型經典紅電話亭，戶外大草坪極為適合小朋友放電跑跳。',
+    exhibitionInfo: {
+      name: '【夜間星空展】莒光樓璀璨燈光秀與金門英雄事跡史蹟展',
+      date: '每晚 18:30 - 21:30 (定時燈光秀)',
+      description: '夜間點亮繽紛彩光燈光秀，館內一至三樓展示金門風土人情與風獅爺文化特展。'
     }
   }
 ];
