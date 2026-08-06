@@ -142,10 +142,23 @@ app.use(express.static(distPath));
 // Fallback all non-API GET requests to index.html for SPA routing
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(distPath, 'index.html'));
+    res.sendFile(path.join(distPath, 'index.html'), (err) => {
+      if (err) {
+        res.status(200).send('StayPulse Cloud Engine Active');
+      }
+    });
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`[SERVER] Full-stack StayPulse cloud server running on port ${PORT}`);
+// Process Uncaught Exception Safeguards
+process.on('uncaughtException', (err) => {
+  console.error('[SERVER UNCAUGHT EXCEPTION SAFEGUARD]', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[SERVER UNHANDLED REJECTION SAFEGUARD]', reason);
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`[SERVER] Full-stack StayPulse cloud server running on port ${PORT} (0.0.0.0)`);
 });
