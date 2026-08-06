@@ -128,6 +128,16 @@ export async function scrapeBlogAttractions(cityQuery, onLog = console.log) {
           day: 'numeric'
         });
 
+        // 展覽資訊解析
+        let exhibitionInfo = null;
+        if (title.includes('展') || title.includes('快閃') || contentEncoded.includes('展覽') || contentEncoded.includes('特展')) {
+          exhibitionInfo = {
+            name: title.includes('展') ? title : `【特別展覽 / 特展】${title}`,
+            date: `發布時間：${dateFormatted}`,
+            description: `來自部落格 [${blog.name}] 最新推薦之親子展覽活動與實境心得。`
+          };
+        }
+
         attractions.push({
           id: `fam-blog-${blog.name}-${idx}-${cityQuery}`,
           cityId: cityQuery,
@@ -140,7 +150,8 @@ export async function scrapeBlogAttractions(cityQuery, onLog = console.log) {
           features: features,
           description: `來自親子部落格 [${blog.name}] 於 ${dateFormatted} 推薦之熱門目的地。`,
           highlights: `發布於半年內 (${dateFormatted})。點選卡片直接閱讀部落格完整文章導覽與行程心得。`,
-          blogUrl: link // 新增部落格原文連結
+          blogUrl: link, // 新增部落格原文連結
+          exhibitionInfo: exhibitionInfo // 展覽資訊
         });
 
         onLog(`[SUCCESS] 找到半年內部落格最新景點: ${title} (${dateFormatted})`);

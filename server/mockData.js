@@ -539,7 +539,12 @@ export const mockFamilyAttractions = [
     rating: 4.9,
     features: ['親近水豚與梅花鹿', '平坦推車步道', '美美子霜淇淋', '五星級親子洗手間'],
     description: '宜蘭最熱門的親子動物農莊，能近距離餵食水豚與梅花鹿。',
-    highlights: '小朋友能親手喂食水豚與小鹿，園內點心精緻優雅，步道推車友善。'
+    highlights: '小朋友能親手喂食水豚與小鹿，園內點心精緻優雅，步道推車友善。',
+    exhibitionInfo: {
+      name: '【夏季期間限定】水豚水上派對與小鹿彩繪DIY手作特展',
+      date: '即日起 ~ 2026/09/30',
+      description: '夏天特別推出大水豚涼爽水池生態觀察，並可現場體驗獨家小鹿造型木雕彩繪 DIY。'
+    }
   },
   {
     id: 'fam-yil-2',
@@ -553,7 +558,12 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['羊駝與水豚餵食', '日式和服體驗', '手工DIY蔥油餅', '專用免費停車場'],
     description: '超人氣日式庭園造景農場，飼養眾多可愛羊駝、水豚與梅花鹿。',
-    highlights: '可以帶孩子換穿浴衣拍照，並體驗親手製作宜蘭特色蔥油餅。'
+    highlights: '可以帶孩子換穿浴衣拍照，並體驗親手製作宜蘭特色蔥油餅。',
+    exhibitionInfo: {
+      name: '【季特展】日式祈福風鈴祭與笑臉羊駝近距離特展',
+      date: '常設特展 (每日 09:00 - 17:30)',
+      description: '全新打造上百座日式竹編祈福風鈴走廊，並可穿著兒童和服體驗親自餵食超萌水豚與笑臉羊駝。'
+    }
   },
   // 台北
   {
@@ -568,7 +578,12 @@ export const mockFamilyAttractions = [
     rating: 4.9,
     features: ['大貓熊館與企鵝館', '嬰兒推車租借 (每次50元)', '全區無障礙坡道', '親子育嬰哺乳室'],
     description: '全台規模最大的動物園，擁有完善的推車步道與多元的動植物生態。',
-    highlights: '明星大貓熊與國王企鵝超受歡迎，全區推車通行無阻，適合推嬰兒車的家庭。'
+    highlights: '明星大貓熊與國王企鵝超受歡迎，全區推車通行無阻，適合推嬰兒車的家庭。',
+    exhibitionInfo: {
+      name: '【熱門展覽】大貓熊生態館觀察展 & 酷暑夜間動物園特展',
+      date: '常態特展 / 暑期特別開放',
+      description: '展示大貓熊成長紀錄與保育成果，暑假特別開放夜間星空動物園探險觀察之旅。'
+    }
   },
   {
     id: 'fam-tp-2',
@@ -582,7 +597,50 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['平價摩天輪與旋轉木馬', '室內球池遊戲區', '嬰兒推車寄放', '悠遊卡刷卡消費'],
     description: '專為兒童設計的都會型遊樂園，免門票負擔大，遊樂設施CP值極高。',
-    highlights: '各設施皆有身高分級標誌，室內有大面積防雨防暑遊戲室，適合幼童放電。'
+    highlights: '各設施皆有身高分級標誌，室內有大面積防雨防暑遊戲室，適合幼童放電。',
+    exhibitionInfo: {
+      name: '【暑期特別展】汪汪隊立大功水上狂歡派對 & 音樂摩天輪特展',
+      date: '即日起 ~ 2026/09/01',
+      description: '園內打造汪汪隊立大功主題大型裝置與水上遊樂區，夜晚摩天輪配合璀璨燈光秀。'
+    }
+  },
+  {
+    id: 'fam-tp-3',
+    cityId: 'taipei',
+    cityName: '台北',
+    name: '國立臺灣科學教育館 (科教館)',
+    location: '台北市士林區士商路189號 (兒童新樂園旁)',
+    category: '科學館 / 展覽館',
+    image: 'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '3-15歲',
+    rating: 4.8,
+    features: ['空中腳踏車與高空吊橋', '兒童室內科學遊戲室', '推車友善大型電梯', '附設收費地下停車場'],
+    description: '結合多項科學實驗、動手做體驗與高空刺激的科學教育館，雨天避暑首選。',
+    highlights: '全館推車無障礙通道，九層樓設計豐富，適合小學年齡層探索科學。',
+    exhibitionInfo: {
+      name: '【重磅特展】侏羅紀恐龍陸海空實境探索特展',
+      date: '即日起 ~ 2026/10/15 (每週一休館)',
+      description: '引進最新 1:1 機械動態恐龍模型，搭配沉浸式 VR 虛擬實境體驗與考古化石清刷 DIY 手作。'
+    }
+  },
+  {
+    id: 'fam-tp-4',
+    cityId: 'taipei',
+    cityName: '台北',
+    name: '華山1914文化創意產業園區 (華山大草坪)',
+    location: '台北市中正區八德路一段12號 (忠孝新生捷運站步行3分)',
+    category: '文創園區 / 戶外大草坪',
+    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.7,
+    features: ['戶外大草坪野餐', '豐富卡通親子主題展', '推車友善平坦通道', '育嬰哺乳室設備'],
+    description: '全台最受歡迎的藝文特區之一，定期舉辦親子特展，並擁有極為開闊的綠色草坪。',
+    highlights: '大草坪極為適合幼兒奔跑野餐，周邊設有多家設計感親子餐廳。',
+    exhibitionInfo: {
+      name: '【快閃特展】波力救援小隊互動體驗展 & 5米高巨型 Hello Kitty 童樂展',
+      date: '即日起 ~ 2026/09/20 (免費入場觀展)',
+      description: '園內中4B館與大草坪打造巨型卡通打卡造景與多項動手操作互動遊戲區，適合親子家庭同樂。'
+    }
   },
   // 台中
   {
@@ -597,7 +655,12 @@ export const mockFamilyAttractions = [
     rating: 4.9,
     features: ['動態恐龍模型展', '嬰兒車免費租借', '科學中心動手玩', '親子閱覽室'],
     description: '擁有極受孩子喜愛的動態恐龍展示，是台中雨天最佳寓教於樂室內景點。',
-    highlights: '超吸煙的巨大暴龍會吼叫點頭，科學中心有許多適合幼童的操作式物理裝置。'
+    highlights: '超吸煙的巨大暴龍會吼叫點頭，科學中心有許多適合幼童的操作式物理裝置。',
+    exhibitionInfo: {
+      name: '【常態特展】生命科學廳 - 恐龍時代沉浸式動態展',
+      date: '常設特展 (每週二至週日 09:00-17:00)',
+      description: '館內最具知名度之巨大暴龍與翼龍動態生態展示，並設有立體 3D 劇場。'
+    }
   },
   {
     id: 'fam-tc-2',
@@ -611,7 +674,12 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['POPA親子專用設施', '嬰兒車租借與育嬰室', '麗寶Outlet直通', '大型戶外停車場'],
     description: '結合大型主題樂園與Outlet，遊樂區擁有眾多為溫和幼兒量身打造的遊樂器械。',
-    highlights: '設有大量棚遮與兒童劇場，直通 Outlet 便於家庭一站式用餐與採購。'
+    highlights: '設有大量棚遮與兒童劇場，直通 Outlet 便於家庭一站式用餐與採購。',
+    exhibitionInfo: {
+      name: '【夏季特展】水陸雙樂園泡泡狂歡特展 & 兒童劇場演出',
+      date: '即日起 ~ 2026/09/10',
+      description: '探索世界親子區推出大型彩色泡泡派對，並於午後舉辦 POPA 家族親子童話劇場。'
+    }
   },
   // 高雄
   {
@@ -626,7 +694,12 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['熱雪天堂探索樂園', '免費兒童科學園', '推車友善電梯', '親子哺乳室'],
     description: '專為親子設計的超大室內科學遊樂場，包含動手玩科學與室內巨型溜滑梯。',
-    highlights: '熱雪天堂有常溫人工滑雪場與攀爬區，是高雄炎夏與雨天的消暑避暑首選。'
+    highlights: '熱雪天堂有常溫人工滑雪場與攀爬區，是高雄炎夏與雨天的消暑避暑首選。',
+    exhibitionInfo: {
+      name: '【熱門特展】熱雪天堂探索樂園常溫滑雪特展',
+      date: '常設特展 (地下二樓特展區)',
+      description: '南台灣唯一常溫人工造雪滑雪場，配有專屬小雪橇與大型三層攀爬探索網。'
+    }
   },
   {
     id: 'fam-kh-2',
@@ -640,7 +713,12 @@ export const mockFamilyAttractions = [
     rating: 4.7,
     features: ['近距離觀看飛機起落', '落羽松露營野餐區', '羊駝與河馬動物區', '兒童沙坑遊戲場'],
     description: '能超近距離感受飛機起落的震撼，並飼養多種可愛動物與大型落羽松沙坑。',
-    highlights: '可以看飛機、餵羊駝、讓孩子在大型沙坑放電，適合悠閒的午後家庭聚會。'
+    highlights: '可以看飛機、餵羊駝、讓孩子在大型沙坑放電，適合悠閒的午後家庭聚會。',
+    exhibitionInfo: {
+      name: '【星空特別展】落羽松星空帳篷音樂祭與可愛動物餵食體驗展',
+      date: '每週末與國定假日 16:00 起',
+      description: '落羽松區傍晚點亮夢幻燈飾，並安排現場兒童吉他演奏與大沙坑尋寶遊戲。'
+    }
   },
   // 沖繩
   {
@@ -655,7 +733,12 @@ export const mockFamilyAttractions = [
     rating: 4.9,
     features: ['黑潮之海巨大鯨鯊池', '免費海豚表演秀', '推車免費借用', '五星級育嬰室'],
     description: '全日本最知名的海洋水族館，欣賞巨大鯨鯊與鬼蝠魟游動的壯麗景色。',
-    highlights: '海豚表演極具水準且免門票觀賞，館內無障礙坡道設計，推嬰兒車十分流暢。'
+    highlights: '海豚表演極具水準且免門票觀賞，館內無障礙坡道設計，推嬰兒車十分流暢。',
+    exhibitionInfo: {
+      name: '【海洋特別展】黑潮大水槽鯨鯊餵食秀與珊瑚礁探索特展',
+      date: '每日固定場次展示 (15:00 / 17:00)',
+      description: '展示數萬條熱帶魚與鬼蝠魟游動，並於每日下午舉辦精彩的鯨鯊垂直進食解說秀。'
+    }
   },
   {
     id: 'fam-oki-2',
@@ -669,125 +752,13 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['開放式鳥類飛禽區', '懷舊輕軌小火車', '水豚與草泥馬餵食', '無障礙推車通道'],
     description: '無障礙的動植物生態公園，孩子可以近距離親手餵食各種溫馴的小動物。',
-    highlights: '能搭乘園內古老輕軌蒸汽火車環繞園區，鳥類會直接在身邊走動，體驗新奇。'
+    highlights: '能搭乘園內古老輕軌蒸汽火車環繞園區，鳥類會直接在身邊走動，體驗新奇。',
+    exhibitionInfo: {
+      name: '【園區特展】沖繩輕軌鐵道搭乘體驗與珍稀飛禽自由穿梭特展',
+      date: '常設特展 (每日開放)',
+      description: '乘坐復古紅頭火車橫跨湖泊，並可於開放式網室園區體驗數百隻紅鶴與紅鸛在身旁飛翔。'
+    }
   },
-  // 東京
-  {
-    id: 'fam-tok-1',
-    cityId: 'tokyo',
-    cityName: '東京',
-    name: '東京上野動物園',
-    location: '東京都台東區上野公園9-83 (上野恩賜公園內)',
-    category: '動物園',
-    image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '0-12歲',
-    rating: 4.8,
-    features: ['大熊貓觀賞區', '日式庭園景色', '嬰兒推車租借 (每次500日圓)', '多功能親子廁所'],
-    description: '日本歷史最悠久的動物園，分為東園與西園，能看到受歡迎的熊貓與企鵝。',
-    highlights: '鄰近上野公園、博物館群與阿美橫丁，非常適合規劃一日全家東京散步行程。'
-  },
-  {
-    id: 'fam-tok-2',
-    cityId: 'tokyo',
-    cityName: '東京',
-    name: '東京巨蛋城室內樂園 ASOBono!',
-    location: '東京都文京區後樂1-3-61',
-    category: '室內遊樂場',
-    image: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '0-6歲',
-    rating: 4.9,
-    features: ['巨大室內球池船', '安全防撞軟墊區', '家家酒與火車玩具', '完整育嬰哺乳室'],
-    description: '東京最大規模的室內親子遊樂館，區分多個幼兒主題體驗區，安全性極高。',
-    highlights: '專為學齡前幼兒設計的玩具天堂，配備全方位育嬰母嬰設施與紙尿布自動販賣機。'
-  },
-  // 大阪
-  {
-    id: 'fam-os-1',
-    cityId: 'osaka',
-    cityName: '大阪',
-    name: '大阪天保山海遊館',
-    location: '大阪府大阪市港區海岸通1-1-10',
-    category: '水族館',
-    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '0-99歲',
-    rating: 4.9,
-    features: ['環太平洋火山帶展', '巨大鯨鯊主水槽', '推車寄放區', '無障礙電梯參觀動線'],
-    description: '世界級的超大型水族館，以獨特的螺旋狀參觀路線著稱，讓遊客如置身海底。',
-    highlights: '周邊有天保山大摩天輪與聖瑪麗亞號觀光船，適合一整天充實的港灣親子行程。'
-  },
-  {
-    id: 'fam-os-2',
-    cityId: 'osaka',
-    cityName: '大阪',
-    name: '大阪萬博紀念公園 & NIFREL 活生生的博物館',
-    location: '大阪府吹田市千里萬博公園2-1 (LaLaport Expocity內)',
-    category: '感官博物館 / 互動動物園',
-    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '1-12歲',
-    rating: 4.8,
-    features: ['無圍欄近距離動物互動', '光影藝術裝置', '大型LaLaport商場直通', '推車友善洗手間'],
-    description: '打破傳統水族館與動物園界線，讓狐猴、企鵝在遊客身邊自由穿梭的感官空間。',
-    highlights: '與大型 Shopping Mall 共構，吃飯、吹冷氣、育兒設備齊全，舒適度極高。'
-  },
-  // 台北額外真實景點
-  {
-    id: 'fam-tp-3',
-    cityId: 'taipei',
-    cityName: '台北',
-    name: '國立臺灣科學教育館 (科教館)',
-    location: '台北市士林區士商路189號 (兒童新樂園旁)',
-    category: '科學館 / 展覽館',
-    image: 'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '3-15歲',
-    rating: 4.8,
-    features: ['空中腳踏車與高空吊橋', '兒童室內科學遊戲室', '推車友善大型電梯', '附設收費地下停車場'],
-    description: '結合多項科學實驗、動手做體驗與高空刺激的科學教育館，雨天避暑首選。',
-    highlights: '全館推車無障礙通道，九層樓設計豐富，適合小學年齡層探索科學。'
-  },
-  {
-    id: 'fam-tp-4',
-    cityId: 'taipei',
-    cityName: '台北',
-    name: '華山1914文化創意產業園區 (華山大草坪)',
-    location: '台北市中正區八德路一段12號 (忠孝新生捷運站步行3分)',
-    category: '文創園區 / 戶外大草坪',
-    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '0-99歲',
-    rating: 4.7,
-    features: ['戶外大草坪野餐', '豐富卡通親子主題展', '推車友善平坦通道', '育嬰哺乳室設備'],
-    description: '全台最受歡迎的藝文特區之一，定期舉辦親子特展，並擁有極為開闊的綠色草坪。',
-    highlights: '大草坪極為適合幼兒奔跑野餐，周邊設有多家設計感親子餐廳。'
-  },
-  // 宜蘭額外真實景點
-  {
-    id: 'fam-yil-3',
-    cityId: 'yilan',
-    cityName: '宜蘭',
-    name: '宜蘭傳藝園區 (國立傳統藝術中心)',
-    location: '宜蘭縣五結鄉五濱路二段201號',
-    category: '文化體驗園區',
-    image: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '0-99歲',
-    rating: 4.8,
-    features: ['紅磚復古老街DIY', '冬山河手搖船體驗', '嬰兒推車租借 (每次50元)', '超大型戶外停車場'],
-    description: '台灣最大的傳統藝術推廣園區，提供古法製作、捏麵人、DIY畫傘等手作課程。',
-    highlights: '步道寬敞、無障礙設施齊全，可帶孩子在水上搭乘特色手搖船。'
-  },
-  {
-    id: 'fam-yil-4',
-    cityId: 'yilan',
-    cityName: '宜蘭',
-    name: '蜡藝蜡筆城堡 (彩繪DIY觀光工廠)',
-    location: '宜蘭縣蘇澳鎮海山西路500號 (蘇澳交流道旁)',
-    category: '觀光工廠',
-    image: 'https://images.unsplash.com/photo-1561542320-9a18cd340469?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '2-12歲',
-    rating: 4.7,
-    features: ['4關卡彩繪手工DIY', '彩色筆裝配體驗', '巨型蠟筆地標打卡', '免費專屬停車場'],
-    description: '外型極為醒目的巨大蠟筆造型觀光工廠，提供製作蠟筆與彩色筆等實作。',
-    highlights: '全天候室內場館不受天候影響，孩子能親手做出自己名字的蠟筆帶回家。'
-  },
-  // 沖繩額外真實景點
   {
     id: 'fam-oki-3',
     cityId: 'okinawa',
@@ -800,7 +771,12 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['Wonder Museum室內探索', '親手餵食大象與羊駝', '嬰兒推車租借', '五星親子哺乳室'],
     description: '沖繩唯一的市立動物園與科學體驗館，結合戶外動物親近與室內光影展。',
-    highlights: '神奇博物館 (Wonder Museum) 提供豐富的體感與聲光互動，適合各年齡兒童。'
+    highlights: '神奇博物館 (Wonder Museum) 提供豐富的體感與聲光互動，適合各年齡兒童。',
+    exhibitionInfo: {
+      name: '【室內重磅展】Wonder Museum 神奇光影與聲響互動特展',
+      date: '常設展區 (B1~2F)',
+      description: '設有三大主題體驗樓層，孩子能利用手勢控制光雕投影與製造巨型彩色泡泡。'
+    }
   },
   // 台南真實景點
   {
@@ -815,7 +791,12 @@ export const mockFamilyAttractions = [
     rating: 4.9,
     features: ['超豐富動物標本展區', '嬰兒推車免費借用', '絕美歐洲羅馬廣場', '全區多功能哺乳室'],
     description: '希臘神殿式華麗外觀與絕美繆思廣場，館內有豐富的動物標本展與兵器展。',
-    highlights: '戶外開闊的草坪與親水廣場極為適合野餐放電，且館內設有五星級哺乳設施。'
+    highlights: '戶外開闊的草坪與親水廣場極為適合野餐放電，且館內設有五星級哺乳設施。',
+    exhibitionInfo: {
+      name: '【國際特展】從拉斐爾到梵谷 - 英國國家藝廊珍藏大展',
+      date: '即日起 ~ 2026/10/10 (需提前預約場次)',
+      description: '展出 50 位西洋藝術大師經典真跡，並針對兒童設計互動導覽地圖與手冊。'
+    }
   },
   {
     id: 'fam-tn-2',
@@ -829,7 +810,12 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['幼兒專用超大球池', '室內五層樓滑梯體驗', '傳統打鼓樂趣DIY', '推車置放專屬區'],
     description: '由舊糖廠改造的文創冒險園區，設有專為兒童設計的室內大型極限球池與煙囪滑梯。',
-    highlights: '孩子能親身體驗擊鼓樂趣，並在高度安全的幼兒滑梯室內遊戲室盡情玩耍。'
+    highlights: '孩子能親身體驗擊鼓樂趣，並在高度安全的幼兒滑梯室內遊戲室盡情玩耍。',
+    exhibitionInfo: {
+      name: '【魔法特展】魔法工廠魔法師世界沉浸式打卡展 & 室內巨型透明滑梯',
+      date: '常設特展 (每日開放)',
+      description: '打造宛如霍格華茲魔法飛天書牆與沉浸式光影展，並設有 5 層樓高兒童極限透明滑梯。'
+    }
   },
   // 京都真實景點
   {
@@ -844,7 +830,12 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['京都特有大鯢觀察', '露天海豚表演秀', '平坦無障礙推車道', '親子多功能洗手間'],
     description: '日本首家完全使用人工海水的水族館，展示大量日本大鯢（娃娃魚）及豐富海洋生物。',
-    highlights: '海豚秀以東寺五重塔為背景，景色壯麗。全館有無障礙推車動線，非常貼心。'
+    highlights: '海豚秀以東寺五重塔為背景，景色壯麗。全館有無障礙推車動線，非常貼心。',
+    exhibitionInfo: {
+      name: '【夏季特別展】水母天空沉浸光影水族展 & 大鯢特展',
+      date: '即日起 ~ 2026/09/30',
+      description: '全日本最大水母球形水槽配合夢幻藍色光影，展示上千隻夢幻漂浮水母。'
+    }
   },
   {
     id: 'fam-ky-2',
@@ -858,7 +849,12 @@ export const mockFamilyAttractions = [
     rating: 4.9,
     features: ['實體蒸汽火車扇形車庫', '電車模擬駕駛體驗', '大尺寸鐵道模型展', '推車免費寄放服務'],
     description: '日本最大的鐵道博物館之一，保存了多台古老實體蒸汽火車與新幹線車頭。',
-    highlights: '鐵道迷孩子的天堂！能與百年老火車拍照，並有非常平坦的推車參觀動線。'
+    highlights: '鐵道迷孩子的天堂！能與百年老火車拍照，並有非常平坦的推車參觀動線。',
+    exhibitionInfo: {
+      name: '【鐵道特別展】新幹線與蒸汽火車近距離運轉實境展',
+      date: '常設特展 (每週三休館)',
+      description: '展示歷代 53 輛鐵道車輛，孩子可實際登上老蒸汽火車頭並觀賞全日本最大規模的模型動態運轉展。'
+    }
   },
   // 首爾真實景點
   {
@@ -873,7 +869,12 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['完全免費免票入場', '附設戶外動物園區', '大型沙坑與溜滑梯', '推車友善洗手間'],
     description: '首爾極受家長歡迎的免費大型公園，結合了動物園、植物園與多項遊樂設施。',
-    highlights: '免票入場且占地廣闊，動物園內能看到大象與老虎，是親民度滿分的放電景點。'
+    highlights: '免票入場且占地廣闊，動物園內能看到大象與老虎，是親民度滿分的放電景點。',
+    exhibitionInfo: {
+      name: '【戶外體驗展】熱帶植物溫室與動物親密互動特展',
+      date: '常態開放 (免費參觀)',
+      description: '設有巨型玻璃溫室花園與野生動物區，孩子可近距離觀察可愛狐獴與斑馬。'
+    }
   },
   {
     id: 'fam-se-2',
@@ -887,7 +888,12 @@ export const mockFamilyAttractions = [
     rating: 4.9,
     features: ['水陸兩用野生動物車', '四季花卉慶典花園', '嬰兒推車付費租借', '五星母嬰育嬰中心'],
     description: '韓國規模最大、最受家庭喜愛的主題樂園，結合遊樂設施與豐富的野生動物世界。',
-    highlights: '搭乘 Safari 巴士能近距離觀看熊、獅子與老虎，樂園對推嬰兒車的家庭支援相當完善。'
+    highlights: '搭乘 Safari 巴士能近距離觀看熊、獅子與老虎，樂園對推嬰兒車的家庭支援相當完善。',
+    exhibitionInfo: {
+      name: '【盛夏慶典】四季花園玫瑰花海與水上潑水狂歡特展',
+      date: '即日起 ~ 2026/09/10',
+      description: '園內四季花園打造歐洲玫瑰花海裝置，並於午後舉辦歡樂的水上音樂潑水大戰。'
+    }
   },
   // 曼谷真實景點
   {
@@ -902,7 +908,12 @@ export const mockFamilyAttractions = [
     rating: 4.9,
     features: ['開車進入野生猛獸區', '超大型長頸鹿餵食台', '海豚與猩猩娛樂秀', '遮陽棚推車大通道'],
     description: '泰國最具代表性的野生動物園，能近距離親手拿香蕉餵食上百隻溫馴的長頸鹿。',
-    highlights: '坐著遊覽車深入獅子與老虎棲息地，長頸鹿餵食台高度安全，孩子玩得超開心。'
+    highlights: '坐著遊覽車深入獅子與老虎棲息地，長頸鹿餵食台高度安全，孩子玩得超開心。',
+    exhibitionInfo: {
+      name: '【動態表演展】西部牛仔特技秀與海豚水上跳躍特展',
+      date: '每日固定表演場次 (10:20 - 15:40)',
+      description: '包含驚險的西部爆破特效特技秀，以及海豚與海獅雙重歡樂水上表演。'
+    }
   },
   {
     id: 'fam-bk-2',
@@ -916,7 +927,12 @@ export const mockFamilyAttractions = [
     rating: 4.8,
     features: ['大型百貨商場B1直達', '360度海底玻璃隧道', '推車寄放與輪椅坡道', '冷氣恆溫避暑首選'],
     description: '東南亞最大的室內水族館之一，位於知名 Siam Paragon 百貨內，交通購物極佳。',
-    highlights: '炎熱曼谷的消暑避暑首選！館內設有美麗的玻璃海底隧道與企鵝觀察區，推車友善。'
+    highlights: '炎熱曼谷的消暑避暑首選！館內設有美麗的玻璃海底隧道與企鵝觀察區，推車友善。',
+    exhibitionInfo: {
+      name: '【室內沈浸展】玻璃底船探險觀鯊展 & 冰雪企鵝觀察展',
+      date: '常設特展 (每日 10:00 - 20:00)',
+      description: '乘坐特殊玻璃底船於鯊魚水槽上方滑行，並於冰雪區探訪巴布亞企鵝家園。'
+    }
   }
 ];
 

@@ -123,6 +123,43 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                     {item.highlights || item.description}
                   </div>
 
+                  {/* 3.5. 當前熱門展覽 / 特展資訊 */}
+                  {item.exhibitionInfo && (
+                    <div style={{
+                      background: 'rgba(99, 102, 241, 0.1)',
+                      border: '1px solid rgba(99, 102, 241, 0.3)',
+                      padding: '10px 12px',
+                      borderRadius: '8px',
+                      marginBottom: '14px'
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '4px',
+                        flexWrap: 'wrap',
+                        gap: '4px'
+                      }}>
+                        <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#a5b4fc' }}>
+                          🎨 當前展覽 / 特展活動:
+                        </span>
+                        {item.exhibitionInfo.date && (
+                          <span style={{ fontSize: '0.73rem', color: '#818cf8', background: 'rgba(99, 102, 241, 0.2)', padding: '2px 6px', borderRadius: '4px' }}>
+                            📅 {item.exhibitionInfo.date}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+                        {item.exhibitionInfo.name}
+                      </div>
+                      {item.exhibitionInfo.description && (
+                        <div style={{ fontSize: '0.78rem', color: '#c7d2fe', lineHeight: '1.4' }}>
+                          {item.exhibitionInfo.description}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {/* 4. 設施 */}
                   {item.features && item.features.length > 0 && (
                     <div style={{ marginBottom: '16px' }}>
