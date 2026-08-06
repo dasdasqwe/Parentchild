@@ -1,4 +1,3 @@
-import { parseString } from 'xml2js'; // 我們如果沒有 xml2js 可以使用輕量正則或 cheerio 來解析，為了避免 npm install 出錯，我們用正則或 cheerio 解析 xml
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
