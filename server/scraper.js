@@ -392,6 +392,7 @@ export async function runScraperJob(query, onLog) {
             cityId: normCityId,
             cityName: normCityName,
             name: item.name,
+            agodaSlug: item.agodaSlug || null,
             type: item.type,
             image: gallery[0],
             images: gallery,
