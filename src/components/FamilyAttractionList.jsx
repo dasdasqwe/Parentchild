@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import { Baby, Star, MapPin, Heart } from 'lucide-react';
+
 function isExhibitionItem(item) {
   if (!item) return false;
   if (item.exhibitionInfo && item.exhibitionInfo.name) return true;
@@ -9,7 +12,7 @@ function isExhibitionItem(item) {
 }
 
 export default function FamilyAttractionList({ attractions, savedItems, onToggleSave }) {
-  const [subFilter, setSubFilter] = React.useState('all'); // 'all' | 'spots' | 'exhibitions'
+  const [subFilter, setSubFilter] = useState('all'); // 'all' | 'spots' | 'exhibitions'
   const savedIds = new Set(savedItems.map(s => s.id));
 
   // 自動分類與數量計算
