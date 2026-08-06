@@ -102,11 +102,23 @@ export async function scrapeBlogAttractions(cityQuery, onLog = console.log) {
         const pubDateStr = $(elem).find('pubDate').text();
         const contentEncoded = $(elem).find('content\\:encoded').text() || $(elem).find('description').text();
 
-        // 條件一：文章標題或內容需包含該城市關鍵字
-        const matchesCity = title.toLowerCase().includes(cityQuery.toLowerCase()) || 
-                            contentEncoded.toLowerCase().includes(cityQuery.toLowerCase());
+        // 條件一：極精準城市匹配 Guard (防止標題寫著高雄、墾丁，內文提到金門而被錯誤採集)
+        const cityList = ['台北', '臺北', '新北', '桃園', '台中', '臺中', '台南', '臺南', '高雄', '宜蘭', '花蓮', '台東', '臺東', '新竹', '苗栗', '彰化', '南投', '雲林', '嘉義', '屏東', '墾丁', '基隆', '澎湖', '金門', '馬祖', '沖繩', '東京', '大阪'];
         
-        if (!matchesCity) return;
+        // 若標題中明確包含其他縣市或觀光區名稱（且非搜尋目標縣市），直接剔除
+        const hasForeignCityTitle = cityList.some(c => c !== cityQuery && !c.includes(cityQuery) && title.includes(c));
+        if (hasForeignCityTitle) {
+          return;
+        }
+
+        // 提取地址
+        const address = extractAddress(contentEncoded, cityQuery);
+
+        // 文章標題必須包含該城市關鍵字，或者擷取的地址明確包含該城市名稱
+        const matchesCityTitleOrAddr = title.toLowerCase().includes(cityQuery.toLowerCase()) || 
+                                       address.toLowerCase().includes(cityQuery.toLowerCase());
+        
+        if (!matchesCityTitleOrAddr) return;
 
         // 條件二：發布日期必須在半年內 (180天)
         const withinSixMonths = isWithinSixMonths(pubDateStr);
@@ -118,7 +130,6 @@ export async function scrapeBlogAttractions(cityQuery, onLog = console.log) {
 
         // 開始解析出景點物件
         const imageUrl = extractImage(contentEncoded);
-        const address = extractAddress(contentEncoded, cityQuery);
         const features = analyzeFeatures(contentEncoded);
 
         // 格式化發布時間
