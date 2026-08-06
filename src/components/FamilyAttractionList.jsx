@@ -23,12 +23,13 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
         gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
         gap: '24px'
       }}>
-        {attractions.map(item => {
+        {attractions.map((item, idx) => {
           const isSaved = savedIds.has(item.id);
           const locationText = item.location || item.address || `${item.cityName || item.cityId || ''} 熱門觀光景點區`;
+          const targetUrl = item.blogUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + ' ' + (item.location || ''))}`;
 
           return (
-            <div key={item.id} className="glass-panel" style={{
+            <div key={item.id || idx} className="glass-panel" style={{
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden'
@@ -36,11 +37,19 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
               
               {/* 1. 圖片 */}
               <div style={{ position: 'relative', height: '200px', width: '100%' }}>
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
+                <a
+                  href={targetUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'block', width: '100%', height: '100%' }}
+                  title="點擊查看地圖導覽或部落格原文"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </a>
                 
                 {item.rating && (
                   <div style={{
@@ -56,7 +65,8 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                     gap: '4px',
                     color: '#fbbf24',
                     fontSize: '0.8rem',
-                    fontWeight: '700'
+                    fontWeight: '700',
+                    pointerEvents: 'none'
                   }}>
                     <Star size={14} fill="#fbbf24" /> {item.rating}
                   </div>
@@ -77,7 +87,8 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    zIndex: 2
                   }}
                 >
                   <Heart size={18} color="#f43f5e" fill={isSaved ? "#f43f5e" : "transparent"} />
@@ -88,7 +99,22 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
               <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                 <div>
                   <h3 style={{ fontSize: '1.15rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '8px' }}>
-                    {item.name}
+                    <a
+                      href={targetUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: '#ffffff',
+                        textDecoration: 'none',
+                        transition: 'color 0.2s ease',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => e.target.style.color = 'var(--accent-amber)'}
+                      onMouseLeave={(e) => e.target.style.color = '#ffffff'}
+                      title="點擊導向地圖地標或部落格原文"
+                    >
+                      {item.name} 🔗
+                    </a>
                   </h3>
 
                   {/* 2. 地點 */}

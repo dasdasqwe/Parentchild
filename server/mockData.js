@@ -1,9 +1,20 @@
 export const mockCities = [
   { id: 'taipei', name: '台北 (Taipei)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台北', 'taipei', '臺北', '大同區', '萬華區', '信義區', '中山區'] },
-  { id: 'yilan', name: '宜蘭 (Yilan)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['宜蘭', 'yilan', '礁溪', '羅東', '頭城', '冬山'] },
-  { id: 'taichung', name: '台中 (Taichung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台中', 'taichung', '臺中', '西屯', '逢甲', '中區'] },
-  { id: 'kaohsiung', name: '高雄 (Kaohsiung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['高雄', 'kaohsiung', '新興區', '鹽埕區', '左營'] },
-  { id: 'tainan', name: '台南 (Tainan)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台南', 'tainan', '臺南', '中西區', '安平'] },
+  { id: 'newtaipei', name: '新北 (New Taipei)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['新北', 'newtaipei', '新北市', '板橋', '淡水', '萬里', '金山', '烏來', '瑞芳'] },
+  { id: 'yilan', name: '宜蘭 (Yilan)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['宜蘭', 'yilan', '宜蘭縣', '礁溪', '羅東', '頭城', '冬山', '三星', '蘇澳'] },
+  { id: 'taichung', name: '台中 (Taichung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台中', 'taichung', '臺中', '台中市', '西屯', '逢甲', '中區', '后里'] },
+  { id: 'kaohsiung', name: '高雄 (Kaohsiung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['高雄', 'kaohsiung', '高雄市', '新興區', '鹽埕區', '左營', '小港', '三民'] },
+  { id: 'tainan', name: '台南 (Tainan)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台南', 'tainan', '臺南', '台南市', '中西區', '安平', '仁德'] },
+  { id: 'taoyuan', name: '桃園 (Taoyuan)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['桃園', 'taoyuan', '桃園市', '中壢', '龍潭', '大溪'] },
+  { id: 'hsinchu', name: '新竹 (Hsinchu)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['新竹', 'hsinchu', '新竹市', '新竹縣', '關西', '竹北', '新豐'] },
+  { id: 'miaoli', name: '苗栗 (Miaoli)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['苗栗', 'miaoli', '苗栗縣', '通霄', '頭份', '三義'] },
+  { id: 'changhua', name: '彰化 (Changhua)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['彰化', 'changhua', '彰化縣', '員林', '鹿港'] },
+  { id: 'nantou', name: '南投 (Nantou)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['南投', 'nantou', '南投縣', '魚池', '日月潭', '仁德', '清境'] },
+  { id: 'chiayi', name: '嘉義 (Chiayi)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['嘉義', 'chiayi', '嘉義市', '嘉義縣', '民雄', '大林', '阿里山'] },
+  { id: 'pingtung', name: '屏東 (Pingtung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['屏東', 'pingtung', '屏東縣', '車城', '恆春', '墾丁'] },
+  { id: 'hualien', name: '花蓮 (Hualien)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['花蓮', 'hualien', '花蓮縣', '花蓮市', '壽豐', '吉安', '太魯閣'] },
+  { id: 'taitung', name: '台東 (Taitung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['台東', 'taitung', '臺東', '台東縣', '卑南', '池上'] },
+  { id: 'penghu', name: '澎湖 (Penghu)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['澎湖', 'penghu', '澎湖縣', '馬公', '白沙'] },
   { id: 'okinawa', name: '沖繩 (Okinawa)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['沖繩', 'okinawa', '那霸', '名護', '北谷'] },
   { id: 'tokyo', name: '東京 (Tokyo)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['東京', 'tokyo', '新宿', '上野', '淺草', '銀座'] },
   { id: 'osaka', name: '大阪 (Osaka)', country: '日本', currency: 'JPY', symbol: '¥', aliases: ['大阪', 'osaka', '難波', '心齋橋', '梅田'] },
@@ -932,6 +943,184 @@ export const mockFamilyAttractions = [
       name: '【室內沈浸展】玻璃底船探險觀鯊展 & 冰雪企鵝觀察展',
       date: '常設特展 (每日 10:00 - 20:00)',
       description: '乘坐特殊玻璃底船於鯊魚水槽上方滑行，並於冰雪區探訪巴布亞企鵝家園。'
+    }
+  },
+  // 新北真實景點
+  {
+    id: 'fam-ntp-1',
+    cityId: 'newtaipei',
+    cityName: '新北',
+    name: '野柳海洋世界 (Yehliu Ocean World)',
+    location: '新北市萬里區野柳里港東路167-3號',
+    category: '海洋樂園 / 水族館',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-12歲',
+    rating: 4.7,
+    features: ['海獅與海豚跳水秀', '室內童樂水族館區', '推車友善無障礙通道', '專用收費停車場'],
+    description: '台灣第一座海洋動物表演公園，欣賞海獅與海豚精彩演出，並設有室內海底隧道展。',
+    highlights: '海豚表演極具教育意義，並可近距離觀察海洋生物，鄰近野柳地質公園。',
+    exhibitionInfo: {
+      name: '【海洋特展】童樂水族館探索展與海獅親子互動秀',
+      date: '每日固定演出場次 (10:30 / 13:30 / 15:30)',
+      description: '展出百種奇特海洋魚類與觸摸池，並特別舉辦海獅幽默跳水與加州海獅解說展。'
+    }
+  },
+  {
+    id: 'fam-ntp-2',
+    cityId: 'newtaipei',
+    cityName: '新北',
+    name: '朱銘美術館 (戶外雕塑藝術園區)',
+    location: '新北市金山區西勢湖2號',
+    category: '戶外藝術公園 / 美術館',
+    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['超廣闊綠意雕塑大草坪', '兒童藝術水戲世界', '推車租借與哺乳室', '免費接駁車與停車場'],
+    description: '全台最大的戶外雕塑美術館，擁有一整片大草坪與太極系列巨型雕塑。',
+    highlights: '極適合推嬰兒車的戶外藝術公園，設有兒童親水區與塗鴉繪畫區。',
+    exhibitionInfo: {
+      name: '【夏季特別展】太極系列戶外雕塑與兒童水戲夏令特展',
+      date: '即日起 ~ 2026/10/31 (每週一休館)',
+      description: '將藝術融入自然生態，設有獨特的兒童水戲噴泉與粉筆塗鴉自由創作大道。'
+    }
+  },
+  // 桃園真實景點
+  {
+    id: 'fam-ty-1',
+    cityId: 'taoyuan',
+    cityName: '桃園',
+    name: '雄獅文具想像力製造所 (彩色筆DIY)',
+    location: '桃園市龍潭區中興路九龍段229號',
+    category: '觀光工廠 / 色彩美學館',
+    image: 'https://images.unsplash.com/photo-1561542320-9a18cd340469?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '2-12歲',
+    rating: 4.9,
+    features: ['全館牆面自由塗鴉', '彩色筆與泡泡灌墨DIY', '森林戶外步道', '室內美型咖啡廳'],
+    description: '全台最美的色彩美學體驗館，孩子可以在純白牆面上隨意塗鴉、組裝彩色筆。',
+    highlights: '設計極具現代感，DIY 課程豐富刺激，全區無障礙且雨天避暑非常適合。',
+    exhibitionInfo: {
+      name: '【美學特展】夜光彩繪互動展與限定版漸層彩色筆 DIY 特展',
+      date: '每日 09:00 - 17:00 (每週三休館)',
+      description: '館內打造夢幻夜光森林彩繪展，孩子能親手組裝個人專屬的 3 色漸層彩色筆。'
+    }
+  },
+  {
+    id: 'fam-ty-2',
+    cityId: 'taoyuan',
+    cityName: '桃園',
+    name: 'Xpark 水族館 (都會型都市水族館)',
+    location: '桃園市中壢區春德路105號 (青埔置地廣場旁)',
+    category: '都市水族館',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['日本橫濱八景島海外首館', '企鵝穿梭咖啡廳', '冷氣恆溫無障礙', '高鐵站步行7分'],
+    description: '來自日本的高科技新都會型水族館，融合音樂、燈光與海洋生態展。',
+    highlights: '企鵝會在用餐區的透明管道中游動穿梭，離高鐵桃園站與華泰名品城極近。',
+    exhibitionInfo: {
+      name: '【沉浸特展】癒見水母夢幻光影展 & 企鵝水中穿梭奇幻特展',
+      date: '常設特展 (每日開放)',
+      description: '運用音樂與光雕投影打造圓柱水母悠游空間，感受前所未有的五感震撼體驗。'
+    }
+  },
+  // 新竹真實景點
+  {
+    id: 'fam-hc-1',
+    cityId: 'hsinchu',
+    cityName: '新竹',
+    name: '六福村主題遊樂園 (非洲部落野生動物園)',
+    location: '新竹縣關西鎮仁安里拱子溝60號',
+    category: '主題樂園 / 野生動物園',
+    image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['猛獸區遊園巴士', '蒸汽火車看草食動物', '溫和幼兒旋轉木馬', '推車付費租借與哺乳室'],
+    description: '全台唯一的結合野生動物園與大型主題遊樂園，搭乘蒸汽火車近距離觀賞白犀牛與美洲野牛。',
+    highlights: '搭乘猛獸巴士能看黃金獵犬與白老虎，園區針對家庭設計眾多溫和幼兒設施。',
+    exhibitionInfo: {
+      name: '【部落盛夏展】部落狂歡大遊行與白犀牛家族觀察特展',
+      date: '即日起 ~ 2026/09/15',
+      description: '每天午後舉辦熱帶狂歡音樂大遊行，並有專人解說白犀牛保育成果與犀牛泥巴浴。'
+    }
+  },
+  // 苗栗真實景點
+  {
+    id: 'fam-ml-1',
+    cityId: 'miaoli',
+    cityName: '苗栗',
+    name: '飛牛牧場 (綠野草原與餵小牛體驗)',
+    location: '苗栗縣通霄鎮南和里166號',
+    category: '休閒農場 / 綠色草原',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-12歲',
+    rating: 4.8,
+    features: ['親手拿奶瓶餵小牛', '鴨子大軍划水逛街', '純濃手作鮮奶冰淇淋', '大草坪野餐'],
+    description: '全台知名的綠色自然牧場，擁有極大幅員的丘陵大草坪與荷蘭荷斯坦乳牛。',
+    highlights: '小朋友能體驗親自餵小奶牛喝奶、擠牛奶，並品嚐純濃鮮奶布丁。',
+    exhibitionInfo: {
+      name: '【牧場特展】鴨子大軍大放行與鮮奶DIY樂趣特展',
+      date: '每日 07:00 - 19:00',
+      description: '每天特定時間有成群白鴨子聽搖鈴搖擺逛街，並提供親子現場調製鮮奶搖搖杯。'
+    }
+  },
+  // 屏東真實景點
+  {
+    id: 'fam-pt-1',
+    cityId: 'pingtung',
+    cityName: '屏東',
+    name: '國立海洋生物博物館 (墾丁海生館)',
+    location: '屏東縣車城鄉後灣路2號',
+    category: '水族館 / 生態公園',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['小白鯨與小白鯨隧道', '巨型海底巨藻水槽', '極地企鵝餵食觀察', '無障礙坡道與育嬰室'],
+    description: '全台灣規模最大的海洋生物博物館，分為台灣水域、珊瑚王國與世界水域三館。',
+    highlights: '海底隧道可以看到巨大的魟魚與小白鯨優雅游過，設施齊全，適合全家大小放鬆度假。',
+    exhibitionInfo: {
+      name: '【重磅特展】巨藻森林沉浸展與企鵝夜宿餵食體驗特展',
+      date: '常設特展 (每日開放)',
+      description: '高達三層樓高的巨大海藻林水槽，每日定時舉辦企鵝餵食秀與鯨鯊生態解說。'
+    }
+  },
+  // 花蓮真實景點
+  {
+    id: 'fam-hl-1',
+    cityId: 'hualien',
+    cityName: '花蓮',
+    name: '花蓮遠雄海洋公園 (太平洋海景遊樂園)',
+    location: '花蓮縣壽豐鄉鹽寮村福德189號',
+    category: '海洋主題樂園 / 水族館',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['美人魚實境水中秀', '海豚與海獅劇場', '晴空纜車俯瞰太平洋', '無障礙電梯與推車借用'],
+    description: '緊鄰無敵太平洋海景的海洋主題樂園，設有浪漫的美人魚表演與海豚表演。',
+    highlights: '搭乘晴空纜車能飽覽蔚藍太平洋，園區無障礙坡道與電梯規劃極佳，放電與度假一次滿足。',
+    exhibitionInfo: {
+      name: '【海洋慶典】夢幻美人魚真人實境水下舞蹈與海豚大遊行特展',
+      date: '即日起 ~ 2026/10/31',
+      description: '全台唯一的真人配樂水下姿態美人魚舞蹈，並有海豚高空跳躍水花秀演出。'
+    }
+  },
+  // 澎湖真實景點
+  {
+    id: 'fam-ph-1',
+    cityId: 'penghu',
+    cityName: '澎湖',
+    name: '澎湖水族館 (Penghu Aquarium)',
+    location: '澎湖縣白沙鄉岐頭村58號',
+    category: '水族館',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['14米長拱型海底隧道', '綠蠵龜戶外復育池', '大斑節蝦與觸摸池', '室內涼爽無障礙'],
+    description: '澎湖唯一的展覽水族館，展示綠蠵龜、玳瑁與澎湖周邊海域獨特的珊瑚礁生態。',
+    highlights: '設有長達 14 米的海底隧道與觸摸池，是澎湖炎夏消暑與雨天最佳備案。',
+    exhibitionInfo: {
+      name: '【海洋生態展】綠蠵龜保育特展與大水槽大魟魚餵食秀',
+      date: '每日固定場次 (15:00 大水槽餵食)',
+      description: '工作人員潛入大水槽餵食巨型龍膽石斑與魟魚，並設有綠蠵龜生態解說互動館。'
     }
   }
 ];
