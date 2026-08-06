@@ -26,7 +26,12 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
         {attractions.map((item, idx) => {
           const isSaved = savedIds.has(item.id);
           const locationText = item.location || item.address || `${item.cityName || item.cityId || ''} 熱門觀光景點區`;
-          const targetUrl = item.blogUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + ' ' + (item.location || ''))}`;
+          
+          // 1. 官網/官方介紹連結 (標題與圖片)
+          const officialUrl = item.websiteUrl || item.blogUrl || `https://www.google.com/search?q=${encodeURIComponent(item.name + ' 官網')}`;
+          
+          // 2. 地圖導航連結 (下方的地址列)
+          const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + ' ' + (item.location || item.address || ''))}`;
 
           return (
             <div key={item.id || idx} className="glass-panel" style={{
@@ -35,14 +40,14 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
               overflow: 'hidden'
             }}>
               
-              {/* 1. 圖片 */}
+              {/* 1. 圖片 (連結至官網/介紹) */}
               <div style={{ position: 'relative', height: '200px', width: '100%' }}>
                 <a
-                  href={targetUrl}
+                  href={officialUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: 'block', width: '100%', height: '100%' }}
-                  title="點擊查看地圖導覽或部落格原文"
+                  title="點擊前往景點官網或介紹"
                 >
                   <img
                     src={item.image}
@@ -98,38 +103,55 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
               {/* 詳情內文 */}
               <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                 <div>
+                  {/* 大標題: 官網/官方介紹超連結 */}
                   <h3 style={{ fontSize: '1.15rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '8px' }}>
                     <a
-                      href={targetUrl}
+                      href={officialUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
                         color: '#ffffff',
                         textDecoration: 'none',
                         transition: 'color 0.2s ease',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
                       }}
-                      onMouseEnter={(e) => e.target.style.color = 'var(--accent-amber)'}
-                      onMouseLeave={(e) => e.target.style.color = '#ffffff'}
-                      title="點擊導向地圖地標或部落格原文"
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-amber)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
+                      title="點擊開啟景點官網 / 介紹"
                     >
-                      {item.name} 🔗
+                      <span>{item.name}</span> 🌐
                     </a>
                   </h3>
 
-                  {/* 2. 地點 */}
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    color: 'var(--text-muted)',
-                    fontSize: '0.85rem',
-                    marginBottom: '14px'
-                  }}>
-                    <MapPin size={16} color="var(--accent-amber)" style={{ flexShrink: 0 }} />
-                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {locationText}
-                    </span>
+                  {/* 2. 下方地址: Google Maps 地圖超連結 */}
+                  <div style={{ marginBottom: '14px' }}>
+                    <a
+                      href={mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        color: 'var(--text-muted)',
+                        fontSize: '0.85rem',
+                        textDecoration: 'none',
+                        transition: 'color 0.2s ease',
+                        cursor: 'pointer',
+                        maxWidth: '100%'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-amber)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                      title="點擊開啟 Google Maps 地圖導覽"
+                    >
+                      <MapPin size={16} color="var(--accent-amber)" style={{ flexShrink: 0 }} />
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+                        {locationText} 📍
+                      </span>
+                    </a>
                   </div>
 
                   {/* 3. 特色 */}
