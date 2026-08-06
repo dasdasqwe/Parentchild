@@ -526,6 +526,7 @@ export const mockPackageTours = [
 ];
 
 export const mockFamilyAttractions = [
+  // 宜蘭
   {
     id: 'fam-yil-1',
     cityId: 'yilan',
@@ -534,27 +535,199 @@ export const mockFamilyAttractions = [
     location: '宜蘭縣冬山鄉下湖路206號 (梅花湖風景區旁)',
     category: '戶外動物親近園區',
     image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '0-12歲 (全家療癒體驗)',
+    ageRecommendation: '0-12歲',
     rating: 4.9,
-    ticketPrice: '全票 NT$200 (附贈紅蘿蔔餵食胡蘿蔔杯)',
-    features: ['親近水豚與梅花鹿', '平坦推車步道', '美美子霜淇淋', '親子洗手間'],
-    description: '宜蘭最火爆的親子動物樂園！近距離餵食溫馴梅花鹿與萌萌水豚君，園區設有綠油油草地與無障礙坡道。',
+    features: ['親近水豚與梅花鹿', '平坦推車步道', '美美子霜淇淋', '五星級親子洗手間'],
+    description: '宜蘭最熱門的親子動物農莊，能近距離餵食水豚與梅花鹿。',
     highlights: '小朋友能親手喂食水豚與小鹿，園內點心精緻優雅，步道推車友善。'
   },
+  {
+    id: 'fam-yil-2',
+    cityId: 'yilan',
+    cityName: '宜蘭',
+    name: '張美阿嬤農場 (日式庭園小鹿體驗)',
+    location: '宜蘭縣三星鄉行健溪一路二段161號',
+    category: '休閒農場',
+    image: 'https://images.unsplash.com/photo-1567608285969-48e24e930a0d?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-15歲',
+    rating: 4.8,
+    features: ['羊駝與水豚餵食', '日式和服體驗', '手工DIY蔥油餅', '專用免費停車場'],
+    description: '超人氣日式庭園造景農場，飼養眾多可愛羊駝、水豚與梅花鹿。',
+    highlights: '可以帶孩子換穿浴衣拍照，並體驗親手製作宜蘭特色蔥油餅。'
+  },
+  // 台北
+  {
+    id: 'fam-tp-1',
+    cityId: 'taipei',
+    cityName: '台北',
+    name: '台北市立動物園 (木柵動物園)',
+    location: '台北市文山區新光路二段30號 (捷運動物園站直達)',
+    category: '動植物園',
+    image: 'https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['大貓熊館與企鵝館', '嬰兒推車租借 (每次50元)', '全區無障礙坡道', '親子育嬰哺乳室'],
+    description: '全台規模最大的動物園，擁有完善的推車步道與多元的動植物生態。',
+    highlights: '明星大貓熊與國王企鵝超受歡迎，全區推車通行無阻，適合推嬰兒車的家庭。'
+  },
+  {
+    id: 'fam-tp-2',
+    cityId: 'taipei',
+    cityName: '台北',
+    name: '台北市立兒童新樂園',
+    location: '台北市士林區承德路五段55號 (近科學教育館)',
+    category: '遊樂園',
+    image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '2-12歲',
+    rating: 4.8,
+    features: ['平價摩天輪與旋轉木馬', '室內球池遊戲區', '嬰兒推車寄放', '悠遊卡刷卡消費'],
+    description: '專為兒童設計的都會型遊樂園，免門票負擔大，遊樂設施CP值極高。',
+    highlights: '各設施皆有身高分級標誌，室內有大面積防雨防暑遊戲室，適合幼童放電。'
+  },
+  // 台中
+  {
+    id: 'fam-tc-1',
+    cityId: 'taichung',
+    cityName: '台中',
+    name: '國立自然科學博物館 (台中科博館)',
+    location: '台中市北區館前路1號',
+    category: '博物館 / 科學館',
+    image: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '3-15歲',
+    rating: 4.9,
+    features: ['動態恐龍模型展', '嬰兒車免費租借', '科學中心動手玩', '親子閱覽室'],
+    description: '擁有極受孩子喜愛的動態恐龍展示，是台中雨天最佳寓教於樂室內景點。',
+    highlights: '超吸煙的巨大暴龍會吼叫點頭，科學中心有許多適合幼童的操作式物理裝置。'
+  },
+  {
+    id: 'fam-tc-2',
+    cityId: 'taichung',
+    cityName: '台中',
+    name: '麗寶樂園 (探索世界親子區)',
+    location: '台中市后里區福容路8號',
+    category: '主題樂園',
+    image: 'https://images.unsplash.com/photo-1561542320-9a18cd340469?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['POPA親子專用設施', '嬰兒車租借與育嬰室', '麗寶Outlet直通', '大型戶外停車場'],
+    description: '結合大型主題樂園與Outlet，遊樂區擁有眾多為溫和幼兒量身打造的遊樂器械。',
+    highlights: '設有大量棚遮與兒童劇場，直通 Outlet 便於家庭一站式用餐與採購。'
+  },
+  // 高雄
+  {
+    id: 'fam-kh-1',
+    cityId: 'kaohsiung',
+    cityName: '高雄',
+    name: '高雄國立科學工藝博物館 (科工館)',
+    location: '高雄市三民區九如一路720號',
+    category: '科學館',
+    image: 'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '2-15歲',
+    rating: 4.8,
+    features: ['熱雪天堂探索樂園', '免費兒童科學園', '推車友善電梯', '親子哺乳室'],
+    description: '專為親子設計的超大室內科學遊樂場，包含動手玩科學與室內巨型溜滑梯。',
+    highlights: '熱雪天堂有常溫人工滑雪場與攀爬區，是高雄炎夏與雨天的消暑避暑首選。'
+  },
+  {
+    id: 'fam-kh-2',
+    cityId: 'kaohsiung',
+    cityName: '高雄',
+    name: '淨園農場 (落羽松草坪與看飛機起降)',
+    location: '高雄市小港區明聖街135巷10-12號',
+    category: '休閒農場 / 景觀餐廳',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-12歲',
+    rating: 4.7,
+    features: ['近距離觀看飛機起落', '落羽松露營野餐區', '羊駝與河馬動物區', '兒童沙坑遊戲場'],
+    description: '能超近距離感受飛機起落的震撼，並飼養多種可愛動物與大型落羽松沙坑。',
+    highlights: '可以看飛機、餵羊駝、讓孩子在大型沙坑放電，適合悠閒的午後家庭聚會。'
+  },
+  // 沖繩
   {
     id: 'fam-oki-1',
     cityId: 'okinawa',
     cityName: '沖繩',
-    name: '沖繩美美麗海水族館 & 鯨鯊海豚劇場 (Churaumi Aquarium)',
-    location: '沖繩縣國頭郡本部町字石川424番地 (海洋博公園內)',
-    category: '海洋水族館 / 自然公園',
+    name: '沖繩美美麗海水族館 (海洋博公園)',
+    location: '沖繩縣國頭郡本部町字石川424番地',
+    category: '水族館 / 公園',
     image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-    ageRecommendation: '0-15歲 (全家必訪第一名)',
+    ageRecommendation: '0-99歲',
     rating: 4.9,
-    ticketPrice: '約 JPY 2,180 (6歲以下免費)',
-    features: ['黑潮之海巨型鯨鯊池', '免費海豚表演', '無障礙坡道', '五星育嬰室', '推車免費租借'],
-    description: '亞洲最雄偉的水族館之一！觀賞巨大鯨鯊與鬼蝠魟在「黑潮之海」水槽游動。',
-    highlights: '推車全館暢行無阻，設有巨型黑潮之海鯨鯊水槽與免費海豚表演。'
+    features: ['黑潮之海巨大鯨鯊池', '免費海豚表演秀', '推車免費借用', '五星級育嬰室'],
+    description: '全日本最知名的海洋水族館，欣賞巨大鯨鯊與鬼蝠魟游動的壯麗景色。',
+    highlights: '海豚表演極具水準且免門票觀賞，館內無障礙坡道設計，推嬰兒車十分流暢。'
+  },
+  {
+    id: 'fam-oki-2',
+    cityId: 'okinawa',
+    cityName: '沖繩',
+    name: '名護動植物園 (NEO PARK OKINAWA)',
+    location: '沖繩縣名護市名護4607-41',
+    category: '動植物園',
+    image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-12歲',
+    rating: 4.8,
+    features: ['開放式鳥類飛禽區', '懷舊輕軌小火車', '水豚與草泥馬餵食', '無障礙推車通道'],
+    description: '無障礙的動植物生態公園，孩子可以近距離親手餵食各種溫馴的小動物。',
+    highlights: '能搭乘園內古老輕軌蒸汽火車環繞園區，鳥類會直接在身邊走動，體驗新奇。'
+  },
+  // 東京
+  {
+    id: 'fam-tok-1',
+    cityId: 'tokyo',
+    cityName: '東京',
+    name: '東京上野動物園',
+    location: '東京都台東區上野公園9-83 (上野恩賜公園內)',
+    category: '動物園',
+    image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-12歲',
+    rating: 4.8,
+    features: ['大熊貓觀賞區', '日式庭園景色', '嬰兒推車租借 (每次500日圓)', '多功能親子廁所'],
+    description: '日本歷史最悠久的動物園，分為東園與西園，能看到受歡迎的熊貓與企鵝。',
+    highlights: '鄰近上野公園、博物館群與阿美橫丁，非常適合規劃一日全家東京散步行程。'
+  },
+  {
+    id: 'fam-tok-2',
+    cityId: 'tokyo',
+    cityName: '東京',
+    name: '東京巨蛋城室內樂園 ASOBono!',
+    location: '東京都文京區後樂1-3-61',
+    category: '室內遊樂場',
+    image: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-6歲',
+    rating: 4.9,
+    features: ['巨大室內球池船', '安全防撞軟墊區', '家家酒與火車玩具', '完整育嬰哺乳室'],
+    description: '東京最大規模的室內親子遊樂館，區分多個幼兒主題體驗區，安全性極高。',
+    highlights: '專為學齡前幼兒設計的玩具天堂，配備全方位育嬰母嬰設施與紙尿布自動販賣機。'
+  },
+  // 大阪
+  {
+    id: 'fam-os-1',
+    cityId: 'osaka',
+    cityName: '大阪',
+    name: '大阪天保山海遊館',
+    location: '大阪府大阪市港區海岸通1-1-10',
+    category: '水族館',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['環太平洋火山帶展', '巨大鯨鯊主水槽', '推車寄放區', '無障礙電梯參觀動線'],
+    description: '世界級的超大型水族館，以獨特的螺旋狀參觀路線著稱，讓遊客如置身海底。',
+    highlights: '周邊有天保山大摩天輪與聖瑪麗亞號觀光船，適合一整天充實的港灣親子行程。'
+  },
+  {
+    id: 'fam-os-2',
+    cityId: 'osaka',
+    cityName: '大阪',
+    name: '大阪萬博紀念公園 & NIFREL 活生生的博物館',
+    location: '大阪府吹田市千里萬博公園2-1 (LaLaport Expocity內)',
+    category: '感官博物館 / 互動動物園',
+    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '1-12歲',
+    rating: 4.8,
+    features: ['無圍欄近距離動物互動', '光影藝術裝置', '大型LaLaport商場直通', '推車友善洗手間'],
+    description: '打破傳統水族館與動物園界線，讓狐猴、企鵝在遊客身邊自由穿梭的感官空間。',
+    highlights: '與大型 Shopping Mall 共構，吃飯、吹冷氣、育兒設備齊全，舒適度極高。'
   }
 ];
 
