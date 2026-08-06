@@ -183,68 +183,68 @@ function getHotelCityId(hotelName, fallbackCityId) {
  */
 const cityRealHotelsMap = {
   okinawa: [
-    { name: '沖繩喜璃癒志海灘渡假飯店 (Okinawa Kariyushi Beach Resort), agodaSlug: 'okinawa-kariyushi-beach-resort-onna/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣國頭郡恩納村名嘉真2590 (美麗海灘第一排)', price: 2680, origPrice: 4300, rating: 4.8, tags: ['無邊際海景泳池', '私人沙灘', '親子水上樂園'] },
-    { name: '沖繩美國村坎帕納船舶飯店 (Vessel Hotel Campana Okinawa), agodaSlug: 'vessel-hotel-campana-okinawa/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣北谷町美濱9-22 (美國村日落海灘旁)', price: 2480, origPrice: 4100, rating: 4.9, tags: ['美國村日落海景', '海景大浴場', '18歲以下免費住宿'] },
-    { name: '那霸阿札特飯店 (Hotel Azat Okinawa), agodaSlug: 'hotel-azat/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市安里2-8-8 (單軌列車安里站 30秒)', price: 1250, origPrice: 2100, rating: 4.6, tags: ['單軌站旁30秒', '24H超市旁', 'CP值極高'] },
-    { name: '沖繩那霸日航都市飯店 (Hotel JAL City Naha), agodaSlug: 'hotel-jal-city-naha/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市牧志1-3-70 (國際通正中央門口)', price: 2150, origPrice: 3500, rating: 4.8, tags: ['國際通正中央', '日航星級服務', '豐富日式早餐'] },
-    { name: '沖繩南海海灘渡假飯店 (Southern Beach Hotel & Resort Okinawa), agodaSlug: 'southern-beach-hotel-resort-okinawa/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣糸滿市西崎町1-6-1 (美美海灘門前)', price: 2890, origPrice: 4600, rating: 4.9, tags: ['室內外雙泳池', '美美海灘旁', '親子水上活動'] },
-    { name: '沖繩海港景致飯店 (Okinawa Harborview Hotel), agodaSlug: 'okinawa-harborview-hotel/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市泉崎2-46 (那霸市政廳旁)', price: 1980, origPrice: 3200, rating: 4.7, tags: ['那霸市中心', '典雅花園庭園', '豐富Buffet早餐'] },
-    { name: '那霸歌町皇家 ORION 飯店 (Hotel Royal Orion Naha), agodaSlug: 'hotel-royal-orion-naha/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市安里1-2-21 (單軌牧志站旁)', price: 1680, origPrice: 2800, rating: 4.7, tags: ['單軌牧志站旁', '國際通起點', '附精緻早餐'] },
-    { name: '沖繩北谷希爾頓渡假飯店 (Hilton Okinawa Chatan Resort), agodaSlug: 'hilton-okinawa-chatan-resort/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣北谷町美濱40-1 (美國村核心特區)', price: 4200, origPrice: 6500, rating: 4.9, tags: ['美國村第一排', '豪華水上樂園', '雙泳池設施'] },
+    { name: '沖繩喜璃癒志海灘渡假飯店 (Okinawa Kariyushi Beach Resort)', agodaSlug: 'okinawa-kariyushi-beach-resort-onna/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣國頭郡恩納村名嘉真2590 (美麗海灘第一排)', price: 2680, origPrice: 4300, rating: 4.8, tags: ['無邊際海景泳池', '私人沙灘', '親子水上樂園'] },
+    { name: '沖繩美國村坎帕納船舶飯店 (Vessel Hotel Campana Okinawa)', agodaSlug: 'vessel-hotel-campana-okinawa/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣北谷町美濱9-22 (美國村日落海灘旁)', price: 2480, origPrice: 4100, rating: 4.9, tags: ['美國村日落海景', '海景大浴場', '18歲以下免費住宿'] },
+    { name: '那霸阿札特飯店 (Hotel Azat Okinawa)', agodaSlug: 'hotel-azat/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市安里2-8-8 (單軌列車安里站 30秒)', price: 1250, origPrice: 2100, rating: 4.6, tags: ['單軌站旁30秒', '24H超市旁', 'CP值極高'] },
+    { name: '沖繩那霸日航都市飯店 (Hotel JAL City Naha)', agodaSlug: 'hotel-jal-city-naha/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市牧志1-3-70 (國際通正中央門口)', price: 2150, origPrice: 3500, rating: 4.8, tags: ['國際通正中央', '日航星級服務', '豐富日式早餐'] },
+    { name: '沖繩南海海灘渡假飯店 (Southern Beach Hotel & Resort Okinawa)', type: 'Family Hotel', address: '沖繩縣糸滿市西崎町1-6-1 (美美海灘門前)', price: 2890, origPrice: 4600, rating: 4.9, tags: ['室內外雙泳池', '美美海灘旁', '親子水上活動'] },
+    { name: '沖繩海港景致飯店 (Okinawa Harborview Hotel)', agodaSlug: 'okinawa-harborview-hotel/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市泉崎2-46 (那霸市政廳旁)', price: 1980, origPrice: 3200, rating: 4.7, tags: ['那霸市中心', '典雅花園庭園', '豐富Buffet早餐'] },
+    { name: '那霸歌町皇家 ORION 飯店 (Hotel Royal Orion Naha)', agodaSlug: 'hotel-royal-orion-naha/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市安里1-2-21 (單軌牧志站旁)', price: 1680, origPrice: 2800, rating: 4.7, tags: ['單軌牧志站旁', '國際通起點', '附精緻早餐'] },
+    { name: '沖繩北谷希爾頓渡假飯店 (Hilton Okinawa Chatan Resort)', agodaSlug: 'hilton-okinawa-chatan-resort/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣北谷町美濱40-1 (美國村核心特區)', price: 4200, origPrice: 6500, rating: 4.9, tags: ['美國村第一排', '豪華水上樂園', '雙泳池設施'] },
     { name: '沖繩那霸 STRATA 飯店 (HOTEL STRATA NAHA)', type: 'Hotel', address: '沖繩縣那霸市美榮橋1-19-8 (單軌美榮橋站 1分)', price: 2100, origPrice: 3300, rating: 4.8, tags: ['戶外綠意泳池', '設計師美學', '單軌站旁'] },
-    { name: '沖繩蒙特利水療渡假飯店 (Hotel Monterey Okinawa Spa & Resort), agodaSlug: 'hotel-monterey-okinawa-spa-resort/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣恩納村富着1550 (老虎海灘第一排)', price: 3800, origPrice: 5900, rating: 4.9, tags: ['老虎海灘直達', '造浪池與水上滑梯', '無邊際泳池'] },
-    { name: '沖繩全日空萬座海濱洲際酒店 (ANA InterContinental Manza Beach Resort), agodaSlug: 'ana-intercontinental-manza-beach-resort/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣恩納村瀨良垣2260 (萬座毛海角勝景)', price: 4500, origPrice: 7200, rating: 4.9, tags: ['萬座海灘海上樂園', '洲際奢華服務', '全海景客房'] },
-    { name: '那霸首里城雙樹希爾頓酒店 (DoubleTree by Hilton Naha Shuri Castle), agodaSlug: 'doubletree-by-hilton-naha-shuri-castle/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市首里山川町1-132 (首里城景區)', price: 2300, origPrice: 3700, rating: 4.7, tags: ['俯瞰首里城夜景', '花園泳池', '家庭寬敞房'] },
-    { name: '沖繩琉球溫泉瀨長島飯店 (Ryukyu Onsen Senagajima Hotel), agodaSlug: 'ryukyu-onsen-senagajima-hotel/hotel/okinawa-jp.html'', type: 'Family Hotel', address: '沖繩縣豐見城市瀨長174-5 (瀨長島陽台露台旁)', price: 3900, origPrice: 6100, rating: 4.9, tags: ['天然海景溫泉', '近距離看飛機起降', '美景夕陽'] },
-    { name: '沖繩那霸休格爾酒店與露台 (Hewitt Resort Naha), agodaSlug: 'hewitt-resort-naha/hotel/naha-jp.html'', type: 'Hotel', address: '沖繩縣那霸市安里2-5-16 (單軌安里站步行3分)', price: 1950, origPrice: 3100, rating: 4.8, tags: ['頂樓無邊際溫水泳池', '豐富Buffet', '全新飯店'] },
+    { name: '沖繩蒙特利水療渡假飯店 (Hotel Monterey Okinawa Spa & Resort)', type: 'Family Hotel', address: '沖繩縣恩納村富着1550 (老虎海灘第一排)', price: 3800, origPrice: 5900, rating: 4.9, tags: ['老虎海灘直達', '造浪池與水上滑梯', '無邊際泳池'] },
+    { name: '沖繩全日空萬座海濱洲際酒店 (ANA InterContinental Manza Beach Resort)', agodaSlug: 'ana-intercontinental-manza-beach-resort/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣恩納村瀨良垣2260 (萬座毛海角勝景)', price: 4500, origPrice: 7200, rating: 4.9, tags: ['萬座海灘海上樂園', '洲際奢華服務', '全海景客房'] },
+    { name: '那霸首里城雙樹希爾頓酒店 (DoubleTree by Hilton Naha Shuri Castle)', agodaSlug: 'doubletree-by-hilton-naha-shuri-castle/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市首里山川町1-132 (首里城景區)', price: 2300, origPrice: 3700, rating: 4.7, tags: ['俯瞰首里城夜景', '花園泳池', '家庭寬敞房'] },
+    { name: '沖繩琉球溫泉瀨長島飯店 (Ryukyu Onsen Senagajima Hotel)', agodaSlug: 'ryukyu-onsen-senagajima-hotel/hotel/okinawa-jp.html', type: 'Family Hotel', address: '沖繩縣豐見城市瀨長174-5 (瀨長島陽台露台旁)', price: 3900, origPrice: 6100, rating: 4.9, tags: ['天然海景溫泉', '近距離看飛機起降', '美景夕陽'] },
+    { name: '沖繩那霸休格爾酒店與露台 (Hewitt Resort Naha)', agodaSlug: 'hewitt-resort-naha/hotel/naha-jp.html', type: 'Hotel', address: '沖繩縣那霸市安里2-5-16 (單軌安里站步行3分)', price: 1950, origPrice: 3100, rating: 4.8, tags: ['頂樓無邊際溫水泳池', '豐富Buffet', '全新飯店'] },
     { name: '那霸國際通一之屋酒店 (One\'s Hotel Naha)', type: 'Hotel', address: '沖繩縣那霸市松山2-1-15 (距離國際通步行5分)', price: 1350, origPrice: 2200, rating: 4.6, tags: ['平價高CP值', '房間寬敞', '生活機能極佳'] }
   ],
   taipei: [
-    { name: '台北君品酒店 (Palais de Chine Hotel), agodaSlug: 'palais-de-chine/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市大同區承德路一段3號 (京站廣場直達)', price: 4800, origPrice: 7500, rating: 4.8, tags: ['京站時尚廣場直達', '米其林三星餐廳', '頂級親子備品'] },
-    { name: '天成文旅 - 華山町 (Hua Shan Din Hotel), agodaSlug: 'hua-shan-din-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中正區忠孝東路二段79號 (忠孝新生站步行3分)', price: 2380, origPrice: 3800, rating: 4.7, tags: ['華山文創園區旁', '金庫設計風格', '附精緻早餐'] },
-    { name: '黑熊好眠站旅館 (Hey Bear Hotel), agodaSlug: 'hey-bear-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '新北市三重區重新路二段1號 (台北橋捷運站旁)', price: 1390, origPrice: 2200, rating: 4.6, tags: ['捷運出口1分鐘', '獨立衛浴', '免費飲料區'] },
-    { name: 'Flip Flop 台北車站親子旅店 (Flip Flop Family Hotel), agodaSlug: 'flip-flop-family-hotel/hotel/taipei-tw.html'', type: 'Family Hotel', address: '台北市大同區長安西路137號 (距離台北車站450m)', price: 1880, origPrice: 3200, rating: 4.8, tags: ['近台北車站', '嬰兒床浴盆備品', '親子閱讀室'] },
-    { name: '台北西門町日記記憶旅店 (Cho Hotel Ximen), agodaSlug: 'cho-hotel-ximen/hotel/taipei-tw.html'', type: 'B&B', address: '台北市萬華區昆明街119號 (西門捷運站步行3分)', price: 1750, origPrice: 2800, rating: 4.7, tags: ['西門町核心商圈', '懷舊文創風格', '懷舊零食免費吃'] },
-    { name: '台北和苑三井花園飯店 (Mitsui Garden Hotel Taipei), agodaSlug: 'mitsui-garden-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市大安區忠孝東路三段30號 (忠孝新生站旁)', price: 3600, origPrice: 5800, rating: 4.9, tags: ['日系大浴場', '忠孝新生站正對面', '精緻日式Buffet'] },
-    { name: '台北晶華酒店 (Regent Taipei), agodaSlug: 'the-regent-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區中山北路二段39巷3號 (中山捷運站步行5分)', price: 5200, origPrice: 8500, rating: 4.9, tags: ['頂樓露天溫水泳池', '栢麗廳知名Buffet', '奢華購物精品廊'] },
-    { name: '台北圓山大飯店 (The Grand Hotel), agodaSlug: 'the-grand-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區中山北路四段1號 (提供免費接駁車)', price: 3200, origPrice: 5200, rating: 4.8, tags: ['宮殿式地標建築', '無敵基隆河市景', '密道體驗行程'] },
-    { name: '台北寒舍艾美酒店 (Le Meridien Taipei), agodaSlug: 'le-meridien-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市信義區松仁路38號 (信義商圈核心)', price: 6800, origPrice: 10500, rating: 4.9, tags: ['信義商圈心臟地帶', '現代藝術薈萃', '探索廚房餐廳'] },
-    { name: '台北 W 飯店 (W Taipei), agodaSlug: 'w-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市信義區忠孝東路五段10號 (市府轉運站直達)', price: 7500, origPrice: 12000, rating: 4.9, tags: ['WET 碧波泳池', '時尚微醺酒吧', '直達阪急百貨'] },
-    { name: '台北凱達大飯店 (Caesar Park Hotel Banqiao / Wanhua), agodaSlug: 'caesar-park-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市萬華區艋舺大道167號 (萬華車站直達)', price: 2100, origPrice: 3500, rating: 4.7, tags: ['萬華車站直達', '高空露天泳池', '龍山寺夜市旁'] },
-    { name: '台北老爺大酒店 (Hotel Royal-Nikko Taipei), agodaSlug: 'hotel-royal-nikko-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區中山北路二段37-1號 (中山站步行3分)', price: 3800, origPrice: 6000, rating: 4.8, tags: ['日航星級服務', '中山綠蔭大道', '烘焙坊名店'] },
-    { name: '台北喜來登大飯店 (Sheraton Grand Taipei Hotel), agodaSlug: 'sheraton-grand-taipei-hotel/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中正區忠孝東路一段12號 (善導寺捷運站出口)', price: 4200, origPrice: 6800, rating: 4.8, tags: ['請客樓米其林二星', '露天泳池', '捷運站出口0分鐘'] },
-    { name: '台北格絲蒂精品旅店 (Gnight Hotel Taipei), agodaSlug: 'gnight-hotel-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區林森北路', price: 1450, origPrice: 2400, rating: 4.6, tags: ['捷運旁', '獨立乾濕分離', '平價極致舒適'] },
-    { name: '台北美侖大飯店 (Parkview Taipei), agodaSlug: 'parkview-taipei/hotel/taipei-tw.html'', type: 'Hotel', address: '台北市中山區復興南路一段6號', price: 2600, origPrice: 4200, rating: 4.7, tags: ['大安森林公園旁', '採光極佳', '環境優雅 quiet'] }
+    { name: '台北君品酒店 (Palais de Chine Hotel)', agodaSlug: 'palais-de-chine/hotel/taipei-tw.html', type: 'Hotel', address: '台北市大同區承德路一段3號 (京站廣場直達)', price: 4800, origPrice: 7500, rating: 4.8, tags: ['京站時尚廣場直達', '米其林三星餐廳', '頂級親子備品'] },
+    { name: '天成文旅 - 華山町 (Hua Shan Din Hotel)', agodaSlug: 'hua-shan-din-hotel/hotel/taipei-tw.html', type: 'Hotel', address: '台北市中正區忠孝東路二段79號 (忠孝新生站步行3分)', price: 2380, origPrice: 3800, rating: 4.7, tags: ['華山文創園區旁', '金庫設計風格', '附精緻早餐'] },
+    { name: '黑熊好眠站旅館 (Hey Bear Hotel)', agodaSlug: 'hey-bear-hotel/hotel/taipei-tw.html', type: 'Hotel', address: '新北市三重區重新路二段1號 (台北橋捷運站旁)', price: 1390, origPrice: 2200, rating: 4.6, tags: ['捷運出口1分鐘', '獨立衛浴', '免費飲料區'] },
+    { name: 'Flip Flop 台北車站親子旅店 (Flip Flop Family Hotel)', agodaSlug: 'flip-flop-family-hotel/hotel/taipei-tw.html', type: 'Family Hotel', address: '台北市大同區長安西路137號 (距離台北車站450m)', price: 1880, origPrice: 3200, rating: 4.8, tags: ['近台北車站', '嬰兒床浴盆備品', '親子閱讀室'] },
+    { name: '台北西門町日記記憶旅店 (Cho Hotel Ximen)', agodaSlug: 'cho-hotel-ximen/hotel/taipei-tw.html', type: 'B&B', address: '台北市萬華區昆明街119號 (西門捷運站步行3分)', price: 1750, origPrice: 2800, rating: 4.7, tags: ['西門町核心商圈', '懷舊文創風格', '懷舊零食免費吃'] },
+    { name: '台北和苑三井花園飯店 (Mitsui Garden Hotel Taipei)', agodaSlug: 'mitsui-garden-hotel-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市大安區忠孝東路三段30號 (忠孝新生站旁)', price: 3600, origPrice: 5800, rating: 4.9, tags: ['日系大浴場', '忠孝新生站正對面', '精緻日式Buffet'] },
+    { name: '台北晶華酒店 (Regent Taipei)', agodaSlug: 'the-regent-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市中山區中山北路二段39巷3號 (中山捷運站步行5分)', price: 5200, origPrice: 8500, rating: 4.9, tags: ['頂樓露天溫水泳池', '栢麗廳知名Buffet', '奢華購物精品廊'] },
+    { name: '台北圓山大飯店 (The Grand Hotel)', agodaSlug: 'the-grand-hotel-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市中山區中山北路四段1號 (提供免費接駁車)', price: 3200, origPrice: 5200, rating: 4.8, tags: ['宮殿式地標建築', '無敵基隆河市景', '密道體驗行程'] },
+    { name: '台北寒舍艾美酒店 (Le Meridien Taipei)', agodaSlug: 'le-meridien-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市信義區松仁路38號 (信義商圈核心)', price: 6800, origPrice: 10500, rating: 4.9, tags: ['信義商圈心臟地帶', '現代藝術薈萃', '探索廚房餐廳'] },
+    { name: '台北 W 飯店 (W Taipei)', agodaSlug: 'w-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市信義區忠孝東路五段10號 (市府轉運站直達)', price: 7500, origPrice: 12000, rating: 4.9, tags: ['WET 碧波泳池', '時尚微醺酒吧', '直達阪急百貨'] },
+    { name: '台北凱達大飯店 (Caesar Park Hotel Banqiao / Wanhua)', agodaSlug: 'caesar-park-hotel-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市萬華區艋舺大道167號 (萬華車站直達)', price: 2100, origPrice: 3500, rating: 4.7, tags: ['萬華車站直達', '高空露天泳池', '龍山寺夜市旁'] },
+    { name: '台北老爺大酒店 (Hotel Royal-Nikko Taipei)', agodaSlug: 'hotel-royal-nikko-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市中山區中山北路二段37-1號 (中山站步行3分)', price: 3800, origPrice: 6000, rating: 4.8, tags: ['日航星級服務', '中山綠蔭大道', '烘焙坊名店'] },
+    { name: '台北喜來登大飯店 (Sheraton Grand Taipei Hotel)', agodaSlug: 'sheraton-grand-taipei-hotel/hotel/taipei-tw.html', type: 'Hotel', address: '台北市中正區忠孝東路一段12號 (善導寺捷運站出口)', price: 4200, origPrice: 6800, rating: 4.8, tags: ['請客樓米其林二星', '露天泳池', '捷運站出口0分鐘'] },
+    { name: '台北格絲蒂精品旅店 (Gnight Hotel Taipei)', agodaSlug: 'gnight-hotel-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市中山區林森北路', price: 1450, origPrice: 2400, rating: 4.6, tags: ['捷運旁', '獨立乾濕分離', '平價極致舒適'] },
+    { name: '台北美侖大飯店 (Parkview Taipei)', agodaSlug: 'parkview-taipei/hotel/taipei-tw.html', type: 'Hotel', address: '台北市中山區復興南路一段6號', price: 2600, origPrice: 4200, rating: 4.7, tags: ['大安森林公園旁', '採光極佳', '環境優雅 quiet'] }
   ],
   taichung: [
-    { name: '台中李方艾美酒店 (Le Meridien Taichung), agodaSlug: 'le-meridien-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市中區建國路111號 (台中車站對面)', price: 4200, origPrice: 6800, rating: 4.9, tags: ['台中車站對面', '高空泳池與酒吧', '萬豪頂級體驗'] },
-    { name: '台中逢甲碧根逢甲酒店 (Beacon Hotel Taichung), agodaSlug: 'beacon-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西屯區福星路537號 (逢甲夜市核心)', price: 1880, origPrice: 3200, rating: 4.7, tags: ['逢甲夜市門口', '獨立停車場', '高CP值'] },
-    { name: '台中草悟道綠宿行旅 (Green Hotel Taichung), agodaSlug: 'green-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西區民生北路126號 (勤美草悟道旁)', price: 1750, origPrice: 2900, rating: 4.8, tags: ['草悟道綠樹林蔭', '環保主題旅店', '心願牆互動'] },
-    { name: '台中日月千禧酒店 (Millennium Hotel Taichung), agodaSlug: 'millennium-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西屯區市政路77號 (七期重劃區)', price: 3800, origPrice: 6200, rating: 4.8, tags: ['七期豪宅區', '露天泳池與水療', '極致商務休閒'] },
-    { name: '台中長榮桂冠酒店 (Evergreen Laurel Hotel Taichung), agodaSlug: 'evergreen-laurel-hotel-taichung/hotel/taichung-tw.html'', type: 'Family Hotel', address: '台中市西屯區台灣大道二段666號', price: 2800, origPrice: 4500, rating: 4.8, tags: ['室外海派泳池', '親子遊戲繪本室', '經典五星級'] },
-    { name: '台中裕元花園酒店 (Windsor Hotel Taichung), agodaSlug: 'windsor-hotel-taichung/hotel/taichung-tw.html'', type: 'Family Hotel', address: '台中市西屯區台灣大道四段610號 (台中交流道旁)', price: 3200, origPrice: 5200, rating: 4.9, tags: ['室內溫水泳池與水療區', '親子遊戲室', '交流道旁方便'] },
-    { name: '台中林酒店 (The Lin Hotel Taichung), agodaSlug: 'the-lin-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西屯區朝富路99號 (國家歌劇院旁)', price: 4800, origPrice: 7500, rating: 4.9, tags: ['國家歌劇院旁', '豪華渡假泳池', '知名LV百匯早餐'] },
-    { name: '台中金典酒店 (The Splendor Hotel Taichung), agodaSlug: 'the-splendor-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西區健行路1049號 (廣三SOGO旁)', price: 2980, origPrice: 4800, rating: 4.8, tags: ['廣三SOGO旁', '高空露天溫水泳池', '家庭寬敞房型'] },
-    { name: '台中全國大飯店 (National Hotel Taichung), agodaSlug: 'national-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市西區館前路57號 (草悟道正中央)', price: 2200, origPrice: 3600, rating: 4.7, tags: ['草悟道正對面', '老字號典雅服務', '生活機能極佳'] },
-    { name: '台中薆悅酒店台中館 (Inhouse Hotel Taichung), agodaSlug: 'inhouse-hotel-taichung/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市東區台中路203號 (忠孝夜市旁)', price: 1680, origPrice: 2700, rating: 4.7, tags: ['忠孝夜市步行2分', '夜店美學風格', '附設健身房'] },
+    { name: '台中李方艾美酒店 (Le Meridien Taichung)', agodaSlug: 'le-meridien-taichung/hotel/taichung-tw.html', type: 'Hotel', address: '台中市中區建國路111號 (台中車站對面)', price: 4200, origPrice: 6800, rating: 4.9, tags: ['台中車站對面', '高空泳池與酒吧', '萬豪頂級體驗'] },
+    { name: '台中逢甲碧根逢甲酒店 (Beacon Hotel Taichung)', agodaSlug: 'beacon-hotel-taichung/hotel/taichung-tw.html', type: 'Hotel', address: '台中市西屯區福星路537號 (逢甲夜市核心)', price: 1880, origPrice: 3200, rating: 4.7, tags: ['逢甲夜市門口', '獨立停車場', '高CP值'] },
+    { name: '台中草悟道綠宿行旅 (Green Hotel Taichung)', agodaSlug: 'green-hotel-taichung/hotel/taichung-tw.html', type: 'Hotel', address: '台中市西區民生北路126號 (勤美草悟道旁)', price: 1750, origPrice: 2900, rating: 4.8, tags: ['草悟道綠樹林蔭', '環保主題旅店', '心願牆互動'] },
+    { name: '台中日月千禧酒店 (Millennium Hotel Taichung)', agodaSlug: 'millennium-hotel-taichung/hotel/taichung-tw.html', type: 'Hotel', address: '台中市西屯區市政路77號 (七期重劃區)', price: 3800, origPrice: 6200, rating: 4.8, tags: ['七期豪宅區', '露天泳池與水療', '極致商務休閒'] },
+    { name: '台中長榮桂冠酒店 (Evergreen Laurel Hotel Taichung)', agodaSlug: 'evergreen-laurel-hotel-taichung/hotel/taichung-tw.html', type: 'Family Hotel', address: '台中市西屯區台灣大道二段666號', price: 2800, origPrice: 4500, rating: 4.8, tags: ['室外海派泳池', '親子遊戲繪本室', '經典五星級'] },
+    { name: '台中裕元花園酒店 (Windsor Hotel Taichung)', agodaSlug: 'windsor-hotel-taichung/hotel/taichung-tw.html', type: 'Family Hotel', address: '台中市西屯區台灣大道四段610號 (台中交流道旁)', price: 3200, origPrice: 5200, rating: 4.9, tags: ['室內溫水泳池與水療區', '親子遊戲室', '交流道旁方便'] },
+    { name: '台中林酒店 (The Lin Hotel Taichung)', agodaSlug: 'the-lin-hotel-taichung/hotel/taichung-tw.html', type: 'Hotel', address: '台中市西屯區朝富路99號 (國家歌劇院旁)', price: 4800, origPrice: 7500, rating: 4.9, tags: ['國家歌劇院旁', '豪華渡假泳池', '知名LV百匯早餐'] },
+    { name: '台中金典酒店 (The Splendor Hotel Taichung)', agodaSlug: 'the-splendor-hotel-taichung/hotel/taichung-tw.html', type: 'Hotel', address: '台中市西區健行路1049號 (廣三SOGO旁)', price: 2980, origPrice: 4800, rating: 4.8, tags: ['廣三SOGO旁', '高空露天溫水泳池', '家庭寬敞房型'] },
+    { name: '台中全國大飯店 (National Hotel Taichung)', agodaSlug: 'national-hotel-taichung/hotel/taichung-tw.html', type: 'Hotel', address: '台中市西區館前路57號 (草悟道正中央)', price: 2200, origPrice: 3600, rating: 4.7, tags: ['草悟道正對面', '老字號典雅服務', '生活機能極佳'] },
+    { name: '台中薆悅酒店台中館 (Inhouse Hotel Taichung)', agodaSlug: 'inhouse-hotel-taichung/hotel/taichung-tw.html', type: 'Hotel', address: '台中市東區台中路203號 (忠孝夜市旁)', price: 1680, origPrice: 2700, rating: 4.7, tags: ['忠孝夜市步行2分', '夜店美學風格', '附設健身房'] },
     { name: '台中星動銀河旅站 (Moving Star Hotel)', type: 'Hotel', address: '台中市中區自由路二段66號 (台中公園旁)', price: 1450, origPrice: 2400, rating: 4.6, tags: ['星際科幻主題', '機器人服務', '平價極致舒適'] },
-    { name: '台中新驛旅店台中車站店 (CityInn Hotel Plus Taichung), agodaSlug: 'cityinn-hotel-plus-taichung-station/hotel/taichung-tw.html'', type: 'Hotel', address: '台中市東區復興路四段133號 (台中車站後站1分)', price: 1850, origPrice: 3000, rating: 4.8, tags: ['車站後站1分鐘', '設計師插畫房型', '免費自助洗衣'] },
+    { name: '台中新驛旅店台中車站店 (CityInn Hotel Plus Taichung)', agodaSlug: 'cityinn-hotel-plus-taichung-station/hotel/taichung-tw.html', type: 'Hotel', address: '台中市東區復興路四段133號 (台中車站後站1分)', price: 1850, origPrice: 3000, rating: 4.8, tags: ['車站後站1分鐘', '設計師插畫房型', '免費自助洗衣'] },
     { name: '台中寶島53行館 (53 Hotel Taichung)', type: 'Hotel', address: '台中市中區中山路27號 (宮原眼科正對面)', price: 1580, origPrice: 2600, rating: 4.7, tags: ['宮原眼科對面', '復古文青風格', '免費單車租借'] },
     { name: '台中頭等艙飯店綠園道館 (Airline Inn Green Park Way Taichung)', type: 'Hotel', address: '台中市西區美村路一段22號 (勤美誠品旁)', price: 1980, origPrice: 3200, rating: 4.8, tags: ['勤美誠品綠園道旁', '機艙座艙體驗', '生活機能超強'] },
     { name: '台中微米文旅 (Micro Hotel Taichung)', type: 'Hotel', address: '台中市中區繼光街', price: 1250, origPrice: 2100, rating: 4.5, tags: ['平價青年旅店', '乾濕分離衛浴', '繼光商圈旁'] }
   ],
   kaohsiung: [
-    { name: '高雄駁二城市商旅真愛館 (City Suites Kaohsiung Chenai), agodaSlug: 'city-suites-kaohsiung-chenai/hotel/kaohsiung-tw.html'', type: 'Hotel', address: '高雄市鹽埕區大義街1號 (輕軌大義站1分)', price: 1680, origPrice: 2800, rating: 4.7, tags: ['駁二藝術特區旁', '海景港灣露台', '輕軌站1分'] },
-    { name: '高雄萬豪酒店 (Kaohsiung Marriott Hotel), agodaSlug: 'kaohsiung-marriott-hotel/hotel/kaohsiung-tw.html'', type: 'Hotel', address: '高雄市鼓山區龍德新路222號 (義享天地直通)', price: 4500, origPrice: 7200, rating: 4.9, tags: ['義享天地購物中心', '水療SPA與泳池', '頂級豪奢客房'] },
+    { name: '高雄駁二城市商旅真愛館 (City Suites Kaohsiung Chenai)', agodaSlug: 'city-suites-kaohsiung-chenai/hotel/kaohsiung-tw.html', type: 'Hotel', address: '高雄市鹽埕區大義街1號 (輕軌大義站1分)', price: 1680, origPrice: 2800, rating: 4.7, tags: ['駁二藝術特區旁', '海景港灣露台', '輕軌站1分'] },
+    { name: '高雄萬豪酒店 (Kaohsiung Marriott Hotel)', agodaSlug: 'kaohsiung-marriott-hotel/hotel/kaohsiung-tw.html', type: 'Hotel', address: '高雄市鼓山區龍德新路222號 (義享天地直通)', price: 4500, origPrice: 7200, rating: 4.9, tags: ['義享天地購物中心', '水療SPA與泳池', '頂級豪奢客房'] },
     { name: '高雄美麗島六合夜市文創行館 (Formosa Boulevard Hotel)', type: 'Hotel', address: '高雄市新興區中山一路 (美麗島站11號出口)', price: 1280, origPrice: 2100, rating: 4.6, tags: ['美麗島光之穹頂旁', '六合夜市步行2分', '高CP值'] },
-    { name: '高雄漢來大飯店 (Grand Hi-Lai Hotel), agodaSlug: 'grand-hi-lai-hotel/hotel/kaohsiung-tw.html'', type: 'Hotel', address: '高雄市前金區成功一路266號 (漢神百貨直通)', price: 3600, origPrice: 5800, rating: 4.9, tags: ['漢神百貨直通', '露天渡假泳池', '海景景觀客房'] },
+    { name: '高雄漢來大飯店 (Grand Hi-Lai Hotel)', agodaSlug: 'grand-hi-lai-hotel/hotel/kaohsiung-tw.html', type: 'Hotel', address: '高雄市前金區成功一路266號 (漢神百貨直通)', price: 3600, origPrice: 5800, rating: 4.9, tags: ['漢神百貨直通', '露天渡假泳池', '海景景觀客房'] },
     { name: '高雄承億酒店 (TAI Urban Resort)', type: 'Family Hotel', address: '高雄市前鎮區林森四路189號 (高空無邊際泳池)', price: 4800, origPrice: 7800, rating: 4.9, tags: ['全球唯一高空懸空無邊際泳池', '圖書館美學', '亞灣視界'] }
   ],
   tokyo: [
-    { name: '東京新宿華盛頓飯店 (Shinjuku Washington Hotel), agodaSlug: 'shinjuku-washington-hotel/hotel/tokyo-jp.html'', type: 'Hotel', address: '東京都新宿區西新宿3-2-9 (新宿站地下道直通)', price: 2980, origPrice: 4600, rating: 4.7, tags: ['新宿站地下道直通', '雨天不沾濕', '利木津巴士直達'] },
+    { name: '東京新宿華盛頓飯店 (Shinjuku Washington Hotel)', agodaSlug: 'shinjuku-washington-hotel/hotel/tokyo-jp.html', type: 'Hotel', address: '東京都新宿區西新宿3-2-9 (新宿站地下道直通)', price: 2980, origPrice: 4600, rating: 4.7, tags: ['新宿站地下道直通', '雨天不沾濕', '利木津巴士直達'] },
     { name: '東京上野公園景觀精緻飯店 (Ueno Parkview Hotel)', type: 'Hotel', address: '東京都台東區上野公園前 (京成上野站2分)', price: 2280, origPrice: 3600, rating: 4.8, tags: ['成田機場直達京成線', '上野恩賜公園旁', '阿美橫丁5分'] },
-    { name: '東京格拉斯麗新宿飯店 (Hotel Gracery Shinjuku), agodaSlug: 'hotel-gracery-shinjuku/hotel/tokyo-jp.html'', type: 'Hotel', address: '東京都新宿區歌舞伎町1-19-1 (哥吉拉地標飯店)', price: 3400, origPrice: 5200, rating: 4.8, tags: ['哥吉拉巨型地標', '歌舞伎町核心', '影城樓上'] },
-    { name: '東京品川王子大飯店 (Shinagawa Prince Hotel), agodaSlug: 'shinagawa-prince-hotel/hotel/tokyo-jp.html'', type: 'Family Hotel', address: '東京都港區高輪4-10-30 (品川新幹線站對面)', price: 3200, origPrice: 5000, rating: 4.8, tags: ['羽田機場急行線直達', '水族館與保齡球館', '交通樞紐'] }
+    { name: '東京格拉斯麗新宿飯店 (Hotel Gracery Shinjuku)', agodaSlug: 'hotel-gracery-shinjuku/hotel/tokyo-jp.html', type: 'Hotel', address: '東京都新宿區歌舞伎町1-19-1 (哥吉拉地標飯店)', price: 3400, origPrice: 5200, rating: 4.8, tags: ['哥吉拉巨型地標', '歌舞伎町核心', '影城樓上'] },
+    { name: '東京品川王子大飯店 (Shinagawa Prince Hotel)', agodaSlug: 'shinagawa-prince-hotel/hotel/tokyo-jp.html', type: 'Family Hotel', address: '東京都港區高輪4-10-30 (品川新幹線站對面)', price: 3200, origPrice: 5000, rating: 4.8, tags: ['羽田機場急行線直達', '水族館與保齡球館', '交通樞紐'] }
   ]
 };
 
@@ -464,16 +464,9 @@ export async function runScraperJob(query, onLog) {
     const chineseName = stay.name.split(' (')[0].replace(/【.*?】/g, '').trim();
 
     const encodedEn = encodeURIComponent(englishName);
-
-    // Agoda URL strategy:
-    // 1. If hotel has agodaSlug -> direct hotel detail page (100% accurate, body class = NewHotel)
-    // 2. Fallback -> city + textToSearch search URL (React SPA reads param to filter within city)
-    let agodaUrl;
-    if (stay.agodaSlug) {
-      agodaUrl = `https://www.agoda.com/zh-tw/${stay.agodaSlug}?checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`;
-    } else {
-      agodaUrl = `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&textToSearch=${encodedEn}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`;
-    }
+    const encodedZh = encodeURIComponent(chineseName);
+    // Combined: Chinese + English name for best matching (e.g. "台北寒舍艾美酒店 Le Meridien Taipei")
+    const encodedCombined = encodeURIComponent(`${chineseName} ${englishName}`);
 
     stay.providers = [
       {
@@ -487,7 +480,9 @@ export async function runScraperJob(query, onLog) {
         name: 'Agoda',
         price: stay.price + 50,
         isLowest: stay.lowestPriceProvider === 'Agoda',
-        url: agodaUrl
+        // Agoda: city param anchors the city, textToSearch filters for the specific hotel
+        // This is the ONLY URL format that doesn't get server-side redirected to homepage
+        url: `https://www.agoda.com/zh-tw/search?city=${agodaCityId}&textToSearch=${encodedEn}&checkIn=${checkIn}&checkOut=${checkOut}&rooms=1&adults=${adults}&children=${children}`
       },
       {
         name: 'Trip.com',
