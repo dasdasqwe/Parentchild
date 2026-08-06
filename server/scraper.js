@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { mockCities, mockStays, mockPackageTours, mockFamilyAttractions, mockFamilyTheaters } from './mockData.js';
 import { scrapeBlogAttractions } from './blogScraper.js';
+import { scrapeOpenDataAttractions } from './openDataScraper.js';
 
 /**
  * Robustly resolve city input to standardized city object
@@ -271,6 +272,16 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
     }
   } catch (err) {
     onLog(`[WARNING] 即時部落格文章抓取失敗: ${err.message}`);
+  }
+
+  // 2.5 實時動態串接官方 Open Data API (文化部與觀光展覽 API)
+  try {
+    const openDataAttractions = await scrapeOpenDataAttractions(normCityName, onLog);
+    if (openDataAttractions && openDataAttractions.length > 0) {
+      results = [...results, ...openDataAttractions];
+    }
+  } catch (err) {
+    onLog(`[WARNING] 官方 Open Data API 串接略過: ${err.message}`);
   }
 
   // 3. 限制上限為 20 個，且不足時不需補齊
