@@ -273,42 +273,11 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
     onLog(`[WARNING] 即時部落格文章抓取失敗: ${err.message}`);
   }
 
-  // 3. Fallback 機制：如該城市無足夠景點，再產出精細樣板
-  if (results.length < 3) {
-    results.push(
-      {
-        id: `fam-ext-1-${normCityId}`,
-        cityId: normCityId,
-        name: `${normCityName} 綠能自然戶外探索公園 & 兒童滑梯樂園`,
-        location: `${normCityName} 市中心觀光區 (綠意草坪第一排)`,
-        category: '戶外自然公園 / 兒童遊戲場',
-        image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
-        ageRecommendation: '0-12歲 (全家戶外放電勝地)',
-        rating: 4.9,
-        ticketPrice: '完全免費開放 (含免費停車場)',
-        features: ['超長滾輪溜滑梯', '無障礙推車坡道', '五星級育嬰室', '大草坪野餐區'],
-        description: `${normCityName} 最受歡迎的大型戶外親子公園，設有大型兒童遊戲場與無障礙步道。`,
-        highlights: '公園設施豐富且完全免費，適合家庭帶小朋友戶外踏青。'
-      },
-      {
-        id: `fam-ext-2-${normCityId}`,
-        cityId: normCityId,
-        name: `${normCityName} 科技探索體驗館 & 室內兒童科學樂園`,
-        location: `${normCityName} 科技園區大道1號 (捷運站步行5分)`,
-        category: '室內科技館 / 兒童樂園',
-        image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-        ageRecommendation: '3-15歲',
-        rating: 4.8,
-        ticketPrice: '平價門票 NT$ 60 起',
-        features: ['室內冷氣開放', '光影互動展區', '獨立育嬰室', '推車寄放區'],
-        description: `雨天最佳備案！設有豐富的光影互動科學展與室內攀爬遊戲設施。`,
-        highlights: '全天候室內恆溫冷氣，雨天或炎夏最佳避暑放電景點。'
-      }
-    );
-  }
+  // 3. 限制上限為 20 個，且不足時不需補齊
+  const finalResults = results.slice(0, 20);
 
-  onLog(`[SUCCESS] 成功獲取 ${results.length} 個「${normCityName}」最新熱門親子景點`);
-  return results;
+  onLog(`[SUCCESS] 成功獲取 ${finalResults.length} 個「${normCityName}」最新熱門親子景點`);
+  return finalResults;
 }
 
 export async function runTheaterScraperJob(query, onLog) {
