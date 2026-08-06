@@ -374,30 +374,32 @@ export default function SearchHeader({
 
       </div>
 
-      {/* Row 3: Popular Quick City Selection Bar */}
+      {/* Row 3: Popular Quick City Selection Bar (Limited to Taiwan 6 Special Municipalities) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
         <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>
-          ✨ 熱門快速選擇：
+          ✨ 熱門六都快速選擇：
         </span>
-        {cities.map((city) => (
-          <button
-            key={city.id}
-            onClick={() => setSelectedCity(city.id)}
-            style={{
-              background: selectedCity === city.id ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-              color: selectedCity === city.id ? '#34d399' : 'var(--text-muted)',
-              border: selectedCity === city.id ? '1px solid var(--primary)' : '1px solid var(--border-glass)',
-              borderRadius: '999px',
-              padding: '4px 14px',
-              fontSize: '0.85rem',
-              fontWeight: selectedCity === city.id ? '700' : '500',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            {city.name.split(' ')[0]}
-          </button>
-        ))}
+        {cities
+          .filter(city => ['taipei', 'newtaipei', 'taoyuan', 'taichung', 'tainan', 'kaohsiung'].includes(city.id))
+          .map((city) => (
+            <button
+              key={city.id}
+              onClick={() => setSelectedCity(city.id)}
+              style={{
+                background: selectedCity === city.id ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                color: selectedCity === city.id ? '#34d399' : 'var(--text-muted)',
+                border: selectedCity === city.id ? '1px solid var(--primary)' : '1px solid var(--border-glass)',
+                borderRadius: '999px',
+                padding: '4px 14px',
+                fontSize: '0.85rem',
+                fontWeight: selectedCity === city.id ? '700' : '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {city.name.split(' ')[0]}
+            </button>
+          ))}
       </div>
 
     </div>
