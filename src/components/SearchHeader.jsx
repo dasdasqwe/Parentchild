@@ -113,8 +113,8 @@ export default function SearchHeader({
         </button>
       </div>
 
-      {/* Accommodation Filter Grid (Only show when on stays/packages/trends tab) */}
-      {(activeTab !== 'family' && activeTab !== 'theaters') && (
+      {/* Accommodation Filter Grid (Only show when on stays/trends tab) */}
+      {(activeTab !== 'family' && activeTab !== 'theaters' && activeTab !== 'packages') && (
         <div style={{
           background: 'rgba(15, 23, 42, 0.65)',
           padding: '20px',
@@ -329,8 +329,8 @@ export default function SearchHeader({
         </div>
       )}
 
-      {/* Parent-Child Attractions Tab: Only Keep Destination Search */}
-      {activeTab === 'family' && (
+      {/* Parent-Child Attractions & Package Tours Tabs: Only Keep Destination Search */}
+      {(activeTab === 'family' || activeTab === 'packages') && (
         <div style={{
           background: 'rgba(15, 23, 42, 0.65)',
           padding: '20px',

@@ -1,33 +1,119 @@
-import React from 'react';
-import { Package, CheckCircle2, Star, Sparkles, ExternalLink, Heart } from 'lucide-react';
+import React, { useState } from 'react';
+import { Package, CheckCircle2, Star, Sparkles, ExternalLink, Heart, Ticket, Utensils } from 'lucide-react';
 
 export default function PackageTourList({ packages, savedItems, onToggleSave }) {
+  const [subFilter, setSubFilter] = useState('all'); // 'all' | 'tickets' | 'dining'
   const savedIds = new Set(savedItems.map(s => s.id));
+
+  const isTicketPackage = (item) => {
+    const text = (item.title + ' ' + (item.toursIncluded || []).join(' ')).toLowerCase();
+    return text.includes('門票') || text.includes('樂園') || text.includes('水族館') || text.includes('海生館') || text.includes('票');
+  };
+
+  const isDiningPackage = (item) => {
+    const text = (item.title + ' ' + (item.toursIncluded || []).join(' ')).toLowerCase();
+    return text.includes('餐券') || text.includes('美食') || text.includes('晚餐') || text.includes('吃到飽') || text.includes('餐');
+  };
+
+  // 自動分類過濾
+  const ticketPackages = packages.filter(isTicketPackage);
+  const diningPackages = packages.filter(isDiningPackage);
+
+  const displayedPackages = packages.filter(item => {
+    if (subFilter === 'tickets') return isTicketPackage(item);
+    if (subFilter === 'dining') return isDiningPackage(item);
+    return true;
+  });
 
   return (
     <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      
+      {/* Top Header Row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <h2 style={{ fontSize: '1.3rem', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Package color="var(--accent-purple)" size={22} />
-            超值旅遊包套組合 (住宿 + 門票/交通一站購足)
+            超值旅遊套裝行程組合 (住宿 + 門票/餐券一站購足)
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
             即時計算住宿與熱門景點門票單買價差，組合訂購平均省下 25% ~ 35% 預算
           </p>
         </div>
+
+        {/* 語意子分類按鈕組 */}
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => setSubFilter('all')}
+            style={{
+              background: subFilter === 'all' ? 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))' : 'rgba(255, 255, 255, 0.05)',
+              color: '#ffffff',
+              border: subFilter === 'all' ? 'none' : '1px solid var(--border-glass)',
+              padding: '6px 14px',
+              borderRadius: '999px',
+              fontSize: '0.82rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            🌟 全部套裝行程 ({packages.length})
+          </button>
+
+          <button
+            onClick={() => setSubFilter('tickets')}
+            style={{
+              background: subFilter === 'tickets' ? 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))' : 'rgba(255, 255, 255, 0.05)',
+              color: '#ffffff',
+              border: subFilter === 'tickets' ? 'none' : '1px solid var(--border-glass)',
+              padding: '6px 14px',
+              borderRadius: '999px',
+              fontSize: '0.82rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Ticket size={14} color="#a78bfa" />
+            住宿 + 景點/樂園門票包 ({ticketPackages.length})
+          </button>
+
+          <button
+            onClick={() => setSubFilter('dining')}
+            style={{
+              background: subFilter === 'dining' ? 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))' : 'rgba(255, 255, 255, 0.05)',
+              color: '#ffffff',
+              border: subFilter === 'dining' ? 'none' : '1px solid var(--border-glass)',
+              padding: '6px 14px',
+              borderRadius: '999px',
+              fontSize: '0.82rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Utensils size={14} color="#fbbf24" />
+            飯店 + 特色美食餐券包 ({diningPackages.length})
+          </button>
+        </div>
       </div>
 
+      {/* Cards Grid */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
         gap: '24px'
       }}>
-        {packages.map(pkg => {
+        {displayedPackages.map(pkg => {
           const isSaved = savedIds.has(pkg.id);
           
-          // 1. 官網/行程連結 (標題與圖片)
-          const officialUrl = pkg.websiteUrl || pkg.url || `https://www.google.com/search?q=${encodeURIComponent(pkg.title + ' 官網')}`;
+          // 1. 直連套裝行程搶購與預訂網址 (大標題與圖片)
+          const packageLink = pkg.url || pkg.ticketUrl || pkg.websiteUrl || `https://www.google.com/search?q=${encodeURIComponent(pkg.title + ' 預訂')}`;
           
           // 2. 地圖導覽連結 (住宿/地點列)
           const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(pkg.stayIncluded || pkg.title + ' ' + (pkg.cityName || ''))}`;
@@ -40,14 +126,14 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
               position: 'relative'
             }}>
               
-              {/* Media Image Banner (連結至官網/行程) */}
+              {/* Media Image Banner (直連搶購與預訂網址) */}
               <div style={{ position: 'relative', height: '190px', width: '100%' }}>
                 <a
-                  href={officialUrl}
+                  href={packageLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: 'block', width: '100%', height: '100%' }}
-                  title="點擊查看行程官網 / 介紹"
+                  title="點擊直連該套裝行程專屬預訂搶購頁面"
                 >
                   <img
                     src={pkg.image}
@@ -97,10 +183,10 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
               {/* Package Info Content */}
               <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                 <div>
-                  {/* 大標題: 行程/官網 */}
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '10px' }}>
+                  {/* 大標題: 直連搶購網址 */}
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '8px' }}>
                     <a
-                      href={officialUrl}
+                      href={packageLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -114,39 +200,35 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                       }}
                       onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-purple)'}
                       onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
-                      title="點擊開啟包套行程官網 / 介紹"
+                      title="點擊直連該套裝行程專屬預訂搶購頁面"
                     >
                       <span>{pkg.title}</span> 🌐
                     </a>
                   </h3>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#fbbf24', fontSize: '0.85rem', marginBottom: '14px' }}>
-                    <Star size={14} fill="#fbbf24" /> {pkg.rating}
-                    <span style={{ color: 'var(--text-muted)' }}>({pkg.reviewsCount} 人已預訂)</span>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '14px' }}>
+                    {pkg.tags.map((tag, idx) => (
+                      <span key={idx} className="badge-purple" style={{ fontSize: '0.75rem', padding: '2px 8px' }}>
+                        #{tag}
+                      </span>
+                    ))}
                   </div>
 
-                  {/* Included Stay & Tours Breakdown (住宿地圖導覽) */}
+                  {/* Stay Included Row (連至 Google Maps) */}
                   <div style={{
-                    background: 'rgba(15, 23, 42, 0.7)',
+                    background: 'rgba(15, 23, 42, 0.75)',
                     padding: '12px',
                     borderRadius: '10px',
                     border: '1px solid var(--border-glass)',
-                    marginBottom: '16px',
+                    marginBottom: '14px',
                     fontSize: '0.85rem'
                   }}>
-                    <div style={{ fontWeight: '700', color: 'var(--primary)', marginBottom: '6px' }}>
+                    <div style={{ fontWeight: '700', color: 'var(--primary)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <a
                         href={mapUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{
-                          color: 'var(--primary)',
-                          textDecoration: 'none',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          cursor: 'pointer'
-                        }}
+                        style={{ color: 'var(--primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}
                         onMouseEnter={(e) => e.currentTarget.style.color = '#34d399'}
                         onMouseLeave={(e) => e.currentTarget.style.color = 'var(--primary)'}
                         title="點擊開啟 Google Maps 地圖導覽"
@@ -182,7 +264,7 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                   </div>
 
                   <a
-                    href={pkg.url || pkg.ticketUrl || 'https://www.kkday.com'}
+                    href={packageLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary"
@@ -201,7 +283,7 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                       boxSizing: 'border-box'
                     }}
                   >
-                    <span>搶購包套優惠 ({pkg.provider})</span>
+                    <span>搶購套裝行程 ({pkg.provider})</span>
                     <ExternalLink size={15} style={{ flexShrink: 0 }} />
                   </a>
                 </div>
