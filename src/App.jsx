@@ -200,6 +200,7 @@ export default function App() {
             packages={packages}
             savedItems={savedItems}
             onToggleSave={handleToggleSave}
+            onCityChange={(city) => { setSelectedCity(city); }}
           />
         )}
 

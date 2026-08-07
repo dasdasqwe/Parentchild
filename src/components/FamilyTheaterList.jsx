@@ -15,7 +15,7 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
             近半年熱門親子劇場表演 & 最早開放購票時間
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
-            即時追蹤巧虎舞台劇、紙風車劇團、迪士尼冰上世界、蘋果劇團等近 6 個月巡迴時間與早鳥搶票時程
+            即時追蹤全台近半年熱門劇團巡迴時間與早鳥搶票時程
           </p>
         </div>
 
@@ -89,7 +89,6 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
                   <Heart size={18} color="#f43f5e" fill={isSaved ? "#f43f5e" : "transparent"} />
                 </button>
 
-                {/* Earliest Ticket Open Time Glow Callout Bar */}
                 <div style={{
                   position: 'absolute',
                   bottom: '0',
@@ -99,12 +98,27 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
                   padding: '12px 16px 8px 16px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px'
+                  gap: '8px',
+                  flexWrap: 'wrap'
                 }}>
                   <Clock size={16} color="#fbbf24" className="pulsing-dot" />
                   <span style={{ fontSize: '0.85rem', color: '#fbbf24', fontWeight: '800' }}>
                     最早可購票時間: {item.earliestTicketDate}
                   </span>
+                  {(() => {
+                    const match = (item.earliestTicketDate || '').match(/(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})/);
+                    if (match) {
+                      const targetDate = new Date(`${match[1]}-${String(match[2]).padStart(2,'0')}-${String(match[3]).padStart(2,'0')}`);
+                      const today = new Date(); today.setHours(0,0,0,0);
+                      const diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
+                      if (diffDays > 0) {
+                        return <span style={{ fontSize: '0.72rem', color: '#86efac', background: 'rgba(16,185,129,0.15)', padding: '2px 8px', borderRadius: '999px', fontWeight: '700' }}>距開搶 {diffDays} 天</span>;
+                      } else if (diffDays === 0) {
+                        return <span style={{ fontSize: '0.72rem', color: '#fbbf24', background: 'rgba(245,158,11,0.2)', padding: '2px 8px', borderRadius: '999px', fontWeight: '800' }}>🔥 今日開搶！</span>;
+                      }
+                    }
+                    return null;
+                  })()}
                 </div>
               </div>
 

@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
 import { Package, CheckCircle2, Star, Sparkles, ExternalLink, Heart, Ticket, Utensils } from 'lucide-react';
 
-export default function PackageTourList({ packages, savedItems, onToggleSave }) {
+export default function PackageTourList({ packages, savedItems, onToggleSave, onCityChange }) {
   const [subFilter, setSubFilter] = useState('all'); // 'all' | 'tickets' | 'dining'
   const savedIds = new Set(savedItems.map(s => s.id));
+  
+  const hotCities = [
+    { label: '台北', icon: '🏙️' },
+    { label: '新北', icon: '🏘️' },
+    { label: '台中', icon: '🎡' },
+    { label: '高雄', icon: '🌊' },
+    { label: '花蓮', icon: '🐳' },
+    { label: '宜蘭', icon: '🧧' },
+    { label: '墾丁', icon: '🏖️' },
+    { label: '沖繩', icon: '🌏' },
+  ];
 
   const isTicketPackage = (item) => {
     const text = (item.title + ' ' + (item.toursIncluded || []).join(' ')).toLowerCase();
@@ -103,6 +114,39 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
         </div>
       </div>
 
+      {/* Hot City Quick-Select Row */}
+      {onCityChange && (
+        <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            🔥 熱門城市快選：
+          </span>
+          {hotCities.map(city => (
+            <button
+              key={city.label}
+              onClick={() => onCityChange(city.label)}
+              style={{
+                background: 'rgba(255, 255, 255, 0.04)',
+                color: 'var(--text-main)',
+                border: '1px solid var(--border-glass)',
+                padding: '5px 12px',
+                borderRadius: '999px',
+                fontSize: '0.8rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(16, 185, 129, 0.12)'; e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'; e.currentTarget.style.borderColor = 'var(--border-glass)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+            >
+              {city.icon} {city.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Cards Grid */}
       <div style={{
         display: 'grid',
@@ -139,20 +183,47 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                   />
                 </a>
                 
-                {/* Savings Callout Tag */}
+                {/* Image Overlay: Savings Badge + Provider Badge */}
                 <div style={{
                   position: 'absolute',
                   top: '12px',
                   left: '12px',
-                  background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-rose))',
-                  color: '#ffffff',
-                  padding: '4px 12px',
-                  borderRadius: '999px',
-                  fontSize: '0.8rem',
-                  fontWeight: '700',
-                  boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)'
+                  display: 'flex',
+                  gap: '6px',
+                  zIndex: 2
                 }}>
-                  {pkg.savingsText}
+                  <span style={{
+                    background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+                    color: '#fff',
+                    fontSize: '0.72rem',
+                    fontWeight: '800',
+                    padding: '3px 10px',
+                    borderRadius: '999px'
+                  }}>
+                    組合包比單買現省 NT${((pkg.originalPrice || pkg.price * 1.3) - pkg.price).toLocaleString()}
+                  </span>
+                </div>
+
+                {/* Provider Badge */}
+                <div style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '50px',
+                  zIndex: 2
+                }}>
+                  <span style={{
+                    background: pkg.provider === 'KKday'
+                      ? 'linear-gradient(135deg, #2563eb, #06b6d4)'
+                      : 'linear-gradient(135deg, #f97316, #ef4444)',
+                    color: '#fff',
+                    fontSize: '0.7rem',
+                    fontWeight: '800',
+                    padding: '3px 8px',
+                    borderRadius: '6px',
+                    letterSpacing: '0.5px'
+                  }}>
+                    {pkg.provider || 'Klook'}
+                  </span>
                 </div>
 
                 <button
@@ -199,7 +270,7 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                       onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                       title="點擊直連該套裝行程專屬預訂搶購頁面"
                     >
-                      <span>{pkg.title}</span> 🌐
+                      <span>{pkg.title}</span>
                     </a>
                   </h3>
 

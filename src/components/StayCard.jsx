@@ -197,9 +197,14 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
 
           <div style={{ textAlign: 'right' }}>
             {stay.originalPrice && (
-              <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '0.8rem', marginRight: '6px' }}>
-                NT$ {stay.originalPrice.toLocaleString()}
-              </span>
+              <>
+                <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '0.8rem', marginRight: '6px' }}>
+                  NT$ {stay.originalPrice.toLocaleString()}
+                </span>
+                <span style={{ fontSize: '0.72rem', color: '#fb7185', fontWeight: '700', background: 'rgba(244,63,94,0.15)', padding: '1px 5px', borderRadius: '4px', marginRight: '4px' }}>
+                  省 NT$ {(stay.originalPrice - stay.price).toLocaleString()}
+                </span>
+              </>
             )}
             <span style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--primary)' }}>
               NT$ {stay.price.toLocaleString()}
@@ -231,7 +236,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
               onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
               title="點擊開啟飯店官網 / 介紹"
             >
-              <span>{stay.name}</span> 🌐
+              <span>{stay.name}</span>
             </a>
           </h3>
 

@@ -144,7 +144,7 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                 onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                 title="點擊開啟景點官網 / 介紹"
               >
-                <span>{item.name}</span> 🌐
+                <span>{item.name}</span>
               </a>
             </h3>
 
@@ -170,8 +170,8 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                 title="點擊開啟 Google Maps 地圖導覽"
               >
                 <MapPin size={16} color="var(--accent-amber)" style={{ flexShrink: 0 }} />
-                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                  {locationText} 📍
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {locationText}
                 </span>
               </a>
             </div>
@@ -213,11 +213,26 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                   <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#a5b4fc' }}>
                     🎨 當前展覽 / 特展活動:
                   </span>
-                  {item.exhibitionInfo.date && (
-                    <span style={{ fontSize: '0.73rem', color: '#818cf8', background: 'rgba(99, 102, 241, 0.2)', padding: '2px 6px', borderRadius: '4px' }}>
-                      📅 {item.exhibitionInfo.date}
-                    </span>
-                  )}
+                  {item.exhibitionInfo.date && (() => {
+                    // Calculate countdown days
+                    const match = (item.exhibitionInfo.date || '').match(/(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})\s*~/);
+                    let endMatch = (item.exhibitionInfo.date || '').match(/~\s*(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})/);
+                    let countdownEl = null;
+                    if (endMatch) {
+                      const endDate = new Date(`${endMatch[1]}-${String(endMatch[2]).padStart(2,'0')}-${String(endMatch[3]).padStart(2,'0')}`);
+                      const today = new Date(); today.setHours(0,0,0,0);
+                      const diffDays = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+                      if (diffDays >= 0 && diffDays <= 30) {
+                        countdownEl = <span style={{ fontSize: '0.7rem', color: '#fb7185', background: 'rgba(244,63,94,0.15)', padding: '2px 6px', borderRadius: '4px', fontWeight: '800' }}>⏰ 剩 {diffDays} 天</span>;
+                      }
+                    }
+                    return (
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: '0.73rem', color: '#818cf8', background: 'rgba(99, 102, 241, 0.2)', padding: '2px 6px', borderRadius: '4px' }}>📅 {item.exhibitionInfo.date}</span>
+                        {countdownEl}
+                      </span>
+                    );
+                  })()}
                 </div>
                 <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
                   {item.exhibitionInfo.name}
