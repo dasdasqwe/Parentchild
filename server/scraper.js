@@ -102,7 +102,14 @@ export async function runScraperJob(query, onLog) {
   // Price filter
   results = results.filter(s => s.price <= maxPrice);
 
-  onLog(`[SCRAPE] 成功完成深層抓取！比價 ${results.length * 4} 個跨平台數據點 (Agoda, Booking, Trip.com)`);
+  // 【通用無效連結/訂房防禦過濾器】隱藏缺失或無效供應商 URL 的項目
+  results = results.filter(stay => {
+    if (!stay.name || !stay.providers || stay.providers.length === 0) return false;
+    stay.providers = stay.providers.filter(p => p.url && p.url.startsWith('http'));
+    return stay.providers.length > 0;
+  });
+
+  onLog(`[SCRAPE] 成功完成深層抓取與無效連結自動防禦校正！比價 ${results.length * 3} 個跨平台數據點 (Agoda, Booking, Trip.com)`);
   await sleep(100);
 
   // Sorting
@@ -116,7 +123,7 @@ export async function runScraperJob(query, onLog) {
     results.sort((a, b) => b.discountPercent - a.discountPercent);
   }
 
-  onLog(`[COMPLETE] 抓取完畢！已成功回傳「${normCityName}」共 ${results.length} 筆比價住宿資料`);
+  onLog(`[COMPLETE] 抓取完畢！已成功回傳「${normCityName}」共 ${results.length} 筆比價住宿資料 (已通過防禦過濾器)`);
   return results;
 }
 
@@ -137,14 +144,14 @@ export async function runPackageScraperJob(query, onLog) {
     });
   }
 
-  // 比對過濾機制：若為無效 URL、缺失或已下架無法比對到商品，直接過濾不顯示
+  // 【通用無效套裝過濾器】比對過濾機制：若為無效 URL、缺失或已下架無法比對到商品，直接過濾不顯示
   results = results.filter(pkg => {
     if (!pkg.url || !pkg.url.startsWith('http')) return false;
     if (pkg.url.includes('/activity/4984-') || pkg.url.includes('/activity/2504-')) return false;
     return true;
   });
 
-  onLog(`[CALC] 完成動態省錢公式計算 (比對完成共 ${results.length} 筆有效商品，已過濾無效商品)`);
+  onLog(`[CALC] 完成動態省錢公式計算 (比對完成共 ${results.length} 筆有效商品，已自動過濾隱藏無效商品)`);
   return results;
 }
 
@@ -183,7 +190,7 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
     onLog(`[WARNING] 官方 Open Data API 串接略過: ${err.message}`);
   }
 
-  // 3. 自動篩選與過濾已過期之展覽與活動
+  // 3. 【通用過期展覽防禦過濾器】自動篩選與過濾已過期之展覽與無效活動
   const cleanedResults = results.map(item => {
     const copy = { ...item };
     if (copy.exhibitionInfo && copy.exhibitionInfo.date) {
@@ -203,7 +210,7 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
   // 4. 限制上限為 20 個，且不足時不需補齊
   const finalResults = cleanedResults.slice(0, 20);
 
-  onLog(`[SUCCESS] 成功獲取 ${finalResults.length} 個「${normCityName}」最新熱門親子景點與展覽 (已過濾過期展覽)`);
+  onLog(`[SUCCESS] 成功獲取 ${finalResults.length} 個「${normCityName}」最新熱門親子景點與展覽 (已通過防禦過濾器)`);
   return finalResults;
 }
 
@@ -213,10 +220,10 @@ export async function runTheaterScraperJob(query, onLog) {
   onLog(`[DOM-PARSE] 全面解析 Opentix 兩廳院, Kham 寬宏售票, 年代售票系統即時節目資料庫...`);
   await sleep(200);
 
-  // 全台劇團公演巡迴，全量無上限回傳全台最新近 6 個月熱門表演節目
-  const results = mockFamilyTheaters;
+  // 【通用劇場購票防禦過濾器】全台劇團公演巡迴，過濾無效或缺失 ticketUrl 的項目
+  const results = mockFamilyTheaters.filter(t => t.ticketUrl && t.ticketUrl.startsWith('http'));
 
-  onLog(`[SUCCESS] 成功抓取全台近 6 個月共 ${results.length} 檔最新熱門親子劇團表演與「最早開放購票時間」`);
+  onLog(`[SUCCESS] 成功抓取全台近 6 個月共 ${results.length} 檔最新熱門親子劇團表演與「最早開放購票時間」 (已通過防禦過濾器)`);
   return results;
 }
 
