@@ -89,16 +89,16 @@ export default function SearchHeader({
         <div>
           <h1 style={{ fontSize: '1.6rem', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <MapPin color="var(--primary)" size={24} />
-            {activeTab === 'stays' && '平價住宿比價與全網最低價抓取'}
-            {activeTab === 'packages' && '超值包套行程 (住宿+門票+交通接送)'}
-            {activeTab === 'family' && '熱門親子景點與當期展覽'}
-            {activeTab === 'theaters' && '近半年熱門親子劇團與公演早鳥搶票'}
-            {activeTab === 'trends' && '全網住宿價格走勢與預算分析'}
+            {activeTab === 'stays' && '親子住宿'}
+            {activeTab === 'packages' && '套裝行程 '}
+            {activeTab === 'family' && '親子景點與展覽'}
+            {activeTab === 'theaters' && '近半年熱門親子劇團與公演'}
+            {activeTab === 'trends' && '住宿價格走勢與預算分析'}
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
-            {activeTab === 'theaters' 
-              ? '即時追蹤巧虎舞台劇、紙風車劇團、迪士尼冰上世界、OPENTIX 等近 6 個月巡迴時程與最早可購票時間'
-              : '即時抓取 Agoda, Booking.com, Trip.com, Klook 等多平台公開最新數據'}
+            {activeTab === 'theaters'
+              ? '即時追蹤近 6 個月巡迴時程與最早可購票時間'
+              : '即時抓取多平台公開最新數據'}
           </p>
         </div>
 

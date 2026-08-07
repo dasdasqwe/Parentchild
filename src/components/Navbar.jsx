@@ -5,7 +5,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAlertModal, onOp
   return (
     <nav className="glass-panel" style={{ margin: '16px auto', maxWidth: '1280px', padding: '14px 24px', borderRadius: '16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-        
+
         {/* Brand Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => setActiveTab('stays')}>
           <div style={{
@@ -26,7 +26,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAlertModal, onOp
               StayPulse
             </span>
             <span style={{ fontSize: '0.75rem', display: 'block', color: 'var(--text-muted)', fontWeight: '500' }}>
-              平價住宿 • 親子劇場 • 包套行程抓取引擎
+              平價住宿 • 親子劇場 • 包套行程
             </span>
           </div>
         </div>
@@ -38,28 +38,28 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAlertModal, onOp
             className={activeTab === 'stays' ? 'btn-primary' : 'btn-secondary'}
             style={{ padding: '8px 16px', fontSize: '0.9rem' }}
           >
-            <Building2 size={16} /> 平價住宿比價
+            <Building2 size={16} /> 平價住宿
           </button>
           <button
             onClick={() => setActiveTab('packages')}
             className={activeTab === 'packages' ? 'btn-primary' : 'btn-secondary'}
             style={{ padding: '8px 16px', fontSize: '0.9rem' }}
           >
-            <Package size={16} /> 超值包套行程
+            <Package size={16} /> 套裝行程
           </button>
           <button
             onClick={() => setActiveTab('family')}
             className={activeTab === 'family' ? 'btn-primary' : 'btn-secondary'}
             style={{ padding: '8px 16px', fontSize: '0.9rem' }}
           >
-            <Baby size={16} /> 最新親子景點
+            <Baby size={16} /> 親子景點與展覽
           </button>
           <button
             onClick={() => setActiveTab('theaters')}
             className={activeTab === 'theaters' ? 'btn-primary' : 'btn-secondary'}
             style={{ padding: '8px 16px', fontSize: '0.9rem' }}
           >
-            <Theater size={16} /> 親子劇場表演
+            <Theater size={16} /> 兒童劇場表演
           </button>
           <button
             onClick={() => setActiveTab('trends')}
