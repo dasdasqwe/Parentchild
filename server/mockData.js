@@ -1450,7 +1450,7 @@ export const mockFamilyTheaters = [
       '臺東藝文中心演藝廳 (10/30 - 11/01)'
     ],
     highlights: '巧虎、琪琪、桃樂比經典登場！注意：巧虎舞台劇全台主要由「ERA 年代售票 (ticket.com.tw)」獨家售票與退換票！',
-    ticketUrl: 'https://ticket.com.tw',
+    ticketUrl: 'https://ticket.com.tw/application/UTK02/UTK0201_.aspx?PRODUCT_ID=P192ILGJ',
     ticketPlatform: 'ERA 年代售票系統'
   },
   {
@@ -1470,7 +1470,7 @@ export const mockFamilyTheaters = [
       '台北國家音樂廳 (09/25 - 09/27)'
     ],
     highlights: 'OPENTIX 主推熱門節目！專為嬰幼兒感官啟蒙設計的互動古典音樂會，全場放鬆歡迎發聲與律動。',
-    ticketUrl: 'https://www.opentix.life',
+    ticketUrl: 'https://www.opentix.life/event/1780470295192809473',
     ticketPlatform: 'OPENTIX 兩廳院文化生活'
   },
   {
@@ -1491,7 +1491,7 @@ export const mockFamilyTheaters = [
       '台中國家歌劇院中劇院 (10/02 - 10/04)'
     ],
     highlights: 'OPENTIX 兩廳院熱門榜第一名！現場管弦樂精緻編曲迪士尼與經典動漫公主主題曲。',
-    ticketUrl: 'https://www.opentix.life',
+    ticketUrl: 'https://www.opentix.life/event/1758066547844075521',
     ticketPlatform: 'OPENTIX 兩廳院文化生活'
   },
   {
@@ -1513,7 +1513,7 @@ export const mockFamilyTheaters = [
       '台中文心森林公園 (10/18)'
     ],
     highlights: '巨型空飄偶與氣球巨龍現場巡遊，震撼戶外舞台光影視覺！現場自由入場。',
-    ticketUrl: 'https://www.paperwindmill.com.tw',
+    ticketUrl: 'https://www.paperwindmill.com.tw/368',
     ticketPlatform: '紙風車官方網站'
   },
   {
@@ -1533,7 +1533,7 @@ export const mockFamilyTheaters = [
       '台北小巨蛋 (10/10 - 10/18 雙週末演出)'
     ],
     highlights: '米奇米妮引領 Elsa、Anna 及 Mirabel 於溜冰場上展現高難度花式溜冰與絕美冰上特技！',
-    ticketUrl: 'https://kham.com.tw',
+    ticketUrl: 'https://kham.com.tw/application/utk01/UTK0101_03.aspx?PRODUCT_ID=N4T14I40',
     ticketPlatform: 'Kham 寬宏售票系統'
   }
 ];
