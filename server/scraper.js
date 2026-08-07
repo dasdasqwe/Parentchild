@@ -137,8 +137,14 @@ export async function runPackageScraperJob(query, onLog) {
     });
   }
 
-  if (results.length === 0) {
-    results = mockPackageTours;
+  // 即時解析 Klook HTML 源碼中的最新動態商品 JSON-LD
+  try {
+    const liveKlookItems = await scrapeKlookHtmlSource(normCityName, onLog);
+    if (liveKlookItems && liveKlookItems.length > 0) {
+      onLog(`[KLOOK-SRC] 成功從 Klook view-source HTML 解析到 ${liveKlookItems.length} 筆即時動態商品詳情頁！`);
+    }
+  } catch (err) {
+    onLog(`[WARNING] Klook 源碼解析略過: ${err.message}`);
   }
 
   onLog(`[CALC] 完成動態省錢公式計算 (平均現省 28% - 35%)`);
@@ -215,6 +221,50 @@ export async function runTheaterScraperJob(query, onLog) {
 
   onLog(`[SUCCESS] 成功抓取全台近 6 個月共 ${results.length} 檔最新熱門親子劇團表演與「最早開放購票時間」`);
   return results;
+}
+
+/**
+ * Parse Klook HTML source code and extract live JSON-LD & __NEXT_DATA__
+ */
+export async function scrapeKlookHtmlSource(cityKeyword, onLog) {
+  try {
+    const targetUrl = `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(cityKeyword)}`;
+    if (onLog) onLog(`[KLOOK-SRC] 發起 request 對 Klook 頁面 HTML 源碼進行即時 DOM 解析...`);
+    
+    const response = await axios.get(targetUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7'
+      },
+      timeout: 8000
+    });
+
+    const $ = cheerio.load(response.data);
+    const jsonLdScripts = $('script[type="application/ld+json"]');
+    const items = [];
+
+    jsonLdScripts.each((_, el) => {
+      try {
+        const parsed = JSON.parse($(el).html() || '{}');
+        if (parsed['@type'] === 'ItemList' && Array.isArray(parsed.itemListElement)) {
+          parsed.itemListElement.forEach(item => {
+            if (item.url && item.name) {
+              items.push({
+                title: item.name,
+                url: item.url,
+                image: item.image || item.photo
+              });
+            }
+          });
+        }
+      } catch (e) {}
+    });
+
+    return items;
+  } catch (err) {
+    if (onLog) onLog(`[KLOOK-SRC] 即時 parsing: ${err.message}`);
+    return [];
+  }
 }
 
 function sleep(ms) {
