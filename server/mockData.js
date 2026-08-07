@@ -536,7 +536,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 520,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/activity/836-churaumi-aquarium-okinawa/'
+    url: 'https://www.klook.com/zh-TW/activity/1421-churaumi-aquarium-okinawa/'
   },
   {
     id: 'pkg-tpe-1',
@@ -554,7 +554,7 @@ export const mockPackageTours = [
     rating: 4.8,
     reviewsCount: 450,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/activity/20857-taipei-childrens-amusement-park-ticket/'
+    url: 'https://www.klook.com/zh-TW/activity/32301-taipei-childrens-amusement-park-one-day-pass/'
   },
   {
     id: 'pkg-txg-1',
@@ -572,7 +572,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 890,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/activity/2327-lihpaoland-taichung/'
+    url: 'https://www.klook.com/zh-TW/activity/12080-lihpao-land-theme-park-combo-ticket-taichung/'
   },
   {
     id: 'pkg-khh-1',
@@ -627,7 +627,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 910,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/activity/2607-pingtung-national-museum-of-marine-biology-and-aquarium/'
+    url: 'https://www.klook.com/zh-TW/activity/4738-national-museum-marine-biology-aquarium-ticket-kenting/'
   },
   {
     id: 'pkg-tpe-2',
@@ -645,7 +645,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 510,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/activity/46788-grand-hyatt-taipei-cafe/'
+    url: 'https://www.klook.com/zh-TW/activity/40122-caf%C3%A9-in-grand-hyatt-taipei-at-taipei-101-world-trade-center-station/'
   }
 ];
 
