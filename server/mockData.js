@@ -518,7 +518,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 680,
     provider: 'KKday',
-    url: 'https://www.kkday.com/zh-tw/product/128362-yilan-jiaoxi-tour-package'
+    url: 'https://www.kkday.com/zh-tw/product/38896'
   },
   {
     id: 'pkg-oki-1',
@@ -536,7 +536,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 520,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/search/result/?query=%E6%B6%96%E7%B9 me%20%E6%B0%B4%E6%97%8F%E9%A4%A8'
+    url: 'https://www.klook.com/zh-TW/activity/836-churaumi-aquarium-okinawa/'
   },
   {
     id: 'pkg-tpe-1',
@@ -554,7 +554,7 @@ export const mockPackageTours = [
     rating: 4.8,
     reviewsCount: 450,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/search/result/?query=%E5%8F%B0%E5%8C%97%20%E5%85%92%E7%AB%A5%E6%96%B0%E6%A8%82%E5%9C%92'
+    url: 'https://www.klook.com/zh-TW/activity/20857-taipei-childrens-amusement-park-ticket/'
   },
   {
     id: 'pkg-txg-1',
@@ -571,8 +571,8 @@ export const mockPackageTours = [
     tags: ['麗寶樂園', '摩天輪', '賽車主題'],
     rating: 4.9,
     reviewsCount: 890,
-    provider: 'KKday',
-    url: 'https://www.kkday.com/zh-tw/product/productlist?keyword=%E9%BA%97%E7%AF%B6%E6%A8%82%E5%9C%92'
+    provider: 'Klook',
+    url: 'https://www.klook.com/zh-TW/activity/2327-lihpaoland-taichung/'
   },
   {
     id: 'pkg-khh-1',
@@ -590,7 +590,7 @@ export const mockPackageTours = [
     rating: 4.8,
     reviewsCount: 620,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/search/result/?query=%E9%AB%98%E9%9B%84%20%E7%BE%A9%E5%A4%A7%E9%81%8A%E6%A8%82%E4%B8%96%E7%95%8C'
+    url: 'https://www.klook.com/zh-TW/activity/1564-eda-theme-park-kaohsiung/'
   },
   {
     id: 'pkg-hun-1',
@@ -608,8 +608,8 @@ export const mockPackageTours = [
     tags: ['海洋公園', '無敵海景', '美人魚秀'],
     rating: 4.9,
     reviewsCount: 740,
-    provider: 'KKday',
-    url: 'https://www.kkday.com/zh-tw/product/productlist?keyword=%E9%81%A0%E9%9B%84%E6%B5%B7%E6%B4%8B%E5%85%AC%E5%9C%92'
+    provider: 'Klook',
+    url: 'https://www.klook.com/zh-TW/activity/2504-farglory-ocean-park-hualien/'
   },
   {
     id: 'pkg-ptg-1',
@@ -627,7 +627,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 910,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/search/result/?query=%E5%A2%AF%E4%B8%81%20%E6%B5%B7%E7%94%9F%E9%A4%A8'
+    url: 'https://www.klook.com/zh-TW/activity/2607-pingtung-national-museum-of-marine-biology-and-aquarium/'
   },
   {
     id: 'pkg-tpe-2',
@@ -645,7 +645,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 510,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/search/result/?query=%E5%8F%B0%E5%8C%97%20%E5%87%B1%E8%8F%B2%E5%B1%8B'
+    url: 'https://www.klook.com/zh-TW/activity/46788-grand-hyatt-taipei-cafe/'
   }
 ];
 
