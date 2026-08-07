@@ -590,7 +590,7 @@ export const mockPackageTours = [
     rating: 4.8,
     reviewsCount: 620,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/activity/1564-eda-theme-park-kaohsiung/'
+    url: 'https://www.klook.com/zh-TW/activity/4984-e-da-theme-park-kaohsiung/'
   },
   {
     id: 'pkg-hun-1',
@@ -609,7 +609,7 @@ export const mockPackageTours = [
     rating: 4.9,
     reviewsCount: 740,
     provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/activity/2504-farglory-ocean-park-hualien/'
+    url: 'https://www.klook.com/zh-TW/activity/422-farglory-ocean-park-hualien/'
   },
   {
     id: 'pkg-ptg-1',
