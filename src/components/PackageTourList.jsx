@@ -112,11 +112,8 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
         {displayedPackages.map(pkg => {
           const isSaved = savedIds.has(pkg.id);
           
-          // 1. 直連套裝行程搶購與預訂網址 (大標題與圖片，若未帶網址則直連 Klook 專屬搶購頁)
+          // 1. 直連套裝行程搶購與預訂網址 (大標題、封面圖片與底部搶購按鈕全數直連)
           const packageLink = pkg.url || pkg.ticketUrl || pkg.websiteUrl || `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(pkg.title)}`;
-          
-          // 2. 地圖導覽連結 (住宿/地點列)
-          const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(pkg.stayIncluded || pkg.title + ' ' + (pkg.cityName || ''))}`;
 
           return (
             <div key={pkg.id} className="glass-panel" style={{
@@ -214,7 +211,7 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                     ))}
                   </div>
 
-                  {/* Stay Included Row (連至 Google Maps) */}
+                  {/* Stay Included Row (純文字展示，無需地圖超連結) */}
                   <div style={{
                     background: 'rgba(15, 23, 42, 0.75)',
                     padding: '12px',
@@ -224,20 +221,10 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                     fontSize: '0.85rem'
                   }}>
                     <div style={{ fontWeight: '700', color: 'var(--primary)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <a
-                        href={mapUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ color: 'var(--primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}
-                        onMouseEnter={(e) => e.currentTarget.style.color = '#34d399'}
-                        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--primary)'}
-                        title="點擊開啟 Google Maps 地圖導覽"
-                      >
-                        <CheckCircle2 size={16} />
-                        <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                          搭配住宿: {pkg.stayIncluded} 📍
-                        </span>
-                      </a>
+                      <CheckCircle2 size={16} />
+                      <span>
+                        搭配住宿: {pkg.stayIncluded}
+                      </span>
                     </div>
 
                     <div style={{ color: 'var(--text-muted)', marginBottom: '4px', fontWeight: '600' }}>
