@@ -1183,6 +1183,106 @@ export const mockFamilyAttractions = [
       date: '每晚 18:30 - 21:30 (定時燈光秀)',
       description: '夜間點亮繽紛彩光燈光秀，館內一至三樓展示金門風土人情與風獅爺文化特展。'
     }
+  },
+  // 馬祖真實景點
+  {
+    id: 'fam-mz-1',
+    cityId: 'matsu',
+    cityName: '馬祖',
+    name: '馬祖民俗文物館 (南竿地標文史館)',
+    location: '連江縣南竿鄉清水村135號',
+    category: '文化展覽館',
+    image: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['傳統閩東建築造型', '藍眼淚多媒體互動體驗', '馬祖傳統大酒甕展示', '戶外綠化文化步道'],
+    description: '馬祖最具代表性的博物館，展示閩東文化、漁業道具、傳統婚俗與藍眼淚生態。',
+    highlights: '館內提供冷氣且展覽豐富，設有藍眼淚與風燈體驗專區，是親子深度了解馬祖文化的起點。',
+    exhibitionInfo: {
+      name: '【閩東風采展】馬祖文化風貌與藍眼淚自然生態常設展',
+      date: '每日 09:00 - 17:00 (週一休館)',
+      description: '全方位展示馬祖四鄉五島采風、石厝建築美學與海洋生態。'
+    }
+  },
+  // 基隆真實景點
+  {
+    id: 'fam-kl-1',
+    cityId: 'keelung',
+    cityName: '基隆',
+    name: '國立海洋科技博物館 - 海科館',
+    location: '基隆市中正區北寧路367號',
+    category: '海洋科學 / 主題樂園',
+    image: 'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['兒童廳巨型室內滑梯', '海洋劇場3D巨幕電影', '潮境智能海洋館巨型水槽', '雨天最佳室內樂園'],
+    description: '結合海洋科技、生態保育與親子休閒的大型博物館，設有超大室內兒童探索體驗區。',
+    highlights: '下雨天放電首選！兒童體驗廳有滑梯、船長駕駛體驗與海洋生物模擬互動區。',
+    exhibitionInfo: {
+      name: '【海洋沉浸展】海科館 3D 巨幕電影與潮境智能水族特展',
+      date: '每日 09:00 - 17:00',
+      description: '透過高科技虛擬實境與實體水槽，探索深海生物與海洋保育生態。'
+    }
+  },
+  // 雲林真實景點
+  {
+    id: 'fam-yl-1',
+    cityId: 'yunlin',
+    cityName: '雲林',
+    name: '劍湖山世界主題樂園 (Janfusun Fancyworld)',
+    location: '雲林縣古坑鄉永光村大湖口67號',
+    category: '主題樂園',
+    image: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['摩天輪地標俯瞰雲嘉平原', '兒童王國室內遊戲世界', '水上樂園夏日消暑', '咕咕飛車與親子旋轉木馬'],
+    description: '台灣老牌三大主題樂園之一，擁有88米高的彩虹摩天輪與全台最大的室內兒童王國。',
+    highlights: '彩虹摩天輪俯瞰絕景，室內兒童王國雨天也能暢玩球池與童話旋轉木馬。',
+    exhibitionInfo: {
+      name: '【夏日嘉年華】劍湖山摩天輪節與動漫水上特展活動',
+      date: '即日起 ~ 2026/10/31',
+      description: '包含夜間水舞秀、角色偶偶巡遊與歡樂水上樂園特展。'
+    }
+  },
+  // 南投真實景點
+  {
+    id: 'fam-nt-1',
+    cityId: 'nantou',
+    cityName: '南投',
+    name: '清境農場 (青青草原與棉羊脫衣秀)',
+    location: '南投縣仁愛鄉大同村仁和路170號',
+    category: '觀光農場',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.9,
+    features: ['高山草地綿羊自由放牧', '經典羊毛秀與馬術表演', '高空景觀步道眺望奇萊山', '餵食羊羔近距離互動'],
+    description: '海拔1750米的霧上桃源，擁有廣袤的青青草原與可愛的柯爾鴨與綿羊群。',
+    highlights: '可以買牧草近距離餵食可愛綿羊，週末還有經典的剪羊毛秀與騎馬表演。',
+    exhibitionInfo: {
+      name: '【高山生態展】青青草原綿羊脫衣秀與高空天空步道展覽',
+      date: '每日 08:00 - 17:00 (表演週末9:30/14:30)',
+      description: '來自紐西蘭牧羊人的精彩剪羊毛表演與牧羊犬趕羊現場實演。'
+    }
+  },
+  // 台東真實景點
+  {
+    id: 'fam-tt-1',
+    cityId: 'taitung',
+    cityName: '台東',
+    name: '初鹿牧場 (Chulu Ranch)',
+    location: '台東縣卑南鄉明峰村28鄰牧場1號',
+    category: '觀光農場',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    ageRecommendation: '0-99歲',
+    rating: 4.8,
+    features: ['香濃鮮奶霜淇淋與鮮奶饅頭', '廣袤綠色草坪滑草體驗', '可愛小牛餵奶互動', '森林景觀步道'],
+    description: '全台最大的坡地牧場，以高品質濃純初鹿鮮乳與滾草放電樂園享譽全台。',
+    highlights: '小朋友可以體驗餵小牛喝牛奶、體驗滑草樂趣，並品嚐全台最濃郁的鮮奶霜淇淋。',
+    exhibitionInfo: {
+      name: '【牧場自然展】台東初鹿鮮奶文化與綠色大地體驗特展',
+      date: '每日 08:00 - 17:00',
+      description: '介紹台東純淨水土鮮乳生產過程，並開放親子牧草DIY體驗。'
+    }
   }
 ];
 
