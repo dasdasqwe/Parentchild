@@ -267,6 +267,43 @@ export async function scrapeKlookHtmlSource(cityKeyword, onLog) {
   }
 }
 
+/**
+ * Parse KKday HTML source code (e.g. product/38896) and extract JSON-LD & window.__INITIAL_STATE__
+ */
+export async function scrapeKkdayHtmlSource(productId = '38896', onLog) {
+  try {
+    const targetUrl = `https://www.kkday.com/zh-tw/product/${productId}`;
+    if (onLog) onLog(`[KKDAY-SRC] 發起 request 解析 KKday 商品 ${productId} 之 view-source HTML 數據...`);
+
+    const response = await axios.get(targetUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7'
+      },
+      timeout: 8000
+    });
+
+    const $ = cheerio.load(response.data);
+    const jsonLdText = $('script[type="application/ld+json"]').first().html();
+    
+    if (jsonLdText) {
+      const parsed = JSON.parse(jsonLdText);
+      return {
+        title: parsed.name,
+        image: Array.isArray(parsed.image) ? parsed.image[0] : parsed.image,
+        price: parsed.offers?.price,
+        currency: parsed.offers?.priceCurrency,
+        url: targetUrl
+      };
+    }
+
+    return null;
+  } catch (err) {
+    if (onLog) onLog(`[KKDAY-SRC] 解析失敗: ${err.message}`);
+    return null;
+  }
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
