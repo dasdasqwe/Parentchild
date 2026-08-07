@@ -1535,5 +1535,113 @@ export const mockFamilyTheaters = [
     highlights: '米奇米妮引領 Elsa、Anna 及 Mirabel 於溜冰場上展現高難度花式溜冰與絕美冰上特技！',
     ticketUrl: 'https://kham.com.tw/application/utk01/UTK0101_03.aspx?PRODUCT_ID=N4T14I40',
     ticketPlatform: 'Kham 寬宏售票系統'
+  },
+  {
+    id: 'th-6',
+    cityId: 'taipei',
+    cityName: '台北 / 新竹 / 台中 / 高雄',
+    title: '【朱宗慶打擊樂團】2026 豆豆冒險《擊樂童話王國》親子打擊音樂會',
+    image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=800&q=80',
+    performanceDate: '2026/09/01 - 2026/11/15',
+    earliestTicketDate: '2026/08/18 12:00 (OPENTIX 會員早鳥85折)',
+    ticketStatus: '即將開賣',
+    ticketStatusType: 'warning',
+    priceRange: 'NT$ 400 - 1,400',
+    ageRecommendation: '3 - 10 歲 (打擊樂啟蒙歌舞)',
+    organizer: '朱宗慶打擊樂團',
+    venues: [
+      '台北國家音樂廳 (09/01 - 09/03)',
+      '新竹縣實驗劇場 (09/20)',
+      '台中國家歌劇院中劇院 (10/10)'
+    ],
+    highlights: '結合擊樂節奏、戲劇故事與全場打擊打拍子互動，引導小朋友在歡笑中感受打擊樂魅力。',
+    ticketUrl: 'https://www.opentix.life/event/1769284093842886657',
+    ticketPlatform: 'OPENTIX 兩廳院文化生活'
+  },
+  {
+    id: 'th-7',
+    cityId: 'taipei',
+    cityName: '台北 / 桃園 / 台南',
+    title: '【蘋果劇團】2026 重磅大戲《抓龍特攻隊》冒險兒童歌舞劇',
+    image: 'https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&w=800&q=80',
+    performanceDate: '2026/08/28 - 2026/10/30',
+    earliestTicketDate: '2026/08/10 10:00 (年代售票開賣中)',
+    ticketStatus: '熱賣中',
+    ticketStatusType: 'success',
+    priceRange: 'NT$ 350 - 1,200',
+    ageRecommendation: '2 - 9 歲',
+    organizer: '蘋果劇團 Apple Theatre',
+    venues: [
+      '台北市政府親子劇場 (08/28 - 08/30)',
+      '桃園展演中心門廳 (09/15)',
+      '台南文化中心演藝廳 (10/30)'
+    ],
+    highlights: '巨型恐龍舞台道具巡遊，強調勇氣、愛與同理心教育，適合全家共賞。',
+    ticketUrl: 'https://www.opentix.life/event/1745367891238989824',
+    ticketPlatform: 'OPENTIX 兩廳院文化生活'
+  },
+  {
+    id: 'th-8',
+    cityId: 'taipei',
+    cityName: '台北 / 台中 / 高雄',
+    title: '【AM創意】繪本改編《包姆與凱羅的奇幻之旅》親子音樂劇',
+    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+    performanceDate: '2026/10/01 - 2026/12/15',
+    earliestTicketDate: '2026/08/25 12:00 (Klook / OPENTIX 聯售)',
+    ticketStatus: '預告搶票',
+    ticketStatusType: 'info',
+    priceRange: 'NT$ 600 - 2,000',
+    ageRecommendation: '3 - 12 歲 (改編日本暢銷繪本)',
+    organizer: '安徒生與莫札特創意 (AM創意)',
+    venues: [
+      '台北城市舞台 (10/01 - 10/04)',
+      '台中國家歌劇院大劇院 (11/12)'
+    ],
+    highlights: '將風靡台日的暢銷繪本改編為現場原創音樂劇，精緻還原包姆與凱羅的小家與奇幻世界。',
+    ticketUrl: 'https://www.opentix.life',
+    ticketPlatform: 'OPENTIX 兩廳院文化生活'
+  },
+  {
+    id: 'th-9',
+    cityId: 'taichung',
+    cityName: '全台六巡迴演',
+    title: '【狂美交響管樂團】《宮崎駿動畫音樂交響夜》親子視聽音樂會',
+    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+    performanceDate: '2026/09/15 - 2026/11/20',
+    earliestTicketDate: '2026/08/14 12:00 (年代售票開賣)',
+    ticketStatus: '熱賣中',
+    ticketStatusType: 'success',
+    priceRange: 'NT$ 400 - 1,600',
+    ageRecommendation: '0 - 99 歲 (動畫大師經典)',
+    organizer: '狂美交響管樂團',
+    venues: [
+      '台北國家音樂廳 (09/15)',
+      '高雄衛武營音樂廳 (10/12)',
+      '中壢藝術館音樂廳 (11/20)'
+    ],
+    highlights: '高畫質視聽大螢幕配合《龍貓》、《魔女宅急便》、《神隱少女》現場震撼管樂合奏。',
+    ticketUrl: 'https://ticket.com.tw',
+    ticketPlatform: 'ERA 年代售票系統'
+  },
+  {
+    id: 'th-10',
+    cityId: 'taipei',
+    cityName: '台北 / 宜蘭 / 屏東',
+    title: '【風神寶寶兒童劇團】《晴空小侍郎》東方奇幻歌仔戲歌舞劇',
+    image: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=800&q=80',
+    performanceDate: '2026/10/15 - 2026/12/01',
+    earliestTicketDate: '2026/08/22 12:00 (OPENTIX 開賣)',
+    ticketStatus: '預購中',
+    ticketStatusType: 'info',
+    priceRange: 'NT$ 300 - 1,000',
+    ageRecommendation: '4 - 12 歲 (傳統戲曲新創新穎)',
+    organizer: '風神寶寶兒童劇團',
+    venues: [
+      '台北臺灣戲曲中心 (10/15 - 10/17)',
+      '宜蘭演藝廳 (11/05)'
+    ],
+    highlights: '結合傳統歌仔戲、現代歌舞與身段武功，創造充滿東方神話魅力的親子歌舞劇。',
+    ticketUrl: 'https://www.opentix.life',
+    ticketPlatform: 'OPENTIX 兩廳院文化生活'
   }
 ];

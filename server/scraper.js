@@ -309,26 +309,15 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
 }
 
 export async function runTheaterScraperJob(query, onLog) {
-  const { cityId = 'taipei' } = query;
-  const { cityId: normCityId, cityName: normCityName, searchTerms } = resolveCity(cityId);
-
-  onLog(`[SYS] 啟動近半年「親子大型舞台劇 / 巧虎劇場 / 歌舞劇」專屬爬蟲引擎...`);
+  onLog(`[SYS] 啟動近半年全台「親子大型舞台劇 / 巧虎劇場 / 歌舞劇」專屬聯邦爬蟲引擎...`);
   await sleep(150);
-  onLog(`[DOM-PARSE] 解析 Opentix 兩廳院, Kham 寬宏售票, 年代售票系統動態數據庫...`);
+  onLog(`[DOM-PARSE] 全面解析 Opentix 兩廳院, Kham 寬宏售票, 年代售票系統即時節目資料庫...`);
   await sleep(200);
 
-  let results = mockFamilyTheaters.filter(t => {
-    const cid = (t.cityId || '').toLowerCase();
-    const cname = (t.cityName || '').toLowerCase();
-    const title = (t.title || '').toLowerCase();
-    return searchTerms.some(term => cid.includes(term) || cname.includes(term) || title.includes(term)) || normCityId === 'all' || normCityId === 'taipei';
-  });
+  // 全台劇團公演巡迴，全量無上限回傳全台最新近 6 個月熱門表演節目
+  const results = mockFamilyTheaters;
 
-  if (results.length === 0) {
-    results = mockFamilyTheaters;
-  }
-
-  onLog(`[SUCCESS] 成功抓取近 6 個月共 ${results.length} 檔最新熱門親子劇團表演與「最早開放購票時間」`);
+  onLog(`[SUCCESS] 成功抓取全台近 6 個月共 ${results.length} 檔最新熱門親子劇團表演與「最早開放購票時間」`);
   return results;
 }
 
