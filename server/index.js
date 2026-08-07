@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { mockCities, mockPriceTrends } from './mockData.js';
 import { runScraperJob, runPackageScraperJob, runFamilyAttractionScraperJob, runTheaterScraperJob } from './scraper.js';
 import { handleLineWebhook } from './lineBot.js';
+import { startCronScheduler, refreshAllAttractionsCache, attractionsCache } from './cronScheduler.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,8 +16,36 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// 啟動背景全自動定時巡檢引擎
+startCronScheduler();
+
 // LINE Bot Webhook Endpoint
 app.post('/api/line/webhook', handleLineWebhook);
+
+// 8. 取得景點自動定時更新狀態與最後刷新時間
+app.get('/api/attractions-status', (req, res) => {
+  res.json({
+    success: true,
+    lastUpdated: attractionsCache.lastUpdated || '伺服器啟動中 (背景巡檢進行中)',
+    cronInterval: '每 6 小時全自動背景巡檢',
+    status: 'ACTIVE'
+  });
+});
+
+// 9. 一鍵強制手動刷新全台最新展覽與景點
+app.post('/api/refresh-attractions', async (req, res) => {
+  try {
+    const result = await refreshAllAttractionsCache(console.log);
+    res.json({
+      success: true,
+      message: '全台最新展覽與景點特展手動即時刷新成功！',
+      lastUpdated: result.lastUpdated,
+      totalEvents: result.totalEvents
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 // Memory store for price alerts
 const priceAlerts = [];

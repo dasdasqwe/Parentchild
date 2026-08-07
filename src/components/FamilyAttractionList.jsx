@@ -13,7 +13,33 @@ function isExhibitionItem(item) {
 
 export default function FamilyAttractionList({ attractions, savedItems, onToggleSave }) {
   const [subFilter, setSubFilter] = useState('all'); // 'all' | 'spots' | 'exhibitions'
+  const [syncStatus, setSyncStatus] = useState({ lastUpdated: '已啟動自動排程', isRefreshing: false });
   const savedIds = new Set(savedItems.map(s => s.id));
+
+  React.useEffect(() => {
+    fetch('/api/attractions-status')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.lastUpdated) {
+          setSyncStatus(prev => ({ ...prev, lastUpdated: data.lastUpdated }));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleManualRefresh = async () => {
+    setSyncStatus(prev => ({ ...prev, isRefreshing: true }));
+    try {
+      const res = await fetch('/api/refresh-attractions', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        setSyncStatus({ lastUpdated: data.lastUpdated, isRefreshing: false });
+        window.location.reload();
+      }
+    } catch {
+      setSyncStatus(prev => ({ ...prev, isRefreshing: false }));
+    }
+  };
 
   // 自動分類與數量計算
   const spotItems = attractions.filter(item => !isExhibitionItem(item));
@@ -272,6 +298,28 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '2px' }}>
             自動歸類為「常態親子景點」與「當期熱門展覽」，並自動即時剔除過期活動
           </p>
+
+          {/* 自動定時巡檢與強制手動刷新控制列 */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px', fontSize: '0.78rem', color: '#10b981', flexWrap: 'wrap' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }}></span>
+            <span>已啟動全台自動巡檢 (每6小時排程更新特展) | 最後同步: {syncStatus.lastUpdated}</span>
+            <button
+              onClick={handleManualRefresh}
+              disabled={syncStatus.isRefreshing}
+              style={{
+                background: 'rgba(16, 185, 129, 0.15)',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                color: '#34d399',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {syncStatus.isRefreshing ? '⏳ 秒級抓取最新資料中...' : '🔄 立即強制同步'}
+            </button>
+          </div>
         </div>
 
         {/* 景點 vs 展覽 分離選擇按鈕組 (含自動統計數量) */}
