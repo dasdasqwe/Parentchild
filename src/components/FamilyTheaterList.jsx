@@ -201,9 +201,24 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary"
-                    style={{ width: '100%', justifyContent: 'center', textDecoration: 'none', background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))', padding: '10px 0' }}
+                    style={{
+                      width: '100%',
+                      height: '44px',
+                      padding: '0 16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      textDecoration: 'none',
+                      background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))',
+                      borderRadius: '10px',
+                      fontSize: '0.9rem',
+                      fontWeight: '700',
+                      boxSizing: 'border-box'
+                    }}
                   >
-                    前往 {item.ticketPlatform} 購票預訂 <ExternalLink size={14} />
+                    <span>前往 {item.ticketPlatform} 購票預訂</span>
+                    <ExternalLink size={15} style={{ flexShrink: 0 }} />
                   </a>
                 </div>
 

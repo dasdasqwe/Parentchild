@@ -359,9 +359,23 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary"
-            style={{ width: '100%', justifyContent: 'center', textDecoration: 'none', padding: '10px 0', fontSize: '0.9rem' }}
+            style={{
+              width: '100%',
+              height: '44px',
+              padding: '0 16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              textDecoration: 'none',
+              borderRadius: '10px',
+              fontSize: '0.9rem',
+              fontWeight: '700',
+              boxSizing: 'border-box'
+            }}
           >
-            前往 {providerName} 預訂 <ExternalLink size={14} />
+            <span>前往 {providerName} 預訂</span>
+            <ExternalLink size={15} style={{ flexShrink: 0 }} />
           </a>
         </div>
 

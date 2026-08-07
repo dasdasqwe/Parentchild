@@ -186,9 +186,23 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary"
-                    style={{ background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))', textDecoration: 'none', padding: '10px 18px' }}
+                    style={{
+                      height: '44px',
+                      padding: '0 18px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-cyan))',
+                      textDecoration: 'none',
+                      borderRadius: '10px',
+                      fontSize: '0.9rem',
+                      fontWeight: '700',
+                      boxSizing: 'border-box'
+                    }}
                   >
-                    搶購包套 <ExternalLink size={14} />
+                    <span>搶購包套優惠 ({pkg.provider})</span>
+                    <ExternalLink size={15} style={{ flexShrink: 0 }} />
                   </a>
                 </div>
 
