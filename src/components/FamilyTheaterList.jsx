@@ -33,8 +33,8 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
         {theaters.map(item => {
           const isSaved = savedIds.has(item.id);
           
-          // 1. 官網/官方介紹連結 (大標題與圖片)
-          const officialUrl = item.websiteUrl || item.ticketUrl || `https://www.google.com/search?q=${encodeURIComponent(item.title + ' 官網')}`;
+          // 表演的超連結直連該表演的訂票網址 (ticketUrl)
+          const ticketLink = item.ticketUrl || item.websiteUrl || `https://www.google.com/search?q=${encodeURIComponent(item.title + ' 訂票')}`;
           
           return (
             <div key={item.id} className="glass-panel" style={{
@@ -44,14 +44,14 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
               position: 'relative'
             }}>
               
-              {/* Media Header Image (官網連結) */}
+              {/* Media Header Image (表演訂票連結) */}
               <div style={{ position: 'relative', height: '210px', width: '100%' }}>
                 <a
-                  href={officialUrl}
+                  href={ticketLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ display: 'block', width: '100%', height: '100%' }}
-                  title="點擊查看劇團/表演官網"
+                  title="點擊直連該表演訂票網址"
                 >
                   <img
                     src={item.image}
@@ -111,10 +111,10 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
               {/* Performance Info Content */}
               <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                 <div>
-                  {/* 大標題: 官網/劇團連結 */}
+                  {/* 大標題: 直連訂票網址 */}
                   <h3 style={{ fontSize: '1.15rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '8px' }}>
                     <a
-                      href={officialUrl}
+                      href={ticketLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
@@ -128,9 +128,9 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
                       }}
                       onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-purple)'}
                       onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
-                      title="點擊開啟劇團官網 / 表演介紹"
+                      title="點擊直連該表演訂票與搶票頁面"
                     >
-                      <span>{item.title}</span> 🌐
+                      <span>{item.title}</span> 🎟️
                     </a>
                   </h3>
 
