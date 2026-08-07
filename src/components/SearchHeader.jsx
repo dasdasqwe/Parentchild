@@ -44,7 +44,7 @@ export default function SearchHeader({
       const target = new Date(checkInDate);
       target.setDate(target.getDate() + nights);
       setCheckOutDate(target.toISOString().split('T')[0]);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const handleCheckInChange = (newCheckIn) => {
@@ -54,7 +54,7 @@ export default function SearchHeader({
       const target = new Date(newCheckIn);
       target.setDate(target.getDate() + nights);
       setCheckOutDate(target.toISOString().split('T')[0]);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const inputControlStyle = {
@@ -83,7 +83,7 @@ export default function SearchHeader({
 
   return (
     <div className="glass-panel-glow glass-panel" style={{ margin: '0 auto 24px auto', maxWidth: '1280px', padding: '24px' }}>
-      
+
       {/* Top Banner Row */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '22px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
@@ -91,11 +91,14 @@ export default function SearchHeader({
             <MapPin color="var(--primary)" size={24} />
             {activeTab === 'stays' && '平價住宿比價與全網最低價抓取'}
             {activeTab === 'packages' && '超值包套行程 (住宿+門票+交通接送)'}
-            {activeTab === 'family' && '最新熱門親子景點與周邊平價住宿'}
+            {activeTab === 'family' && '熱門親子景點與當期展覽'}
+            {activeTab === 'theaters' && '近半年熱門親子劇團與公演早鳥搶票'}
             {activeTab === 'trends' && '全網住宿價格走勢與預算分析'}
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
-            即時抓取 Agoda, Booking.com, Trip.com, Klook 等多平台公開最新價格數據
+            {activeTab === 'theaters' 
+              ? '即時追蹤巧虎舞台劇、紙風車劇團、迪士尼冰上世界、OPENTIX 等近 6 個月巡迴時程與最早可購票時間'
+              : '即時抓取 Agoda, Booking.com, Trip.com, Klook 等多平台公開最新數據'}
           </p>
         </div>
 
@@ -110,24 +113,23 @@ export default function SearchHeader({
         </button>
       </div>
 
-      {/* Symmetrical 4-Column x 2-Row Filter Grid */}
-      <div style={{
-        background: 'rgba(15, 23, 42, 0.65)',
-        padding: '20px',
-        borderRadius: '16px',
-        border: '1px solid var(--border-glass)',
-        marginBottom: '20px'
-      }}>
-        
-        {/* ROW 1: Location & Date Controls (4 Equal Columns) */}
-        {activeTab !== 'family' ? (
+      {/* Accommodation Filter Grid (Only show when on stays/packages/trends tab) */}
+      {(activeTab !== 'family' && activeTab !== 'theaters') && (
+        <div style={{
+          background: 'rgba(15, 23, 42, 0.65)',
+          padding: '20px',
+          borderRadius: '16px',
+          border: '1px solid var(--border-glass)',
+          marginBottom: '20px'
+        }}>
+          {/* ROW 1: Location & Date Controls */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '16px',
             marginBottom: '16px'
           }}>
-            
+
             {/* Row 1 Col 1: Destination City */}
             <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
               <label style={labelStyle}>
@@ -227,62 +229,15 @@ export default function SearchHeader({
             </div>
 
           </div>
-        ) : (
-          /* Parent-Child Attractions Tab: Only Keep Destination Location Search */
-          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '600px' }}>
-              <label style={labelStyle}>
-                <MapPin size={15} color="var(--primary)" /> 目的地 / 城市
-              </label>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <div style={{ position: 'relative', flex: 1 }}>
-                  <Search size={16} color="var(--primary)" style={{ position: 'absolute', left: '12px', top: '13px' }} />
-                  <input
-                    type="text"
-                    list="city-suggestions"
-                    value={selectedCity}
-                    onChange={(e) => setSelectedCity(e.target.value)}
-                    placeholder="輸入：沖繩、宜蘭..."
-                    style={{
-                      ...inputControlStyle,
-                      paddingLeft: '36px',
-                      border: '1px solid var(--border-glass-glow)',
-                      fontWeight: '600'
-                    }}
-                  />
-                  <datalist id="city-suggestions">
-                    <option value="沖繩">沖繩 (Okinawa)</option>
-                    <option value="台北">台北 (Taipei)</option>
-                    <option value="東京">東京 (Tokyo)</option>
-                    <option value="京都">京都 (Kyoto)</option>
-                    <option value="首爾">首爾 (Seoul)</option>
-                    <option value="台中">台中 (Taichung)</option>
-                    <option value="宜蘭">宜蘭 (Yilan)</option>
-                    <option value="大阪">大阪 (Osaka)</option>
-                    <option value="曼谷">曼谷 (Bangkok)</option>
-                  </datalist>
-                </div>
-                <button
-                  type="submit"
-                  className="btn-primary"
-                  style={{ padding: '0 24px', height: '42px', borderRadius: '10px', fontSize: '0.9rem' }}
-                >
-                  搜尋
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
 
-        {/* ROW 2: Guests, Type, Budget & Sorting (Only show when NOT on family attractions tab) */}
-        {activeTab !== 'family' && (
+          {/* ROW 2: Guests, Type, Budget & Sorting */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '16px'
           }}>
-            
-            {/* Row 2 Col 1: Guests Count (Adults & Children) */}
+
+            {/* Row 2 Col 1: Guests Count */}
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <label style={labelStyle}>
                 <Users size={15} color="var(--primary)" /> 人數設定 (大人 / 小孩)
@@ -370,37 +325,81 @@ export default function SearchHeader({
             </div>
 
           </div>
-        )}
 
-      </div>
+        </div>
+      )}
 
-      {/* Row 3: Popular Quick City Selection Bar (Limited to Taiwan 6 Special Municipalities) */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-        <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>
-          ✨ 熱門六都快速選擇：
-        </span>
-        {cities
-          .filter(city => ['taipei', 'newtaipei', 'taoyuan', 'taichung', 'tainan', 'kaohsiung'].includes(city.id))
-          .map((city) => (
-            <button
-              key={city.id}
-              onClick={() => setSelectedCity(city.id)}
-              style={{
-                background: selectedCity === city.id ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-                color: selectedCity === city.id ? '#34d399' : 'var(--text-muted)',
-                border: selectedCity === city.id ? '1px solid var(--primary)' : '1px solid var(--border-glass)',
-                borderRadius: '999px',
-                padding: '4px 14px',
-                fontSize: '0.85rem',
-                fontWeight: selectedCity === city.id ? '700' : '500',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              {city.name.split(' ')[0]}
-            </button>
-          ))}
-      </div>
+      {/* Parent-Child Attractions Tab: Only Keep Destination Search */}
+      {activeTab === 'family' && (
+        <div style={{
+          background: 'rgba(15, 23, 42, 0.65)',
+          padding: '20px',
+          borderRadius: '16px',
+          border: '1px solid var(--border-glass)',
+          marginBottom: '20px'
+        }}>
+          <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '600px' }}>
+            <label style={labelStyle}>
+              <MapPin size={15} color="var(--primary)" /> 目的地 / 城市
+            </label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ position: 'relative', flex: 1 }}>
+                <Search size={16} color="var(--primary)" style={{ position: 'absolute', left: '12px', top: '13px' }} />
+                <input
+                  type="text"
+                  list="city-suggestions"
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  placeholder="輸入：沖繩、宜蘭..."
+                  style={{
+                    ...inputControlStyle,
+                    paddingLeft: '36px',
+                    border: '1px solid var(--border-glass-glow)',
+                    fontWeight: '600'
+                  }}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn-primary"
+                style={{ padding: '0 24px', height: '42px', borderRadius: '10px', fontSize: '0.9rem' }}
+              >
+                搜尋
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Row 3: Popular Quick City Selection Bar (Hide on theaters tab) */}
+      {activeTab !== 'theaters' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: '600' }}>
+            ✨ 熱門六都快速選擇：
+          </span>
+          {cities
+            .filter(city => ['taipei', 'newtaipei', 'taoyuan', 'taichung', 'tainan', 'kaohsiung'].includes(city.id))
+            .map((city) => (
+              <button
+                key={city.id}
+                onClick={() => setSelectedCity(city.id)}
+                style={{
+                  background: selectedCity === city.id ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255, 255, 255, 0.04)',
+                  color: selectedCity === city.id ? '#34d399' : 'var(--text-muted)',
+                  border: selectedCity === city.id ? '1px solid var(--primary)' : '1px solid var(--border-glass)',
+                  borderRadius: '999px',
+                  padding: '4px 14px',
+                  fontSize: '0.85rem',
+                  fontWeight: selectedCity === city.id ? '700' : '500',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                {city.name.split(' ')[0]}
+              </button>
+            ))}
+        </div>
+      )}
 
     </div>
   );
