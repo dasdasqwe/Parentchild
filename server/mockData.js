@@ -1451,7 +1451,7 @@ export const mockFamilyTheaters = [
     ],
     highlights: '巧虎、琪琪、桃樂比經典登場！注意：巧虎舞台劇全台主要由「ERA 年代售票 (ticket.com.tw)」獨家售票與退換票！',
     ticketUrl: 'https://ticket.com.tw',
-    ticketPlatform: 'ERA 年代售票系統 (ticket.com.tw)'
+    ticketPlatform: 'ERA 年代售票系統'
   },
   {
     id: 'th-2',
