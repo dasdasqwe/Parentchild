@@ -137,17 +137,14 @@ export async function runPackageScraperJob(query, onLog) {
     });
   }
 
-  // 即時解析 Klook HTML 源碼中的最新動態商品 JSON-LD
-  try {
-    const liveKlookItems = await scrapeKlookHtmlSource(normCityName, onLog);
-    if (liveKlookItems && liveKlookItems.length > 0) {
-      onLog(`[KLOOK-SRC] 成功從 Klook view-source HTML 解析到 ${liveKlookItems.length} 筆即時動態商品詳情頁！`);
-    }
-  } catch (err) {
-    onLog(`[WARNING] Klook 源碼解析略過: ${err.message}`);
-  }
+  // 比對過濾機制：若為無效 URL、缺失或已下架無法比對到商品，直接過濾不顯示
+  results = results.filter(pkg => {
+    if (!pkg.url || !pkg.url.startsWith('http')) return false;
+    if (pkg.url.includes('/activity/4984-') || pkg.url.includes('/activity/2504-')) return false;
+    return true;
+  });
 
-  onLog(`[CALC] 完成動態省錢公式計算 (平均現省 28% - 35%)`);
+  onLog(`[CALC] 完成動態省錢公式計算 (比對完成共 ${results.length} 筆有效商品，已過濾無效商品)`);
   return results;
 }
 

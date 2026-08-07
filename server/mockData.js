@@ -589,8 +589,8 @@ export const mockPackageTours = [
     tags: ['義大樂園', '皇家自助餐', '親子家庭房'],
     rating: 4.8,
     reviewsCount: 620,
-    provider: 'Klook',
-    url: 'https://www.klook.com/zh-TW/activity/4984-e-da-theme-park-kaohsiung/'
+    provider: 'KKday',
+    url: 'https://www.kkday.com/zh-tw/product/20696'
   },
   {
     id: 'pkg-hun-1',
