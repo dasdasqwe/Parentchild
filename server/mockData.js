@@ -9,7 +9,7 @@ export const mockCities = [
   { id: 'hsinchu', name: '新竹 (Hsinchu)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['新竹', 'hsinchu', '新竹市', '新竹縣', '關西', '竹北', '新豐'] },
   { id: 'miaoli', name: '苗栗 (Miaoli)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['苗栗', 'miaoli', '苗栗縣', '通霄', '頭份', '三義'] },
   { id: 'changhua', name: '彰化 (Changhua)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['彰化', 'changhua', '彰化縣', '員林', '鹿港'] },
-  { id: 'nantou', name: '南投 (Nantou)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['南投', 'nantou', '南投縣', '魚池', '日月潭', '仁德', '清境'] },
+  { id: 'nantou', name: '南投 (Nantou)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['南投', 'nantou', '南投縣', '魚池', '日月潭', '仁愛', '清境', '埔里'] },
   { id: 'chiayi', name: '嘉義 (Chiayi)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['嘉義', 'chiayi', '嘉義市', '嘉義縣', '民雄', '大林', '阿里山'] },
   { id: 'pingtung', name: '屏東 (Pingtung)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['屏東', 'pingtung', '屏東縣', '車城', '恆春', '墾丁'] },
   { id: 'hualien', name: '花蓮 (Hualien)', country: '台灣', currency: 'TWD', symbol: 'NT$', aliases: ['花蓮', 'hualien', '花蓮縣', '花蓮市', '壽豐', '吉安', '太魯閣'] },
