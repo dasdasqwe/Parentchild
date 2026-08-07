@@ -205,56 +205,24 @@ export async function runScraperJob(query, onLog) {
 }
 
 export async function runPackageScraperJob(query, onLog) {
-  const { cityId = 'taipei' } = query;
+  const { cityId = '' } = query;
   const { cityId: normCityId, cityName: normCityName, searchTerms } = resolveCity(cityId);
 
   onLog(`[SYS] 啟動「${normCityName}」多頁包套行程深層抓取引擎...`);
   await sleep(150);
 
-  let results = mockPackageTours.filter(pkg => {
-    const cid = (pkg.cityId || '').toLowerCase();
-    const cname = (pkg.cityName || '').toLowerCase();
-    const title = (pkg.title || '').toLowerCase();
-    return searchTerms.some(term => cid.includes(term) || cname.includes(term) || title.includes(term));
-  });
+  let results = mockPackageTours;
+  if (normCityId !== 'all') {
+    results = mockPackageTours.filter(pkg => {
+      const cid = (pkg.cityId || '').toLowerCase();
+      const cname = (pkg.cityName || '').toLowerCase();
+      const title = (pkg.title || '').toLowerCase();
+      return searchTerms.some(term => cid.includes(term) || cname.includes(term) || title.includes(term));
+    });
+  }
 
-  if (results.length < 2) {
-    results.push(
-      {
-        id: `pkg-ext-1-${normCityId}`,
-        cityId: normCityId,
-        title: `【${normCityName} 精選親子飯店 + 景點主題樂園通票】超值組合包`,
-        image: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80',
-        stayIncluded: `${normCityName} 親子渡假飯店 1晚`,
-        toursIncluded: [`${normCityName} 熱門主題樂園/水族館門票通票`, '星級渡假飯店溫泉體驗', '在地美食折價券'],
-        price: 3480,
-        originalPrice: 4900,
-        discountPercent: 29,
-        savingsText: '組合包比單買現省 NT$1,420',
-        tags: ['親子同樂', '水族館通票', '主題樂園'],
-        rating: 4.9,
-        reviewsCount: 420,
-        provider: 'Klook',
-        url: `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(normCityName + ' 親子住宿 門票')}`
-      },
-      {
-        id: `pkg-ext-2-${normCityId}`,
-        cityId: normCityId,
-        title: `【${normCityName} 景觀飯店 + 奢華星級自助晚餐券】閃電特惠包`,
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-        stayIncluded: `${normCityName} 陽光景觀飯店 2晚`,
-        toursIncluded: [`${normCityName} 星級美景餐廳雙人精緻晚餐券`, '飯店頂樓無邊際泳池體驗'],
-        price: 4200,
-        originalPrice: 6200,
-        discountPercent: 32,
-        savingsText: '組合包比單買現省 NT$2,000',
-        tags: ['星級美景晚餐', '無邊際泳池', '熱銷爆款'],
-        rating: 4.8,
-        reviewsCount: 310,
-        provider: 'KKday',
-        url: `https://www.kkday.com/zh-TW/product/productlist?keyword=${encodeURIComponent(normCityName + ' 飯店 餐券')}`
-      }
-    );
+  if (results.length === 0) {
+    results = mockPackageTours;
   }
 
   onLog(`[CALC] 完成動態省錢公式計算 (平均現省 28% - 35%)`);
