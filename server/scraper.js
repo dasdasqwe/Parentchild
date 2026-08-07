@@ -7,8 +7,16 @@ import { scrapeOpenDataAttractions, isExhibitionExpired } from './openDataScrape
 /**
  * Robustly resolve city input to standardized city object
  */
-function resolveCity(inputCityId = 'taipei') {
-  const inputStr = (inputCityId || 'taipei').trim().toLowerCase();
+function resolveCity(inputCityId = '') {
+  const inputStr = (inputCityId || '').trim().toLowerCase();
+  
+  if (!inputStr || inputStr === 'all') {
+    return {
+      cityId: 'all',
+      cityName: '全區',
+      searchTerms: []
+    };
+  }
   
   const found = mockCities.find(c => 
     c.id.toLowerCase() === inputStr ||
@@ -250,8 +258,8 @@ export async function runPackageScraperJob(query, onLog) {
 }
 
 export async function runFamilyAttractionScraperJob(query, onLog) {
-  const { cityId = 'taipei' } = query;
-  const { cityId: normCityId, cityName: normCityName, searchTerms } = resolveCity(cityId);
+  const inputCity = (query.cityId && query.cityId.trim()) ? query.cityId : '台中';
+  const { cityId: normCityId, cityName: normCityName, searchTerms } = resolveCity(inputCity);
 
   onLog(`[SYS] 抓取「${normCityName}」最新熱門親子景點庫與設施數據...`);
   await sleep(150);

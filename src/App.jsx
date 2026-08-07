@@ -13,7 +13,7 @@ import { mockCities } from '../server/mockData.js';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('stays'); // 'stays' | 'packages' | 'family' | 'theaters' | 'trends'
-  const [selectedCity, setSelectedCity] = useState('沖繩');
+  const [selectedCity, setSelectedCity] = useState(''); // 預設目的地不設任何地點
   const [stayType, setStayType] = useState('all');
   const [maxPrice, setMaxPrice] = useState(10000);
   const [sortBy, setSortBy] = useState('price_asc');
@@ -42,6 +42,16 @@ export default function App() {
   const [savedItems, setSavedItems] = useState([]);
 
   const currentCityObj = mockCities.find(c => c.id === selectedCity) || mockCities[0];
+
+  // 處理頁籤切換 (僅「親子景點與展覽」預設台中市，其它預設不設任何地點)
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+    if (newTab === 'family') {
+      setSelectedCity('台中');
+    } else {
+      setSelectedCity('');
+    }
+  };
 
   // Fetch initial data when parameters change
   useEffect(() => {
@@ -77,7 +87,8 @@ export default function App() {
           if (data.logs) setLogs(prev => [...data.logs, ...prev].slice(0, 30));
         }
       } else if (activeTab === 'family') {
-        const query = new URLSearchParams({ cityId: selectedCity });
+        const familyCity = selectedCity || '台中';
+        const query = new URLSearchParams({ cityId: familyCity });
         const res = await fetch(`/api/family-attractions?${query}`);
         const data = await res.json();
         if (data.success) {
@@ -132,7 +143,7 @@ export default function App() {
       {/* Navbar */}
       <Navbar
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
         onOpenAlertModal={() => setIsAlertModalOpen(true)}
         onOpenSavedModal={() => setIsSavedModalOpen(true)}
         savedCount={savedItems.length}
