@@ -223,32 +223,36 @@ export async function runPackageScraperJob(query, onLog) {
       {
         id: `pkg-ext-1-${normCityId}`,
         cityId: normCityId,
-        title: `【${normCityName} 精選親子飯店 + 景點通行證與觀光專車接送】超值組合包`,
+        title: `【${normCityName} 精選親子飯店 + 景點主題樂園通票】超值組合包`,
         image: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80',
         stayIncluded: `${normCityName} 親子渡假飯店 1晚`,
-        toursIncluded: [`${normCityName} 熱門主題樂園/景點門票通票`, '觀光專車往返接送服務', '在地美食折價券'],
+        toursIncluded: [`${normCityName} 熱門主題樂園/水族館門票通票`, '星級渡假飯店溫泉體驗', '在地美食折價券'],
         price: 3480,
         originalPrice: 4900,
         discountPercent: 29,
         savingsText: '組合包比單買現省 NT$1,420',
-        tags: ['親子同樂', '含專車接送', '主題樂園'],
+        tags: ['親子同樂', '水族館通票', '主題樂園'],
         rating: 4.9,
-        reviewsCount: 420
+        reviewsCount: 420,
+        provider: 'Klook',
+        url: `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(normCityName + ' 親子住宿 門票')}`
       },
       {
         id: `pkg-ext-2-${normCityId}`,
         cityId: normCityId,
-        title: `【${normCityName} 景觀飯店 + 美食餐券與一日遊包車】閃電特惠包`,
+        title: `【${normCityName} 景觀飯店 + 奢華星級自助晚餐券】閃電特惠包`,
         image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
         stayIncluded: `${normCityName} 陽光景觀飯店 2晚`,
-        toursIncluded: [`${normCityName} 全區一日遊包車服務`, '星級美景餐廳雙人晚餐券'],
+        toursIncluded: [`${normCityName} 星級美景餐廳雙人精緻晚餐券`, '飯店頂樓無邊際泳池體驗'],
         price: 4200,
         originalPrice: 6200,
         discountPercent: 32,
         savingsText: '組合包比單買現省 NT$2,000',
-        tags: ['觀光包車', '雙人美景晚餐', '熱銷爆款'],
+        tags: ['星級美景晚餐', '無邊際泳池', '熱銷爆款'],
         rating: 4.8,
-        reviewsCount: 310
+        reviewsCount: 310,
+        provider: 'KKday',
+        url: `https://www.kkday.com/zh-TW/product/productlist?keyword=${encodeURIComponent(normCityName + ' 飯店 餐券')}`
       }
     );
   }

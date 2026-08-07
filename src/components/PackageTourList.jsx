@@ -112,8 +112,8 @@ export default function PackageTourList({ packages, savedItems, onToggleSave }) 
         {displayedPackages.map(pkg => {
           const isSaved = savedIds.has(pkg.id);
           
-          // 1. 直連套裝行程搶購與預訂網址 (大標題與圖片)
-          const packageLink = pkg.url || pkg.ticketUrl || pkg.websiteUrl || `https://www.google.com/search?q=${encodeURIComponent(pkg.title + ' 預訂')}`;
+          // 1. 直連套裝行程搶購與預訂網址 (大標題與圖片，若未帶網址則直連 Klook 專屬搶購頁)
+          const packageLink = pkg.url || pkg.ticketUrl || pkg.websiteUrl || `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(pkg.title)}`;
           
           // 2. 地圖導覽連結 (住宿/地點列)
           const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(pkg.stayIncluded || pkg.title + ' ' + (pkg.cityName || ''))}`;
