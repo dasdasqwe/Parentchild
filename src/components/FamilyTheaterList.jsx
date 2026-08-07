@@ -6,7 +6,7 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
 
   return (
     <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-      
+
       {/* Top Banner Row */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
@@ -32,10 +32,10 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
       }}>
         {theaters.map(item => {
           const isSaved = savedIds.has(item.id);
-          
+
           // 表演的超連結直連該表演的訂票網址 (ticketUrl)
           const ticketLink = item.ticketUrl || item.websiteUrl || `https://www.google.com/search?q=${encodeURIComponent(item.title + ' 訂票')}`;
-          
+
           return (
             <div key={item.id} className="glass-panel" style={{
               display: 'flex',
@@ -43,7 +43,7 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
               overflow: 'hidden',
               position: 'relative'
             }}>
-              
+
               {/* Media Header Image (表演訂票連結) */}
               <div style={{ position: 'relative', height: '210px', width: '100%' }}>
                 <a
@@ -59,7 +59,7 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </a>
-                
+
                 {/* Status Badge */}
                 <div style={{ position: 'absolute', top: '12px', left: '12px', display: 'flex', gap: '6px' }}>
                   {item.ticketStatusType === 'success' && <span className="badge-green">🎉 {item.ticketStatus}</span>}
@@ -221,7 +221,7 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
                           whiteSpace: 'nowrap'
                         }}
                       >
-                        <span>前往 {cleanPlatform} 購票預訂</span>
+                        <span>前往 {cleanPlatform} 訂票</span>
                         <ExternalLink size={15} style={{ flexShrink: 0 }} />
                       </a>
                     );
