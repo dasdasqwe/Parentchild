@@ -33,8 +33,8 @@ export default function FamilyTheaterList({ theaters, savedItems, onToggleSave }
         {theaters.map(item => {
           const isSaved = savedIds.has(item.id);
 
-          // 表演的超連結直連該表演的訂票網址 (ticketUrl)
-          const ticketLink = item.ticketUrl || item.websiteUrl || `https://www.google.com/search?q=${encodeURIComponent(item.title + ' 訂票')}`;
+          // 表演的超連結直連該表演的訂票網址 (ticketUrl / OPENTIX)
+          const ticketLink = item.ticketUrl || item.websiteUrl || `https://www.opentix.life/search?keyword=${encodeURIComponent(item.title)}`;
 
           return (
             <div key={item.id} className="glass-panel" style={{

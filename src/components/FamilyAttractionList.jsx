@@ -49,8 +49,8 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
     const isSaved = savedIds.has(item.id);
     const locationText = item.location || item.address || `${item.cityName || item.cityId || ''} 熱門觀光景點區`;
     
-    // 1. 官網/官方介紹連結 (標題與圖片)
-    const officialUrl = item.websiteUrl || item.blogUrl || `https://www.google.com/search?q=${encodeURIComponent(item.name + ' 官網')}`;
+    // 1. 直連景點/展覽特展官方或獨家售票頁面 (標題與圖片)
+    const officialUrl = item.websiteUrl || item.ticketUrl || item.blogUrl || `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(item.name)}`;
     
     // 2. 地圖導覽連結 (下方的地址列)
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + ' ' + (item.location || item.address || ''))}`;
