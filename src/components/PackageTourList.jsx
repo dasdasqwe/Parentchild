@@ -156,8 +156,11 @@ export default function PackageTourList({ packages, savedItems, onToggleSave, on
         {displayedPackages.map(pkg => {
           const isSaved = savedIds.has(pkg.id);
           
-          // 1. 直連套裝行程搶購與預訂網址 (大標題、封面圖片與底部搶購按鈕全數直連)
-          const packageLink = pkg.url || pkg.ticketUrl || pkg.websiteUrl || `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(pkg.title)}`;
+          // 1. 直連套裝行程搶購與預訂網址 (動態依據發行平台 KKday / Klook 自動產生專屬備用搜尋網址)
+          const fallbackUrl = pkg.provider === 'KKday'
+            ? `https://www.kkday.com/zh-tw/product/search?keyword=${encodeURIComponent(pkg.title)}`
+            : `https://www.klook.com/zh-TW/search/result/?query=${encodeURIComponent(pkg.title)}`;
+          const packageLink = pkg.url || pkg.ticketUrl || pkg.websiteUrl || fallbackUrl;
 
           return (
             <div key={pkg.id} className="glass-panel" style={{

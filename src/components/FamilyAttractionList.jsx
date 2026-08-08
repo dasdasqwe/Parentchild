@@ -269,9 +269,9 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
               </div>
             )}
 
-            {/* 5. 部落格原文連結 */}
-            {item.blogUrl && (
-              <div style={{ paddingTop: '12px', borderTop: '1px solid var(--border-glass)' }}>
+            {/* 5. 景點與特展專屬行動按鈕 (依據來源動態切換語意按鈕) */}
+            <div style={{ paddingTop: '12px', borderTop: '1px solid var(--border-glass)' }}>
+              {item.blogUrl ? (
                 <a
                   href={item.blogUrl}
                   target="_blank"
@@ -293,8 +293,54 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
                 >
                   📖 閱讀部落格完整文章導覽
                 </a>
-              </div>
-            )}
+              ) : (item.ticketUrl || item.websiteUrl) ? (
+                <a
+                  href={officialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    textDecoration: 'none',
+                    fontSize: '0.8rem',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    textAlign: 'center'
+                  }}
+                >
+                  🎟️ 查看景點門票與預訂資訊
+                </a>
+              ) : (
+                <a
+                  href={mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    textDecoration: 'none',
+                    fontSize: '0.8rem',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    textAlign: 'center',
+                    color: '#34d399',
+                    borderColor: 'rgba(16, 185, 129, 0.3)'
+                  }}
+                >
+                  📍 開啟 Google Maps 地圖導覽
+                </a>
+              )}
+            </div>
           </div>
 
         </div>
