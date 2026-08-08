@@ -29,23 +29,31 @@ async function processUserMessage(replyToken, userText) {
   let maxPrice = 10000;
   let type = 'all';
 
+  const cleanNoise = (rawText) => {
+    return rawText
+      .replace(/請幫我查|請幫我|幫我查|幫我|請查|查詢|推薦|比價|平價|請|幫|查|找|的/g, '')
+      .replace(/劇|巧虎|表演|舞台劇|包套|行程|組合|套票|景點|親子|放電|遊樂|公園|住宿|飯店|民宿|旅館/g, '')
+      .replace(/\d+/g, '')
+      .trim();
+  };
+
   if (text.includes('劇') || text.includes('巧虎') || text.includes('表演') || text.includes('舞台劇')) {
     // Search family theater performances over next 6 months
-    const city = text.replace(/劇|巧虎|表演|舞台劇|推薦|查詢/g, '').trim() || 'taipei';
+    const city = cleanNoise(text) || 'taipei';
     const theaters = await runTheaterScraperJob({ cityId: city }, () => {});
     return await replyLineTheaters(replyToken, city, theaters);
   }
 
   if (text.includes('包套') || text.includes('行程')) {
     // Search package tours
-    const city = text.replace(/包套|行程|推薦|組合|套票/g, '').trim() || '宜蘭';
+    const city = cleanNoise(text) || '宜蘭';
     const packages = await runPackageScraperJob({ cityId: city }, () => {});
     return await replyLinePackages(replyToken, city, packages);
   }
 
   if (text.includes('景點') || text.includes('親子')) {
     // Search family attractions
-    const city = text.replace(/景點|親子|放電|遊樂|公園/g, '').trim() || '宜蘭';
+    const city = cleanNoise(text) || '宜蘭';
     const attractions = await runFamilyAttractionScraperJob({ cityId: city }, () => {});
     return await replyLineAttractions(replyToken, city, attractions);
   }
@@ -61,13 +69,7 @@ async function processUserMessage(replyToken, userText) {
     maxPrice = Number(priceMatch[0]);
   }
 
-  // Clean city name from common intent words
-  let cleanCity = text
-    .replace(/\d+/g, '')
-    .replace(/住宿|飯店|民宿|旅館|推薦|比價|平價|查詢|請幫我查|查|找/g, '')
-    .trim();
-
-  let destination = cleanCity || '宜蘭';
+  let destination = cleanNoise(text) || '宜蘭';
 
   const stays = await runScraperJob({ cityId: destination, maxPrice, type }, () => {});
   await replyLineStays(replyToken, destination, stays);

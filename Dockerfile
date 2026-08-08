@@ -1,26 +1,29 @@
-# Step 1: Build & Production Environment
-FROM node:20-alpine AS production
+# Stage 1: Build Vite frontend assets
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy dependency files
 COPY package*.json ./
+RUN npm ci
 
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy application files
 COPY . .
-
-# Build Vite frontend assets
 RUN npm run build
 
-# Expose server port
-EXPOSE 3001
+# Stage 2: Production runner
+FROM node:20-alpine AS runner
 
-# Set production environment variables
+WORKDIR /app
+
 ENV NODE_ENV=production
 ENV PORT=3001
 
-# Command to launch Express server
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/server ./server
+COPY --from=builder /app/index.html ./index.html
+
+EXPOSE 3001
+
 CMD ["node", "server/index.js"]

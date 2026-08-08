@@ -39,9 +39,30 @@ export default function App() {
   // Modals
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
-  const [savedItems, setSavedItems] = useState([]);
+  const [savedItems, setSavedItems] = useState(() => {
+    try {
+      const local = localStorage.getItem('staypulse_saved_items');
+      return local ? JSON.parse(local) : [];
+    } catch {
+      return [];
+    }
+  });
 
-  const currentCityObj = mockCities.find(c => c.id === selectedCity) || mockCities[0];
+  useEffect(() => {
+    try {
+      localStorage.setItem('staypulse_saved_items', JSON.stringify(savedItems));
+    } catch (err) {
+      console.error('Failed to persist saved items:', err);
+    }
+  }, [savedItems]);
+
+  const currentCityObj = mockCities.find(c => {
+    if (!selectedCity) return false;
+    const q = selectedCity.trim().toLowerCase();
+    return c.id.toLowerCase() === q ||
+      c.name.toLowerCase().includes(q) ||
+      (c.aliases && c.aliases.some(a => a.toLowerCase() === q || q.includes(a.toLowerCase())));
+  }) || mockCities[0];
 
   // 處理頁籤切換 (僅「親子景點與展覽」預設台中市，其它預設不設任何地點)
   const handleTabChange = (newTab) => {

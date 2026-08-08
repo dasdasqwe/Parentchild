@@ -34,7 +34,8 @@ export default function FamilyAttractionList({ attractions, savedItems, onToggle
       const data = await res.json();
       if (data.success) {
         setSyncStatus({ lastUpdated: data.lastUpdated, isRefreshing: false });
-        window.location.reload();
+      } else {
+        setSyncStatus(prev => ({ ...prev, isRefreshing: false }));
       }
     } catch {
       setSyncStatus(prev => ({ ...prev, isRefreshing: false }));

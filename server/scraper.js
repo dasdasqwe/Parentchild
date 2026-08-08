@@ -4,10 +4,12 @@ import { mockCities, mockStays, mockPackageTours, mockFamilyAttractions, mockFam
 import { scrapeBlogAttractions } from './blogScraper.js';
 import { scrapeOpenDataAttractions, isExhibitionExpired } from './openDataScraper.js';
 
+import { attractionsCache } from './cronScheduler.js';
+
 /**
  * Robustly resolve city input to standardized city object
  */
-function resolveCity(inputCityId = '') {
+export function resolveCity(inputCityId = '') {
   const inputStr = (inputCityId || '').trim().toLowerCase();
   
   if (!inputStr || inputStr === 'all') {
@@ -180,11 +182,17 @@ export async function runFamilyAttractionScraperJob(query, onLog) {
     onLog(`[WARNING] 即時部落格文章抓取失敗: ${err.message}`);
   }
 
-  // 2.5 實時動態串接官方 Open Data API (文化部與觀光展覽 API)
+  // 2.5 實時動態串接官方 Open Data API (優先讀取全台背景巡檢快取)
   try {
-    const openDataAttractions = await scrapeOpenDataAttractions(normCityName, onLog);
-    if (openDataAttractions && openDataAttractions.length > 0) {
-      results = [...results, ...openDataAttractions];
+    const cachedOpenData = attractionsCache.data[normCityId] || attractionsCache.data[normCityName];
+    if (cachedOpenData && cachedOpenData.length > 0) {
+      onLog(`[CACHE-HIT] 命中全台背景定時巡檢快取 (同步時間: ${attractionsCache.lastUpdated || '已同步'})，載入 ${cachedOpenData.length} 筆特展`);
+      results = [...results, ...cachedOpenData];
+    } else {
+      const openDataAttractions = await scrapeOpenDataAttractions(normCityName, onLog);
+      if (openDataAttractions && openDataAttractions.length > 0) {
+        results = [...results, ...openDataAttractions];
+      }
     }
   } catch (err) {
     onLog(`[WARNING] 官方 Open Data API 串接略過: ${err.message}`);

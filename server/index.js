@@ -3,7 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { mockCities, mockPriceTrends } from './mockData.js';
-import { runScraperJob, runPackageScraperJob, runFamilyAttractionScraperJob, runTheaterScraperJob } from './scraper.js';
+import { runScraperJob, runPackageScraperJob, runFamilyAttractionScraperJob, runTheaterScraperJob, resolveCity } from './scraper.js';
 import { handleLineWebhook } from './lineBot.js';
 import { startCronScheduler, refreshAllAttractionsCache, attractionsCache } from './cronScheduler.js';
 
@@ -138,8 +138,10 @@ app.get('/api/theaters', async (req, res) => {
 // 6. Price Trends
 app.get('/api/trends', (req, res) => {
   const { cityId = 'taipei' } = req.query;
-  const trendData = mockPriceTrends[cityId] || mockPriceTrends['taipei'];
-  res.json({ success: true, cityId, data: trendData });
+  const resolved = resolveCity(cityId);
+  const targetKey = resolved.cityId === 'all' ? 'taipei' : resolved.cityId;
+  const trendData = mockPriceTrends[targetKey] || mockPriceTrends['taipei'];
+  res.json({ success: true, cityId: targetKey, cityName: resolved.cityName, data: trendData });
 });
 
 // 7. Register Price Alert
