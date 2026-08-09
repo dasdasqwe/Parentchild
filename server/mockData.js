@@ -231,6 +231,68 @@ export const mockStays = [
     ]
   },
 
+  // 台南 (Tainan)
+  {
+    id: 'tn-1',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '台南晶英酒店 (Silks Place Tainan)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 3200,
+    address: '台南市中西區和意路1號 (新光三越新天地旁/赤崁樓直達)',
+    tags: ['頂級游泳池', '兒童遊戲室', '米其林早餐', '府城古蹟周邊'],
+    lowestPriceProvider: 'Agoda',
+    price: 4200,
+    originalPrice: 6800,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 4200, url: 'https://www.agoda.com/zh-tw/silks-place-tainan/hotel/tainan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4350, url: 'https://www.booking.com/hotel/tw/silks-place-tainan.zh-tw.html' }
+    ]
+  },
+  {
+    id: 'tn-2',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '台南和逸飯店 - 西門館 (Hotel COZZI Ximen Tainan)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 4100,
+    address: '台南市中西區西門路一段658之2號 (500坪戶外奇趣操場)',
+    tags: ['卡通頻道主題房', '奇趣操場電動車', '沙坑遊戲區', '新光三越旁'],
+    lowestPriceProvider: 'Agoda',
+    price: 3400,
+    originalPrice: 5500,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 3400, url: 'https://www.agoda.com/zh-tw/hotel-cozzi-ximen-tainan/hotel/tainan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 3520, url: 'https://www.booking.com/hotel/tw/hotel-cozzi-ximen-tainan.zh-tw.html' }
+    ]
+  },
+  {
+    id: 'tn-3',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '台南煙波大飯店 (Lakeshore Hotel Tainan)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+    rating: 4.7,
+    reviewsCount: 2800,
+    address: '台南市中西區義民街一段269號 (台南美術館二館對面)',
+    tags: ['露天游泳池', '三溫暖設施', '豪華早餐百匯', '美術館周邊'],
+    lowestPriceProvider: 'Booking.com',
+    price: 2800,
+    originalPrice: 4200,
+    discountPercent: 33,
+    providers: [
+      { name: 'Booking.com', price: 2800, url: 'https://www.booking.com/hotel/tw/lakeshore-hotel-tainan.zh-tw.html', isLowest: true },
+      { name: 'Agoda', price: 2880, url: 'https://www.agoda.com/zh-tw/lakeshore-hotel-tainan/hotel/tainan-tw.html' }
+    ]
+  },
+
   // 台中 (Taichung)
   {
     id: 'tc-1',
