@@ -92,8 +92,6 @@ export async function runScraperJob(query, onLog) {
     const engMatch = rawName.match(/\(([^)]+)\)/);
     const cleanKw = engMatch ? engMatch[1].trim() : rawName.replace(/\(.*?\)/g, '').replace(/【.*?】/g, '').trim();
     const encodedKw = encodeURIComponent(cleanKw || normCityName);
-    const hotelSlug = cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'hotel';
-
     stay.providers = stay.providers.map(p => {
       let targetUrl = p.url || '';
       const d1 = new Date(checkIn);
@@ -101,30 +99,33 @@ export async function runScraperJob(query, onLog) {
       const diffNights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
 
       if (p.name.includes('Booking')) {
-        if (!targetUrl.includes('/hotel/') && !targetUrl.includes('.html')) {
-          targetUrl = `https://www.booking.com/hotel/tw/${hotelSlug}.zh-tw.html`;
+        if (targetUrl.includes('/hotel/') || targetUrl.includes('.html')) {
+          const hasQuery = targetUrl.includes('?');
+          const sep = hasQuery ? '&' : '?';
+          targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1`;
+        } else {
+          targetUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=search_results&dest_type=city`;
         }
-        const hasQuery = targetUrl.includes('?');
-        const sep = hasQuery ? '&' : '?';
-        targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1`;
       } else if (p.name.includes('Agoda')) {
-        if (!targetUrl.includes('/hotel/') && !targetUrl.includes('.html')) {
-          targetUrl = `https://www.agoda.com/zh-tw/${hotelSlug}/hotel/${stay.cityId || 'city'}-tw.html`;
+        if (targetUrl.includes('/hotel/') || targetUrl.includes('.html')) {
+          const hasQuery = targetUrl.includes('?');
+          const sep = hasQuery ? '&' : '?';
+          targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
+        } else {
+          targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
         }
-        const hasQuery = targetUrl.includes('?');
-        const sep = hasQuery ? '&' : '?';
-        targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
       } else if (p.name.includes('Trip')) {
         const hasQuery = targetUrl.includes('?');
         const sep = hasQuery ? '&' : '?';
         targetUrl = `${targetUrl}${sep}keyword=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
       } else {
-        if (!targetUrl.includes('/hotel/') && !targetUrl.includes('.html')) {
-          targetUrl = `https://www.agoda.com/zh-tw/${hotelSlug}/hotel/${stay.cityId || 'city'}-tw.html`;
+        if (targetUrl.includes('/hotel/') || targetUrl.includes('.html')) {
+          const hasQuery = targetUrl.includes('?');
+          const sep = hasQuery ? '&' : '?';
+          targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
+        } else {
+          targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
         }
-        const hasQuery = targetUrl.includes('?');
-        const sep = hasQuery ? '&' : '?';
-        targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
       }
       return { ...p, url: targetUrl };
     });
