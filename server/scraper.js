@@ -89,25 +89,31 @@ export async function runScraperJob(query, onLog) {
 
     stay.providers = stay.providers.map(p => {
       let targetUrl = p.url || '';
-      // 若已有專屬飯店直連 URL (例如包含 /hotel/ 或 .html)，則保留直連 URL 並完整帶入日期與人數參數 (相容 Agoda checkin/checkout 小寫格式)
+      // 若已有專屬飯店直連 URL (例如包含 /hotel/ 或 .html)，則保留直連 URL 並完整帶入日期、住宿天數 (los) 與兒童年齡 (childAges) 參數
       if (targetUrl.includes('/hotel/') || targetUrl.includes('.html')) {
         const hasQuery = targetUrl.includes('?');
         const sep = hasQuery ? '&' : '?';
+        const d1 = new Date(checkIn);
+        const d2 = new Date(checkOut);
+        const diffNights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
         if (p.name.includes('Booking')) {
           targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1`;
         } else {
-          targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}&rooms=1`;
+          targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
         }
       } else {
         // 若為關鍵字搜尋，使用各平台最精準的關鍵字 API 格式與完整日期參數
+        const d1 = new Date(checkIn);
+        const d2 = new Date(checkOut);
+        const diffNights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
         if (p.name.includes('Booking')) {
           targetUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=search_results&dest_type=city`;
         } else if (p.name.includes('Agoda')) {
-          targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}&rooms=1`;
+          targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
         } else if (p.name.includes('Trip')) {
           targetUrl = `https://tw.trip.com/hotels/list?keyword=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
         } else {
-          targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
+          targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
         }
       }
       return { ...p, url: targetUrl };
