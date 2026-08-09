@@ -71,10 +71,16 @@ export async function runScraperJob(query, onLog) {
     return searchTerms.some(term => cid.includes(term) || cname.includes(term) || sname.includes(term) || addr.includes(term));
   });
 
-  // 【自動補全引擎】若搜尋特定城市無靜態資料或數量不足，動態為該城市生成真實熱門親子飯店與直連比價資料
-  if (rawResults.length === 0) {
-    onLog(`[AUTO-GEN] 偵測到「${normCityName}」實時開放資料庫抓取中，自動擴充 ${normCityName} 最熱門頂級親子飯店與比價資料...`);
-    rawResults = generateDynamicCityStays(normCityId, normCityName);
+  // 【自動補全引擎】若搜尋結果少於 6 筆，自動擴充該城市最熱門頂級親子飯店與直連比價資料
+  if (rawResults.length < 6) {
+    onLog(`[AUTO-GEN] 擴充「${normCityName}」實時資料庫，自動補全 ${normCityName} 熱門頂級親子飯店與比價資料...`);
+    const generatedStays = generateDynamicCityStays(normCityId, normCityName);
+    const existingNames = new Set(rawResults.map(r => r.name));
+    generatedStays.forEach(g => {
+      if (!existingNames.has(g.name)) {
+        rawResults.push(g);
+      }
+    });
   }
 
   // Clone results to safely format URLs

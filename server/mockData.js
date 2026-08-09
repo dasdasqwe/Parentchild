@@ -292,6 +292,106 @@ export const mockStays = [
       { name: 'Agoda', price: 2880, url: 'https://www.agoda.com/zh-tw/lakeshore-hotel-tainan/hotel/tainan-tw.html' }
     ]
   },
+  {
+    id: 'tn-4',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '台南大員皇冠假日酒店 (Crowne Plaza Tainan)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 1950,
+    address: '台南市安平區州平路289號 (安平水岸景觀與台江國家公園旁)',
+    tags: ['安平水岸景觀', '室內溫水泳池', '兒童俱樂部', '生態導覽'],
+    lowestPriceProvider: 'Agoda',
+    price: 3900,
+    originalPrice: 6000,
+    discountPercent: 35,
+    providers: [
+      { name: 'Agoda', price: 3900, url: 'https://www.agoda.com/zh-tw/crowne-plaza-tainan/hotel/tainan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4050, url: 'https://www.booking.com/hotel/tw/crowne-plaza-tainan.zh-tw.html' }
+    ]
+  },
+  {
+    id: 'tn-5',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '台南夏都城旅安平館 (Chateau Avenue Tainan)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.7,
+    reviewsCount: 1600,
+    address: '台南市南區新建路47號 (200坪城冒險兒童室內遊戲區)',
+    tags: ['百坪室內兒童冒險館', '電競室', '親子備品禮包', '免費停車'],
+    lowestPriceProvider: 'Agoda',
+    price: 2600,
+    originalPrice: 4000,
+    discountPercent: 35,
+    providers: [
+      { name: 'Agoda', price: 2600, url: 'https://www.agoda.com/zh-tw/chateau-avenue-tainan/hotel/tainan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 2720, url: 'https://www.booking.com/hotel/tw/chateau-avenue-tainan.zh-tw.html' }
+    ]
+  },
+  {
+    id: 'tn-6',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '台南遠東香格里拉 (Shangri-La Far Eastern Tainan)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 3800,
+    address: '台南市東區大學路西段89號 (台南後火車站直達)',
+    tags: ['心形露天泳池', '台南最高地標', '高空景觀餐廳', '火車站旁'],
+    lowestPriceProvider: 'Booking.com',
+    price: 4600,
+    originalPrice: 7200,
+    discountPercent: 36,
+    providers: [
+      { name: 'Booking.com', price: 4600, url: 'https://www.booking.com/hotel/tw/shangri-la-far-eastern-tainan.zh-tw.html', isLowest: true },
+      { name: 'Agoda', price: 4720, url: 'https://www.agoda.com/zh-tw/shangri-la-far-eastern-tainan/hotel/tainan-tw.html' }
+    ]
+  },
+  {
+    id: 'tn-7',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '捷絲旅台南十鼓館 (Just Sleep Tainan Ten-Drum)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 1450,
+    address: '台南市仁德區文華路二段300號 (十鼓仁糖文創園區旁)',
+    tags: ['十鼓園區旁', '戶外游泳池', '復古文青風格', '奇美博物館旁'],
+    lowestPriceProvider: 'Agoda',
+    price: 2950,
+    originalPrice: 4500,
+    discountPercent: 34,
+    providers: [
+      { name: 'Agoda', price: 2950, url: 'https://www.agoda.com/zh-tw/just-sleep-tainan-ten-drum/hotel/tainan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 3080, url: 'https://www.booking.com/hotel/tw/just-sleep-tainan-ten-drum.zh-tw.html' }
+    ]
+  },
+  {
+    id: 'tn-8',
+    cityId: 'tainan',
+    cityName: '台南',
+    name: '台南禧榕軒大飯店 (Grand Banyan Hotel Tainan)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 1750,
+    address: '台南市北區成功路68號 (台南火車站步行 5分鐘)',
+    tags: ['頂樓花園空中泳池', '日式質感設計', '百匯精緻早餐', '火車站商圈'],
+    lowestPriceProvider: 'Agoda',
+    price: 3300,
+    originalPrice: 5200,
+    discountPercent: 36,
+    providers: [
+      { name: 'Agoda', price: 3300, url: 'https://www.agoda.com/zh-tw/grand-banyan-hotel-tainan/hotel/tainan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 3420, url: 'https://www.booking.com/hotel/tw/grand-banyan-hotel-tainan.zh-tw.html' }
+    ]
+  },
 
   // 台中 (Taichung)
   {
