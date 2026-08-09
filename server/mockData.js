@@ -43,8 +43,8 @@ export const mockStays = [
     originalPrice: 4200,
     discountPercent: 36,
     providers: [
-      { name: 'Agoda', price: 2680, url: 'https://www.agoda.com/zh-tw/search?kw=Jiaoxi+Hotspring+Family+Hotel', isLowest: true },
-      { name: 'Booking.com', price: 2780, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Jiaoxi+Hotspring+Family+Hotel' },
+      { name: 'Agoda', price: 2680, url: 'https://www.agoda.com/zh-tw/jiaoxi-hotspring-family-hotel/hotel/yilan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 2780, url: 'https://www.booking.com/hotel/tw/jiaoxi-hotspring-family-hotel.zh-tw.html' },
       { name: 'Trip.com', price: 2850, url: 'https://hk.trip.com/hotels/w/yilan-hotels' }
     ]
   },
@@ -64,8 +64,8 @@ export const mockStays = [
     originalPrice: 2500,
     discountPercent: 37,
     providers: [
-      { name: 'Booking.com', price: 1580, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Luodong+Nightmarket+Hotel', isLowest: true },
-      { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/search?kw=Luodong+Nightmarket+Hotel' }
+      { name: 'Booking.com', price: 1580, url: 'https://www.booking.com/hotel/tw/luodong-nightmarket-hotel.zh-tw.html', isLowest: true },
+      { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/luodong-nightmarket-hotel/hotel/yilan-tw.html' }
     ]
   },
   {
@@ -84,8 +84,8 @@ export const mockStays = [
     originalPrice: 2900,
     discountPercent: 36,
     providers: [
-      { name: 'Agoda', price: 1850, url: 'https://www.agoda.com/zh-tw/search?kw=Dongshan+River+B%26B+Yilan', isLowest: true },
-      { name: 'Booking.com', price: 1920, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Dongshan+River+B%26B+Yilan' }
+      { name: 'Agoda', price: 1850, url: 'https://www.agoda.com/zh-tw/dongshan-river-b-b-yilan/hotel/yilan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 1920, url: 'https://www.booking.com/hotel/tw/dongshan-river-b-b-yilan.zh-tw.html' }
     ]
   },
   {
@@ -104,8 +104,8 @@ export const mockStays = [
     originalPrice: 4800,
     discountPercent: 38,
     providers: [
-      { name: 'Booking.com', price: 2980, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Lanyang+Ocean+Family+Hotel', isLowest: true },
-      { name: 'Agoda', price: 3100, url: 'https://www.agoda.com/zh-tw/search?kw=Lanyang+Ocean+Family+Hotel' }
+      { name: 'Booking.com', price: 2980, url: 'https://www.booking.com/hotel/tw/lanyang-ocean-family-hotel.zh-tw.html', isLowest: true },
+      { name: 'Agoda', price: 3100, url: 'https://www.agoda.com/zh-tw/lanyang-ocean-family-hotel/hotel/yilan-tw.html' }
     ]
   },
   {
@@ -124,8 +124,8 @@ export const mockStays = [
     originalPrice: 6500,
     discountPercent: 35,
     providers: [
-      { name: 'Agoda', price: 4200, url: 'https://www.agoda.com/zh-tw/search?kw=Wellspring+by+Silks+Jiaoxi', isLowest: true },
-      { name: 'Booking.com', price: 4350, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Wellspring+by+Silks+Jiaoxi' }
+      { name: 'Agoda', price: 4200, url: 'https://www.agoda.com/zh-tw/wellspring-by-silks-jiaoxi/hotel/yilan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4350, url: 'https://www.booking.com/hotel/tw/wellspring-by-silks-jiaoxi.zh-tw.html' }
     ]
   },
 
@@ -146,8 +146,8 @@ export const mockStays = [
     originalPrice: 3200,
     discountPercent: 41,
     providers: [
-      { name: 'Agoda', price: 1880, url: 'https://www.agoda.com/zh-tw/search?kw=Flip+Flop+Family+Hotel+Taipei', isLowest: true },
-      { name: 'Booking.com', price: 1950, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Flip+Flop+Family+Hotel+Taipei' }
+      { name: 'Agoda', price: 1880, url: 'https://www.agoda.com/zh-tw/flip-flop-family-hotel-taipei/hotel/taipei-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 1950, url: 'https://www.booking.com/hotel/tw/flip-flop-family-hotel-taipei.zh-tw.html' }
     ]
   },
   {
@@ -166,8 +166,8 @@ export const mockStays = [
     originalPrice: 2200,
     discountPercent: 37,
     providers: [
-      { name: 'Booking.com', price: 1390, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Hey+Bear+Hotel+Taipei', isLowest: true },
-      { name: 'Agoda', price: 1450, url: 'https://www.agoda.com/zh-tw/search?kw=Hey+Bear+Hotel+Taipei' }
+      { name: 'Booking.com', price: 1390, url: 'https://www.booking.com/hotel/tw/hey-bear-hotel-taipei.zh-tw.html', isLowest: true },
+      { name: 'Agoda', price: 1450, url: 'https://www.agoda.com/zh-tw/hey-bear-hotel-taipei/hotel/taipei-tw.html' }
     ]
   },
   {
@@ -187,7 +187,7 @@ export const mockStays = [
     discountPercent: 43,
     providers: [
       { name: 'Trip.com', price: 1580, url: 'https://hk.trip.com/hotels/w/taipei-hotels', isLowest: true },
-      { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/search?kw=Cho+B%26B+Ximen+Taipei' }
+      { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/cho-b-b-ximen-taipei/hotel/taipei-tw.html' }
     ]
   },
   {
@@ -206,8 +206,8 @@ export const mockStays = [
     originalPrice: 7500,
     discountPercent: 36,
     providers: [
-      { name: 'Agoda', price: 4800, url: 'https://www.agoda.com/zh-tw/search?kw=Palais+de+Chine+Hotel', isLowest: true },
-      { name: 'Booking.com', price: 4950, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Palais+de+Chine+Hotel' }
+      { name: 'Agoda', price: 4800, url: 'https://www.agoda.com/zh-tw/palais-de-chine-hotel/hotel/taipei-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4950, url: 'https://www.booking.com/hotel/tw/palais-de-chine-hotel.zh-tw.html' }
     ]
   },
   {
@@ -226,8 +226,8 @@ export const mockStays = [
     originalPrice: 3800,
     discountPercent: 37,
     providers: [
-      { name: 'Booking.com', price: 2380, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Hua+Shan+Din+Hotel', isLowest: true },
-      { name: 'Agoda', price: 2450, url: 'https://www.agoda.com/zh-tw/search?kw=Hua+Shan+Din+Hotel' }
+      { name: 'Booking.com', price: 2380, url: 'https://www.booking.com/hotel/tw/hua-shan-din-hotel.zh-tw.html', isLowest: true },
+      { name: 'Agoda', price: 2450, url: 'https://www.agoda.com/zh-tw/hua-shan-din-hotel/hotel/taipei-tw.html' }
     ]
   },
 
