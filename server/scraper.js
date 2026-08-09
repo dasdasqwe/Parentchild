@@ -92,35 +92,39 @@ export async function runScraperJob(query, onLog) {
     const engMatch = rawName.match(/\(([^)]+)\)/);
     const cleanKw = engMatch ? engMatch[1].trim() : rawName.replace(/\(.*?\)/g, '').replace(/【.*?】/g, '').trim();
     const encodedKw = encodeURIComponent(cleanKw || normCityName);
+    const hotelSlug = cleanKw.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'hotel';
 
     stay.providers = stay.providers.map(p => {
       let targetUrl = p.url || '';
-      // 若已有專屬飯店直連 URL (例如包含 /hotel/ 或 .html)，則保留直連 URL 並完整帶入日期、住宿天數 (los) 與兒童年齡 (childAges) 參數
-      if (targetUrl.includes('/hotel/') || targetUrl.includes('.html')) {
+      const d1 = new Date(checkIn);
+      const d2 = new Date(checkOut);
+      const diffNights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
+
+      if (p.name.includes('Booking')) {
+        if (!targetUrl.includes('/hotel/') && !targetUrl.includes('.html')) {
+          targetUrl = `https://www.booking.com/hotel/tw/${hotelSlug}.zh-tw.html`;
+        }
         const hasQuery = targetUrl.includes('?');
         const sep = hasQuery ? '&' : '?';
-        const d1 = new Date(checkIn);
-        const d2 = new Date(checkOut);
-        const diffNights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
-        if (p.name.includes('Booking')) {
-          targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1`;
-        } else {
-          targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
+        targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1`;
+      } else if (p.name.includes('Agoda')) {
+        if (!targetUrl.includes('/hotel/') && !targetUrl.includes('.html')) {
+          targetUrl = `https://www.agoda.com/zh-tw/${hotelSlug}/hotel/${stay.cityId || 'city'}-tw.html`;
         }
+        const hasQuery = targetUrl.includes('?');
+        const sep = hasQuery ? '&' : '?';
+        targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
+      } else if (p.name.includes('Trip')) {
+        const hasQuery = targetUrl.includes('?');
+        const sep = hasQuery ? '&' : '?';
+        targetUrl = `${targetUrl}${sep}keyword=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
       } else {
-        // 若為關鍵字搜尋，使用各平台最精準的關鍵字 API 格式與完整日期參數
-        const d1 = new Date(checkIn);
-        const d2 = new Date(checkOut);
-        const diffNights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
-        if (p.name.includes('Booking')) {
-          targetUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=search_results&dest_type=city`;
-        } else if (p.name.includes('Agoda')) {
-          targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
-        } else if (p.name.includes('Trip')) {
-          targetUrl = `https://tw.trip.com/hotels/list?keyword=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
-        } else {
-          targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
+        if (!targetUrl.includes('/hotel/') && !targetUrl.includes('.html')) {
+          targetUrl = `https://www.agoda.com/zh-tw/${hotelSlug}/hotel/${stay.cityId || 'city'}-tw.html`;
         }
+        const hasQuery = targetUrl.includes('?');
+        const sep = hasQuery ? '&' : '?';
+        targetUrl = `${targetUrl}${sep}checkin=${checkIn}&checkout=${checkOut}&checkIn=${checkIn}&checkOut=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}&childAges=6&rooms=1`;
       }
       return { ...p, url: targetUrl };
     });
