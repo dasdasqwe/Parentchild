@@ -13,7 +13,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
   const providerName = stay.lowestPriceProvider || lowestProvider?.name || 'Agoda';
 
   // 1. 直連飯店比價與訂房頁面 (標題與圖片)
-  const officialUrl = stay.websiteUrl || stay.url || `https://www.agoda.com/zh-tw/search?text=${encodeURIComponent(stay.name)}`;
+  const officialUrl = stay.websiteUrl || stay.url || `https://www.agoda.com/zh-tw/search?kw=${encodeURIComponent(stay.name)}`;
   
   // 2. 地圖導覽連結
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stay.name + ' ' + (stay.address || stay.cityName || ''))}`;

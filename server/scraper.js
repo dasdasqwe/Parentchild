@@ -86,11 +86,11 @@ export async function runScraperJob(query, onLog) {
       if (p.name.includes('Booking')) {
         targetUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${encodedKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=search_results&dest_type=city`;
       } else if (p.name.includes('Agoda')) {
-        targetUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${encodedKw}&text=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
+        targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
       } else if (p.name.includes('Trip')) {
         targetUrl = `https://tw.trip.com/hotels/list?keyword=${encodedKw}&checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`;
       } else {
-        targetUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${encodedKw}`;
+        targetUrl = `https://www.agoda.com/zh-tw/search?kw=${encodedKw}`;
       }
       return { ...p, url: targetUrl };
     });
