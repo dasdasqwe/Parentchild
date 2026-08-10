@@ -359,6 +359,40 @@ export function generateDynamicCityStays(cityId, cityName) {
   const cSlug = (cityId || 'city').toLowerCase();
 
   const cityTemplates = {
+    taipei: [
+      { name: '台北晶華酒店 (Regent Taipei)', price: 5200, orig: 8200, rating: 4.9, rev: 6200, type: 'Family Hotel', tags: ['露天溫水泳池', '栢麗廳百匯', '童話故事俱樂部', '中山商圈'], slug: 'regent-taipei' },
+      { name: '台北君品酒店 (Palais de Chine Hotel)', price: 4800, orig: 7500, rating: 4.8, rev: 4200, type: 'Hotel', tags: ['歐式奢華風', '米其林三星頤宮', '京站廣場連通', '台北車站旁'], slug: 'palais-de-chine-hotel' },
+      { name: '天成文旅 - 華山町 (Hua Shan Din Hotel)', price: 2380, orig: 3800, rating: 4.7, rev: 1890, type: 'Hotel', tags: ['華山文創園區旁', '金庫造型設計', '親子閱讀室', '捷運忠孝新生站'], slug: 'hua-shan-din-hotel' },
+      { name: '台北君悅酒店 (Grand Hyatt Taipei)', price: 5600, orig: 9000, rating: 4.9, rev: 5800, type: 'Family Hotel', tags: ['台北101海景第一排', '戶外溫水泳池', '凱菲屋百匯', '信義商圈'], slug: 'grand-hyatt-taipei' },
+      { name: '和逸飯店台北民生館 (COZZI Minsheng Taipei)', price: 3200, orig: 5000, rating: 4.8, rev: 2400, type: 'Hotel', tags: ['行天宮捷運站旁', '親子家庭房', '極致舒適床墊', '免費咖啡吧'], slug: 'cozzi-minsheng-taipei' },
+      { name: '格拉斯麗台北飯店 (Hotel Gracery Taipei)', price: 3400, orig: 5200, rating: 4.8, rev: 2100, type: 'Hotel', tags: ['日系精緻品牌', '忠孝新生站對面', '日式浴缸風呂', '阜杭豆漿周邊'], slug: 'hotel-gracery-taipei' }
+    ],
+    newtaipei: [
+      { name: '板橋凱撒大飯店 (Caesar Park Hotel Banqiao)', price: 3600, orig: 5800, rating: 4.8, rev: 3800, type: 'Hotel', tags: ['32樓高空無邊際泳池', '板橋車站直達', '新北耶誕城第一排', '朋派百匯'], slug: 'caesar-park-hotel-banqiao' },
+      { name: '薆悅酒店野柳渡假館 (Inhouse Hotel Yehliu)', price: 2980, orig: 4800, rating: 4.8, rev: 2900, type: 'Family Hotel', tags: ['400坪兒童遊戲室', '電動車賽車道', '野柳海洋世界對面', '海景房'], slug: 'inhouse-hotel-yehliu' },
+      { name: '淡水將捷金郁金香酒店 (Golden Tulip Fab Hotel Tamsui)', price: 4200, orig: 6800, rating: 4.9, rev: 2100, type: 'Family Hotel', tags: ['淡水河夕陽無敵海景', '滬尾藝文休閒園區', '高爾夫球場旁', '親子草坪'], slug: 'golden-tulip-fab-hotel-tamsui' },
+      { name: '傑仕堡有氧酒店 (Jasper Hotel Banqiao)', price: 2800, orig: 4200, rating: 4.7, rev: 1700, type: 'Hotel', tags: ['日式大浴場三溫暖', '路易莎聯名早餐', '新埔民生捷運站', '健身會館'], slug: 'jasper-hotel-banqiao' }
+    ],
+    yilan: [
+      { name: '宜蘭礁溪晶泉楓旅 (Wellspring by Silks Jiaoxi)', price: 4200, orig: 6500, rating: 4.9, rev: 3120, type: 'Family Hotel', tags: ['私人露天風呂', '無邊際溫泉池', '日式清酒禮遇', '頂級親子備品'], slug: 'wellspring-by-silks-jiaoxi' },
+      { name: '捷絲旅宜蘭礁溪館 (Just Sleep Jiaoxi)', price: 2880, orig: 4200, rating: 4.8, rev: 2850, type: 'Family Hotel', tags: ['露天溫泉泡湯池', '傳統童玩遊戲室', '奶奶文具店', '古早味點心吧'], slug: 'just-sleep-jiaoxi' },
+      { name: '宜蘭蘭城晶英酒店 (Silks Place Yilan)', price: 7800, orig: 11000, rating: 4.9, rev: 4890, type: 'Family Hotel', tags: ['芬朵奇堡兒童賽車場', '櫻桃鴨經典饗宴', '新月影城免費看', '頂級親子聖地'], slug: 'silks-place-yilan' },
+      { name: '宜蘭綠舞國際觀光飯店 (Dancewoods Hotel & Resort)', price: 4980, orig: 7500, rating: 4.8, rev: 2200, type: 'Family Hotel', tags: ['水豚與羊駝近距離互動', '日式浴衣體驗', '黑柴風呂', '露天游泳池'], slug: 'dancewoods-hotel-resort' },
+      { name: '礁溪寒沐酒店 (MU JIAO XI HOTEL)', price: 5600, orig: 9000, rating: 4.9, rev: 3400, type: 'Family Hotel', tags: ['樂未央兒童遊戲室', '綜合溫泉游泳池', '寒舍集團頂級百匯', '電競室'], slug: 'mu-jiao-xi-hotel' }
+    ],
+    taichung: [
+      { name: '台中逢甲夜市親子歡樂行館 (Fengjia Joyous Family Hotel)', price: 1850, orig: 3200, rating: 4.8, rev: 2300, type: 'Family Hotel', tags: ['兒童球池遊戲區', '免費停車位', '嬰兒澡盆', '夜市美食首選'], slug: 'fengjia-joyous-family-hotel' },
+      { name: '台中林酒店 (The Lin Hotel Taichung)', price: 4600, orig: 7500, rating: 4.8, rev: 4100, type: 'Hotel', tags: ['杜拜奢華風格', '露天溫水泳池', 'LV百匯餐廳', '國家歌劇院旁'], slug: 'the-lin-hotel-taichung' },
+      { name: '麗寶福容大飯店 (Fullon Hotel Lihpao Land)', price: 4500, orig: 6800, rating: 4.9, rev: 3600, type: 'Family Hotel', tags: ['直通麗寶樂園', '摩天輪景觀房', '室內外戲水池', '兒童冒險樂園'], slug: 'fullon-hotel-lihpao-land' },
+      { name: '台中裕元花園酒店 (Windsor Hotel Taichung)', price: 3800, orig: 6000, rating: 4.8, rev: 2900, type: 'Hotel', tags: ['室內溫水游泳池', '溫泉水療SPA', '玫瑰烘焙坊', '中港交流道旁'], slug: 'windsor-hotel-taichung' },
+      { name: '台中日光溫泉會館 (Sun Hot Spring Resort)', price: 3600, orig: 5500, rating: 4.7, rev: 2100, type: 'Family Hotel', tags: ['美人湯碳酸氫鈉泉', '兒童戶外戲水池', '日光兒童館', '大坑步道周邊'], slug: 'sun-hot-spring-resort' }
+    ],
+    kaohsiung: [
+      { name: '高雄萬豪酒店 (Kaohsiung Marriott Hotel)', price: 4500, orig: 7200, rating: 4.9, rev: 5200, type: 'Family Hotel', tags: ['水療溫水按摩池', '兒童專用水樂園', '義享天地商場直通', '愛河之心景觀'], slug: 'kaohsiung-marriott-hotel' },
+      { name: '高雄義大皇家酒店 (E-Da Royal Hotel)', price: 3800, orig: 6000, rating: 4.8, rev: 4100, type: 'Family Hotel', tags: ['夢幻兒童主題房', '水療戲水池', '義大摩天輪', '皇家百匯自助餐'], slug: 'e-da-royal-hotel' },
+      { name: '高雄漢來大飯店 (Grand Hi-Lai Hotel)', price: 3900, orig: 6200, rating: 4.9, rev: 6100, type: 'Hotel', tags: ['三麗鷗 Hello Kitty 主題房', '露天游泳池', '漢來海港百匯首家', '港景第一排'], slug: 'grand-hi-lai-hotel' },
+      { name: '高雄洲際酒店 (InterContinental Kaohsiung)', price: 5800, orig: 9200, rating: 4.9, rev: 2800, type: 'Hotel', tags: ['奢華智慧客房', '高空沉浸式光影酒吧', '室內溫水泳池', '三多商圈旁'], slug: 'intercontinental-kaohsiung' }
+    ],
     tainan: [
       { name: '台南晶英酒店 (Silks Place Tainan)', price: 4200, orig: 6800, rating: 4.9, rev: 3200, type: 'Family Hotel', tags: ['頂級游泳池', '兒童遊戲室', '米其林早餐', '府城古蹟周邊'], slug: 'silks-place-tainan' },
       { name: '台南和逸飯店 - 西門館 (Hotel COZZI Ximen Tainan)', price: 3400, orig: 5500, rating: 4.8, rev: 4100, type: 'Family Hotel', tags: ['卡通頻道主題房', '奇趣操場電動車', '沙坑遊戲區', '新光三越旁'], slug: 'hotel-cozzi-ximen-tainan' },
@@ -378,15 +412,67 @@ export function generateDynamicCityStays(cityId, cityName) {
       { name: '新竹煙波大飯店湖濱館 (Lakeshore Hotel Hsinchu)', price: 3900, orig: 6200, rating: 4.9, rev: 5200, type: 'Family Hotel', tags: ['2300坪卡樂次元兒童樂園', '溫水泳池', '親子主題房'], slug: 'lakeshore-hotel-hsinchu' },
       { name: '新竹豐邑喜來登大飯店 (Sheraton Hsinchu Hotel)', price: 4500, orig: 7000, rating: 4.8, rev: 3100, type: 'Hotel', tags: ['波波夢幻島玩具房', '室內游泳池', '喜來登甜點百匯'], slug: 'sheraton-hsinchu-hotel' }
     ],
-    hualien: [
-      { name: '花蓮遠雄悅來大飯店 (Farglory Hotel Hualien)', price: 5800, orig: 9000, rating: 4.9, rev: 3900, type: 'Family Hotel', tags: ['維多利亞海景', '海洋公園直達車', '室內外雙泳池'], slug: 'farglory-hotel-hualien' },
-      { name: '花蓮瑞穗天合國際觀光酒店 (Grand Cosmos Resort Ruisui)', price: 1150, orig: 18000, rating: 4.9, rev: 2800, type: 'Family Hotel', tags: ['台版迪士尼城堡', '黃金溫泉水樂園', '跑跑卡丁車'], slug: 'grand-cosmos-resort-ruisui' },
-      { name: '花蓮理想大地渡假飯店 (Promenade Resort Hualien)', price: 4800, orig: 7500, rating: 4.8, rev: 3400, type: 'Family Hotel', tags: ['應許之河搭遊艇', '西班牙高第建築', '兒童自然營'], slug: 'promenade-resort-hualien' }
+    miaoli: [
+      { name: '苗栗享沐時光莊園渡假酒店 (Shine Mood Resort Miaoli)', price: 4980, orig: 7800, rating: 4.9, rev: 2600, type: 'Family Hotel', tags: ['700坪露天風呂', '裸湯溫泉三溫暖', '兒童遊戲室', '美人湯美人湯'], slug: 'shine-mood-resort-miaoli' },
+      { name: '泰安觀止溫泉會館 (Onsen Papago Resort Miaoli)', price: 6800, orig: 10500, rating: 4.9, rev: 3100, type: 'Family Hotel', tags: ['溪谷無邊際溫泉池', '建築美學經典', '泰安溫泉首選'], slug: 'onsen-papago-resort-miaoli' },
+      { name: '尚順君樂飯店 (Grand Royal Hotel Miaoli)', price: 2980, orig: 4800, rating: 4.7, rev: 2800, type: 'Family Hotel', tags: ['直通尚順育樂天地', '5D體感飛行劇院', '攀岩軌道場'], slug: 'grand-royal-hotel-miaoli' }
+    ],
+    changhua: [
+      { name: '鹿港永樂酒店 (UNION HOUSE Lukang)', price: 3600, orig: 5500, rating: 4.9, rev: 1980, type: 'Hotel', tags: ['SLH全球奢華精品認證', '鹿港龍山寺旁', '鼎泰豐等級早餐'], slug: 'union-house-lukang' },
+      { name: '員林昇財麗禧酒店 (Grand Hotel Changhua)', price: 2200, orig: 3500, rating: 4.6, rev: 1200, type: 'Hotel', tags: ['員林車站周邊', '商務親子友善', '在地精緻台菜早餐'], slug: 'grand-hotel-changhua' }
+    ],
+    nantou: [
+      { name: '日月潭雲品溫泉酒店 (Fleur de Chine Sun Moon Lake)', price: 9800, orig: 15000, rating: 4.9, rev: 4200, type: 'Family Hotel', tags: ['日月潭第一排湖景', '露天親水水療館', '雲水酒廊禮遇'], slug: 'fleur-de-chine-sun-moon-lake' },
+      { name: '日月潭涵碧樓酒店 (The Lalu Sun Moon Lake)', price: 16800, orig: 24000, rating: 4.9, rev: 3500, type: 'Hotel', tags: ['極致禪風建築美學', '60米無邊際泳池', '日月潭頂級地標'], slug: 'the-lalu-sun-moon-lake' },
+      { name: '清境佛羅倫斯渡假山莊 (Florence Resort Nantou)', price: 3200, orig: 5200, rating: 4.8, rev: 2100, type: 'B&B', tags: ['義式城堡風格', '巧克力工坊DIY', '落羽松高山美景'], slug: 'florence-resort-nantou' }
+    ],
+    chiayi: [
+      { name: '嘉義天成文旅 - 繪日之丘 (Sun Dialogue by Cosmos Creation)', price: 2600, orig: 4200, rating: 4.8, rev: 2400, type: 'Family Hotel', tags: ['兒童溜滑梯親子房', '星空童樂室無限古早味', '碰碰車體驗'], slug: 'sun-dialogue-by-cosmos-creation' },
+      { name: '嘉義耐斯王子大飯店 (Nice Prince Hotel)', price: 3200, orig: 5200, rating: 4.7, rev: 2900, type: 'Hotel', tags: ['日式五星級品質', '耐斯廣場購物中心直達', '阿里山門戶'], slug: 'nice-prince-hotel' },
+      { name: '阿里山賓館 (Alishan House)', price: 6800, orig: 10500, rating: 4.8, rev: 2100, type: 'Hotel', tags: ['阿里山森林園區內', '頂樓日出觀景台', '百年檜木古色古香'], slug: 'alishan-house' }
     ],
     pingtung: [
       { name: '墾丁夏都沙灘酒店 (Chateau Beach Resort Kenting)', price: 4900, orig: 7800, rating: 4.8, rev: 4100, type: 'Family Hotel', tags: ['直通私人白色沙灘', '無邊際海景泳池', '水上活動教學'], slug: 'chateau-beach-resort-kenting' },
       { name: '墾丁凱撒大飯店 (Caesar Park Hotel Kenting)', price: 5200, orig: 8500, rating: 4.9, rev: 4800, type: 'Family Hotel', tags: ['小灣沙灘獨家通路', '椰林景觀游泳池', '兒童遊戲休閒中心'], slug: 'caesar-park-hotel-kenting' },
       { name: '墾丁悠活渡假村 (Yoho Beach Resort Kenting)', price: 2900, orig: 4800, rating: 4.7, rev: 3200, type: 'Family Hotel', tags: ['兒童水上滑水道', '巧克力主題房', '阿信巧克力農場旁'], slug: 'yoho-beach-resort-kenting' }
+    ],
+    hualien: [
+      { name: '花蓮遠雄悅來大飯店 (Farglory Hotel Hualien)', price: 5800, orig: 9000, rating: 4.9, rev: 3900, type: 'Family Hotel', tags: ['維多利亞海景', '海洋公園直達車', '室內外雙泳池'], slug: 'farglory-hotel-hualien' },
+      { name: '花蓮瑞穗天合國際觀光酒店 (Grand Cosmos Resort Ruisui)', price: 11500, orig: 18000, rating: 4.9, rev: 2800, type: 'Family Hotel', tags: ['台版迪士尼城堡', '黃金溫泉水樂園', '跑跑卡丁車'], slug: 'grand-cosmos-resort-ruisui' },
+      { name: '花蓮理想大地渡假飯店 (Promenade Resort Hualien)', price: 4800, orig: 7500, rating: 4.8, rev: 3400, type: 'Family Hotel', tags: ['應許之河搭遊艇', '西班牙高第建築', '兒童自然營'], slug: 'promenade-resort-hualien' }
+    ],
+    taitung: [
+      { name: '台東知本老爺酒店 (Hotel Royal Chihpen)', price: 5500, orig: 8800, rating: 4.9, rev: 3200, type: 'Family Hotel', tags: ['露天星空美人湯', '原住民歌舞表演', '射箭體驗與滑草'], slug: 'hotel-royal-chihpen' },
+      { name: '台東桂田喜來登酒店 (Sheraton Taitung Hotel)', price: 4200, orig: 6800, rating: 4.8, rev: 2800, type: 'Hotel', tags: ['正對台東觀光夜市', '高空露天游泳池', '阿力海百匯自助餐'], slug: 'sheraton-taitung-hotel' }
+    ],
+    penghu: [
+      { name: '澎湖福朋喜來登酒店 (Four Points by Sheraton Penghu)', price: 4200, orig: 6800, rating: 4.9, rev: 3100, type: 'Family Hotel', tags: ['港灣無邊際泳池', '宜客樂海鮮百匯', '微風酒吧'], slug: 'four-points-by-sheraton-penghu' },
+      { name: '澎澄飯店 (Discovery Hotel Penghu)', price: 3800, orig: 6000, rating: 4.8, rev: 2400, type: 'Family Hotel', tags: ['Pier3三號港免稅商場直通', '極限極限體能挑戰館', '港景家庭房'], slug: 'discovery-hotel-penghu' }
+    ],
+    kinmen: [
+      { name: '金門昇恆昌金湖大飯店 (Everrich Golden Lake Hotel)', price: 3800, orig: 6000, rating: 4.9, rev: 2400, type: 'Hotel', tags: ['太湖第一排景觀', '昇恆昌免稅廣場直通', '溫水游泳池'], slug: 'everrich-golden-lake-hotel' }
+    ],
+    matsu: [
+      { name: '馬祖南竿日光春和 (Dayspring Matsu Resort)', price: 3600, orig: 5500, rating: 4.9, rev: 890, type: 'B&B', tags: ['極簡美學清水模', '無敵海景第一排', '藍眼淚首選'], slug: 'dayspring-matsu-resort' }
+    ],
+    okinawa: [
+      { name: '沖繩美國村坎帕納船舶飯店 (Vessel Hotel Campana Okinawa)', price: 2480, orig: 4200, rating: 4.9, rev: 3800, type: 'Family Hotel', tags: ['美國村日落海景', '海景展望大浴場', '18歲以下免費入住'], slug: 'vessel-hotel-campana-okinawa' },
+      { name: '那霸阿札特飯店 (Hotel Azat Okinawa)', price: 1250, orig: 2100, rating: 4.6, rev: 2100, type: 'Hotel', tags: ['單軌安里站30秒', '24H超市旁', 'CP值高'], slug: 'hotel-azat-okinawa' }
+    ],
+    tokyo: [
+      { name: '東京新宿格拉斯麗飯店 (Hotel Gracery Shinjuku)', price: 3500, orig: 5800, rating: 4.9, rev: 4500, type: 'Family Hotel', tags: ['巨大哥吉拉地標', '新宿站步行5分', '周邊美食無敵'], slug: 'hotel-gracery-shinjuku' }
+    ],
+    osaka: [
+      { name: '大阪環球影城港口飯店 (Hotel Universal Port)', price: 3800, orig: 6200, rating: 4.9, rev: 5100, type: 'Family Hotel', tags: ['小小兵主題房', 'USJ環球影城步行3分', 'JR櫻島站旁'], slug: 'hotel-universal-port' }
+    ],
+    seoul: [
+      { name: '首爾明洞 L7 飯店 (L7 Myeongdong by LOTTE)', price: 3200, orig: 5200, rating: 4.8, rev: 3800, type: 'Hotel', tags: ['明洞商圈第一排', '南山塔高空酒吧', '捷運站口1秒到'], slug: 'l7-myeongdong-by-lotte' }
+    ],
+    kyoto: [
+      { name: '京都站前 MIMARU 家族公寓式飯店 (MIMARU KYOTO STATION)', price: 4500, orig: 7200, rating: 4.9, rev: 2900, type: 'Family Hotel', tags: ['完整廚房餐具', '寶可夢主題房', '京都車站八條口'], slug: 'mimaru-kyoto-station' }
+    ],
+    bangkok: [
+      { name: '曼谷中心點大飯店 Terminal 21 館 (Grande Centre Point Terminal 21)', price: 2800, orig: 4800, rating: 4.9, rev: 6800, type: 'Hotel', tags: ['Terminal 21 直通', 'BTS Asok 站直連', '高空無邊際泳池'], slug: 'grande-centre-point-terminal-21' }
     ]
   };
 

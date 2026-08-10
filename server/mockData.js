@@ -26,7 +26,7 @@ export const mockCities = [
 ];
 
 export const mockStays = [
-  // 宜蘭 (Yilan)
+  // 1. 宜蘭 (Yilan)
   {
     id: 'yil-1',
     cityId: 'yilan',
@@ -92,26 +92,6 @@ export const mockStays = [
     id: 'yil-4',
     cityId: 'yilan',
     cityName: '宜蘭',
-    name: '宜蘭羅東夜市觀光商務飯店 (Luodong Night Market Hotel)',
-    type: 'Hotel',
-    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
-    rating: 4.7,
-    reviewsCount: 1680,
-    address: '宜蘭縣羅東鎮公正路 (距離羅東夜市步行 2分鐘)',
-    tags: ['羅東夜市旁', '免費停車位', '獨立衛浴', '含在地美味早餐'],
-    lowestPriceProvider: 'Booking.com',
-    price: 1580,
-    originalPrice: 2500,
-    discountPercent: 37,
-    providers: [
-      { name: 'Booking.com', price: 1580, url: 'https://www.booking.com/hotel/tw/luodong-nightmarket-hotel.zh-tw.html', isLowest: true },
-      { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/luodong-nightmarket-hotel/hotel/yilan-tw.html' }
-    ]
-  },
-  {
-    id: 'yil-5',
-    cityId: 'yilan',
-    cityName: '宜蘭',
     name: '宜蘭綠舞國際觀光飯店 (Dancewoods Hotel & Resort)',
     type: 'Family Hotel',
     image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
@@ -129,7 +109,7 @@ export const mockStays = [
     ]
   },
 
-  // 台北 (Taipei)
+  // 2. 台北 (Taipei)
   {
     id: 'tp-1',
     cityId: 'taipei',
@@ -147,8 +127,7 @@ export const mockStays = [
     discountPercent: 36,
     providers: [
       { name: 'Agoda', price: 4800, url: 'https://www.agoda.com/zh-tw/palais-de-chine-hotel/hotel/taipei-tw.html', isLowest: true },
-      { name: 'Booking.com', price: 4950, url: 'https://www.booking.com/hotel/tw/palais-de-chine-hotel.zh-tw.html' },
-      { name: 'Trip.com', price: 5080, url: 'https://tw.trip.com/hotels/detail/?hotelId=436901' }
+      { name: 'Booking.com', price: 4950, url: 'https://www.booking.com/hotel/tw/palais-de-chine-hotel.zh-tw.html' }
     ]
   },
   {
@@ -175,46 +154,6 @@ export const mockStays = [
     id: 'tp-3',
     cityId: 'taipei',
     cityName: '台北',
-    name: '台北車站夾腳拖親子文旅 (Flip Flop Hostel Garden)',
-    type: 'Family Hotel',
-    image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
-    rating: 4.8,
-    reviewsCount: 1240,
-    address: '台北市大同區長安西路137號 (距離台北車站/當代藝術館 450m)',
-    tags: ['嬰兒床與澡盆借用', '近捷運站', '含豐盛早午餐', '老宅庭園風格'],
-    lowestPriceProvider: 'Agoda',
-    price: 1880,
-    originalPrice: 3200,
-    discountPercent: 41,
-    providers: [
-      { name: 'Agoda', price: 1880, url: 'https://www.agoda.com/zh-tw/flip-flop-family-hotel-taipei/hotel/taipei-tw.html', isLowest: true },
-      { name: 'Booking.com', price: 1950, url: 'https://www.booking.com/hotel/tw/flip-flop-family-hotel-taipei.zh-tw.html' }
-    ]
-  },
-  {
-    id: 'tp-4',
-    cityId: 'taipei',
-    cityName: '台北',
-    name: '西門町町記憶風情旅店 (Cho Hotel Ximen)',
-    type: 'B&B',
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
-    rating: 4.9,
-    reviewsCount: 2150,
-    address: '台北市萬華區昆明街119號 (距離西門捷運站 步行300m)',
-    tags: ['復古懷舊風', '免費古早味零食吧', '懷舊拍立得紀錄', '親子友善館'],
-    lowestPriceProvider: 'Trip.com',
-    price: 1580,
-    originalPrice: 2800,
-    discountPercent: 43,
-    providers: [
-      { name: 'Trip.com', price: 1580, url: 'https://tw.trip.com/hotels/detail/?hotelId=1620950', isLowest: true },
-      { name: 'Agoda', price: 1650, url: 'https://www.agoda.com/zh-tw/cho-b-b-ximen-taipei/hotel/taipei-tw.html' }
-    ]
-  },
-  {
-    id: 'tp-5',
-    cityId: 'taipei',
-    cityName: '台北',
     name: '台北晶華酒店 (Regent Taipei)',
     type: 'Family Hotel',
     image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
@@ -232,7 +171,7 @@ export const mockStays = [
     ]
   },
 
-  // 新北 (New Taipei)
+  // 3. 新北 (New Taipei)
   {
     id: 'ntp-1',
     cityId: 'newtaipei',
@@ -274,7 +213,7 @@ export const mockStays = [
     ]
   },
 
-  // 台中 (Taichung)
+  // 4. 台中 (Taichung)
   {
     id: 'tc-1',
     cityId: 'taichung',
@@ -299,20 +238,20 @@ export const mockStays = [
     id: 'tc-2',
     cityId: 'taichung',
     cityName: '台中',
-    name: '台中草悟道綠意設計酒店 (Calligraphy Greenway Hotel)',
+    name: '台中林酒店 (The Lin Hotel Taichung)',
     type: 'Hotel',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-    rating: 4.7,
-    reviewsCount: 1540,
-    address: '台中市西區公益路 (草悟道/勤美誠品步行 3分鐘)',
-    tags: ['草悟道綠意林蔭', '設計風格房', '人文咖啡館', '親善管家服務'],
-    lowestPriceProvider: 'Booking.com',
-    price: 2100,
-    originalPrice: 3500,
-    discountPercent: 40,
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 4100,
+    address: '台中市西屯區朝富路99號 (國家歌劇院與秋紅谷旁)',
+    tags: ['杜拜奢華風格', '露天溫水泳池', 'LV百匯餐廳', '歌劇院旁地標'],
+    lowestPriceProvider: 'Agoda',
+    price: 4600,
+    originalPrice: 7500,
+    discountPercent: 38,
     providers: [
-      { name: 'Booking.com', price: 2100, url: 'https://www.booking.com/searchresults.zh-tw.html?ss=Calligraphy+Greenway+Hotel+Taichung', isLowest: true },
-      { name: 'Agoda', price: 2180, url: 'https://www.agoda.com/zh-tw/search?kw=Calligraphy+Greenway+Hotel+Taichung' }
+      { name: 'Agoda', price: 4600, url: 'https://www.agoda.com/zh-tw/the-lin-hotel/hotel/taichung-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4780, url: 'https://www.booking.com/hotel/tw/the-lin.zh-tw.html' }
     ]
   },
   {
@@ -336,7 +275,49 @@ export const mockStays = [
     ]
   },
 
-  // 台南 (Tainan)
+  // 5. 高雄 (Kaohsiung)
+  {
+    id: 'kh-1',
+    cityId: 'kaohsiung',
+    cityName: '高雄',
+    name: '高雄萬豪酒店 (Kaohsiung Marriott Hotel)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 5200,
+    address: '高雄市鼓山區龍德新路222號 (義享天地購物中心直達)',
+    tags: ['水療溫水按摩池', '兒童專用水樂園', '義享天地商場直通', '愛河之心景觀'],
+    lowestPriceProvider: 'Agoda',
+    price: 4500,
+    originalPrice: 7200,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 4500, url: 'https://www.agoda.com/zh-tw/kaohsiung-marriott-hotel/hotel/kaohsiung-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4680, url: 'https://www.booking.com/hotel/tw/kaohsiung-marriott.zh-tw.html' }
+    ]
+  },
+  {
+    id: 'kh-2',
+    cityId: 'kaohsiung',
+    cityName: '高雄',
+    name: '高雄義大皇家酒店 (E-Da Royal Hotel)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 4100,
+    address: '高雄市大樹區學城路一段12號 (義大世界樂園旁)',
+    tags: ['夢幻兒童主題房', '水療戲水池', '義大摩天輪', '皇家百匯自助餐'],
+    lowestPriceProvider: 'Agoda',
+    price: 3800,
+    originalPrice: 6000,
+    discountPercent: 37,
+    providers: [
+      { name: 'Agoda', price: 3800, url: 'https://www.agoda.com/zh-tw/e-da-royal-hotel/hotel/kaohsiung-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 3950, url: 'https://www.booking.com/hotel/tw/e-da-royal.zh-tw.html' }
+    ]
+  },
+
+  // 6. 台南 (Tainan)
   {
     id: 'tn-1',
     cityId: 'tainan',
@@ -398,49 +379,311 @@ export const mockStays = [
     ]
   },
 
-  // 高雄 (Kaohsiung)
+  // 7. 桃園 (Taoyuan)
   {
-    id: 'kh-1',
-    cityId: 'kaohsiung',
-    cityName: '高雄',
-    name: '高雄萬豪酒店 (Kaohsiung Marriott Hotel)',
+    id: 'ty-1',
+    cityId: 'taoyuan',
+    cityName: '桃園',
+    name: '桃園大溪笠復威斯汀度假酒店 (The Westin Tashee Resort Taoyuan)',
     type: 'Family Hotel',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
     rating: 4.9,
-    reviewsCount: 5200,
-    address: '高雄市鼓山區龍德新路222號 (義享天地購物中心直達)',
-    tags: ['水療溫水按摩池', '兒童專用水樂園', '義享天地商場直通', '愛河之心景觀'],
+    reviewsCount: 3800,
+    address: '桃園市大溪區日新路166號 (峇里島度假風戶外泳池)',
+    tags: ['峇里島水上泳池', 'GoKart卡丁車', '全球最大天夢之床', '兒童遊戲俱樂部'],
     lowestPriceProvider: 'Agoda',
-    price: 4500,
-    originalPrice: 7200,
-    discountPercent: 38,
+    price: 7800,
+    originalPrice: 12000,
+    discountPercent: 35,
     providers: [
-      { name: 'Agoda', price: 4500, url: 'https://www.agoda.com/zh-tw/kaohsiung-marriott-hotel/hotel/kaohsiung-tw.html', isLowest: true },
-      { name: 'Booking.com', price: 4680, url: 'https://www.booking.com/hotel/tw/kaohsiung-marriott.zh-tw.html' }
+      { name: 'Agoda', price: 7800, url: 'https://www.agoda.com/zh-tw/the-westin-tashee-resort-taoyuan/hotel/taoyuan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 8100, url: 'https://www.booking.com/hotel/tw/the-westin-tashee-resort-taoyuan.zh-tw.html' }
     ]
   },
   {
-    id: 'kh-2',
-    cityId: 'kaohsiung',
-    cityName: '高雄',
-    name: '高雄義大皇家酒店 (E-Da Royal Hotel)',
+    id: 'ty-2',
+    cityId: 'taoyuan',
+    cityName: '桃園',
+    name: '桃園和逸飯店 - 桃園館 (COZZI Blu Taoyuan)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 3500,
+    address: '桃園市中壢區春德路101號 (Xpark水族館與華泰名品城連通)',
+    tags: ['海洋主題客房', 'Xpark水族館旁', '華泰名品城直達', '高鐵桃園站步行8分'],
+    lowestPriceProvider: 'Agoda',
+    price: 4200,
+    originalPrice: 6500,
+    discountPercent: 35,
+    providers: [
+      { name: 'Agoda', price: 4200, url: 'https://www.agoda.com/zh-tw/cozzi-blu/hotel/taoyuan-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4350, url: 'https://www.booking.com/hotel/tw/cozzi-blu.zh-tw.html' }
+    ]
+  },
+
+  // 8. 新竹 (Hsinchu)
+  {
+    id: 'hc-1',
+    cityId: 'hsinchu',
+    cityName: '新竹',
+    name: '關西六福莊生態渡假旅館 (Leofoo Resort Guanshi)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 4500,
+    address: '新竹縣關西鎮仁安里拱子溝60號 (窗外即是長頸鹿與白犀牛)',
+    tags: ['窗外長頸鹿斑馬', '六福村樂園旁', '非洲風情主題房', '親近動物餵食'],
+    lowestPriceProvider: 'Agoda',
+    price: 8500,
+    originalPrice: 13000,
+    discountPercent: 35,
+    providers: [
+      { name: 'Agoda', price: 8500, url: 'https://www.agoda.com/zh-tw/leofoo-resort-guanshi/hotel/hsinchu-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 8800, url: 'https://www.booking.com/hotel/tw/leofoo-resort-guanshi.zh-tw.html' }
+    ]
+  },
+  {
+    id: 'hc-2',
+    cityId: 'hsinchu',
+    cityName: '新竹',
+    name: '新竹煙波大飯店湖濱館 (Lakeshore Hotel Hsinchu)',
     type: 'Family Hotel',
     image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 5200,
+    address: '新竹市東區明湖路773號 (2300坪卡樂次元兒童室內樂園)',
+    tags: ['2300坪卡樂次元室內樂園', '溫水泳池與球池', '卡樂星友主題房', '莫內西餐廳'],
+    lowestPriceProvider: 'Agoda',
+    price: 3900,
+    originalPrice: 6200,
+    discountPercent: 37,
+    providers: [
+      { name: 'Agoda', price: 3900, url: 'https://www.agoda.com/zh-tw/lakeshore-hotel-hsinchu/hotel/hsinchu-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4050, url: 'https://www.booking.com/hotel/tw/lakeshore.zh-tw.html' }
+    ]
+  },
+
+  // 9. 苗栗 (Miaoli)
+  {
+    id: 'ml-1',
+    cityId: 'miaoli',
+    cityName: '苗栗',
+    name: '苗栗享沐時光莊園渡假酒店 (Shine Mood Resort Miaoli)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 2600,
+    address: '苗栗縣苑裡鎮石鎮里錦山8-1號 (700坪露天溫泉水療區)',
+    tags: ['700坪露天風呂', '裸湯溫泉三溫暖', '兒童遊戲室', '美人湯美人湯'],
+    lowestPriceProvider: 'Agoda',
+    price: 4980,
+    originalPrice: 7800,
+    discountPercent: 36,
+    providers: [
+      { name: 'Agoda', price: 4980, url: 'https://www.agoda.com/zh-tw/shine-mood-resort-miaoli/hotel/miaoli-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 5150, url: 'https://www.booking.com/hotel/tw/shine-mood-resort-miaoli.zh-tw.html' }
+    ]
+  },
+
+  // 10. 彰化 (Changhua)
+  {
+    id: 'ch-1',
+    cityId: 'changhua',
+    cityName: '彰化',
+    name: '鹿港永樂酒店 (UNION HOUSE Lukang)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 1980,
+    address: '彰化縣鹿港鎮三民路152號 (距離鹿港龍山寺 步行3分鐘)',
+    tags: ['SLH全球奢華精品酒店認證', '鹿港古蹟巡禮', '鼎泰豐等級早餐', '推車友善'],
+    lowestPriceProvider: 'Agoda',
+    price: 3600,
+    originalPrice: 5500,
+    discountPercent: 35,
+    providers: [
+      { name: 'Agoda', price: 3600, url: 'https://www.agoda.com/zh-tw/union-house-lukang/hotel/changhua-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 3750, url: 'https://www.booking.com/hotel/tw/union-house-lukang.zh-tw.html' }
+    ]
+  },
+
+  // 11. 南投 (Nantou)
+  {
+    id: 'nt-1',
+    cityId: 'nantou',
+    cityName: '南投',
+    name: '日月潭雲品溫泉酒店 (Fleur de Chine Hotel Sun Moon Lake)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 4200,
+    address: '南投縣魚池鄉中正路23號 (日月潭無敵湖景首排)',
+    tags: ['日月潭湖景風呂', '親水主題館', '雲水行政酒廊', '頂級親子樂園'],
+    lowestPriceProvider: 'Agoda',
+    price: 9800,
+    originalPrice: 15000,
+    discountPercent: 35,
+    providers: [
+      { name: 'Agoda', price: 9800, url: 'https://www.agoda.com/zh-tw/fleur-de-chine-hotel/hotel/nantou-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 10200, url: 'https://www.booking.com/hotel/tw/fleur-de-chine.zh-tw.html' }
+    ]
+  },
+
+  // 12. 嘉義 (Chiayi)
+  {
+    id: 'cy-1',
+    cityId: 'chiayi',
+    cityName: '嘉義',
+    name: '嘉義天成文旅 - 繪日之丘 (Sun Dialogue by Cosmos Creation)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 2400,
+    address: '嘉義市東區大雅路一段888號 (白色幾何純白美型建築)',
+    tags: ['兒童溜滑梯親子房', '星空童樂室無限古早味', '碰碰車體驗', '免費停車'],
+    lowestPriceProvider: 'Agoda',
+    price: 2600,
+    originalPrice: 4200,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 2600, url: 'https://www.agoda.com/zh-tw/sun-dialogue-by-cosmos-creation/hotel/chiayi-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 2720, url: 'https://www.booking.com/hotel/tw/sun-dialogue-by-cosmos-creation.zh-tw.html' }
+    ]
+  },
+
+  // 13. 屏東 / 墾丁 (Pingtung / Kenting)
+  {
+    id: 'pt-1',
+    cityId: 'pingtung',
+    cityName: '屏東',
+    name: '墾丁夏都沙灘酒店 (Chateau Beach Resort Kenting)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
     rating: 4.8,
     reviewsCount: 4100,
-    address: '高雄市大樹區學城路一段12號 (義大世界樂園旁)',
-    tags: ['夢幻兒童主題房', '水療戲水池', '義大摩天輪', '皇家百匯自助餐'],
+    address: '屏東縣恆春鎮墾丁路451號 (直通2.8公里私人白色沙灘)',
+    tags: ['直通私人白色沙灘', '無邊際海景泳池', '水上活動教學', '墾丁大街旁'],
+    lowestPriceProvider: 'Agoda',
+    price: 4900,
+    originalPrice: 7800,
+    discountPercent: 37,
+    providers: [
+      { name: 'Agoda', price: 4900, url: 'https://www.agoda.com/zh-tw/chateau-beach-resort/hotel/kenting-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 5080, url: 'https://www.booking.com/hotel/tw/chateau-beach-resort.zh-tw.html' }
+    ]
+  },
+
+  // 14. 花蓮 (Hualien)
+  {
+    id: 'hl-1',
+    cityId: 'hualien',
+    cityName: '花蓮',
+    name: '花蓮遠雄悅來大飯店 (Farglory Hotel Hualien)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 3900,
+    address: '花蓮縣壽豐鄉山嶺18號 (維多利亞太平洋海景首排)',
+    tags: ['太平洋無敵海景', '海洋公園接駁車', '室內外雙戲水池', '英倫百匯餐廳'],
+    lowestPriceProvider: 'Agoda',
+    price: 5800,
+    originalPrice: 9000,
+    discountPercent: 36,
+    providers: [
+      { name: 'Agoda', price: 5800, url: 'https://www.agoda.com/zh-tw/farglory-hotel/hotel/hualien-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 6050, url: 'https://www.booking.com/hotel/tw/farglory.zh-tw.html' }
+    ]
+  },
+
+  // 15. 台東 (Taitung)
+  {
+    id: 'tt-1',
+    cityId: 'taitung',
+    cityName: '台東',
+    name: '台東知本老爺酒店 (Hotel Royal Chihpen)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 3200,
+    address: '台東縣卑南鄉溫泉村龍泉路113巷23號 (峽谷露天溫泉星空風呂)',
+    tags: ['露天星空美人湯', '原住民歌舞表演', '射箭體驗與滑草', '知本森林旁'],
+    lowestPriceProvider: 'Agoda',
+    price: 5500,
+    originalPrice: 8800,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 5500, url: 'https://www.agoda.com/zh-tw/hotel-royal-chihpen/hotel/taitung-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 5720, url: 'https://www.booking.com/hotel/tw/hotel-royal-chihpen.zh-tw.html' }
+    ]
+  },
+
+  // 16. 澎湖 (Penghu)
+  {
+    id: 'ph-1',
+    cityId: 'penghu',
+    cityName: '澎湖',
+    name: '澎湖福朋喜來登酒店 (Four Points by Sheraton Penghu)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 3100,
+    address: '澎湖縣馬公市新店路199號 (無邊際海景游泳池)',
+    tags: ['港灣無邊際泳池', '宜客樂海鮮百匯', '微風酒吧', '馬公港港景'],
+    lowestPriceProvider: 'Agoda',
+    price: 4200,
+    originalPrice: 6800,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 4200, url: 'https://www.agoda.com/zh-tw/four-points-by-sheraton-penghu/hotel/penghu-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 4380, url: 'https://www.booking.com/hotel/tw/four-points-by-sheraton-penghu.zh-tw.html' }
+    ]
+  },
+
+  // 17. 金門 (Kinmen)
+  {
+    id: 'km-1',
+    cityId: 'kinmen',
+    cityName: '金門',
+    name: '金門昇恆昌金湖大飯店 (Everrich Golden Lake Hotel)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 2400,
+    address: '金門縣金湖鎮太湖路二段218號 (太湖畔與昇恆昌免稅商場直連)',
+    tags: ['金湖太湖第一排', '免稅廣場直通', '室內溫水泳池', '金門最高五星飯店'],
     lowestPriceProvider: 'Agoda',
     price: 3800,
     originalPrice: 6000,
     discountPercent: 37,
     providers: [
-      { name: 'Agoda', price: 3800, url: 'https://www.agoda.com/zh-tw/e-da-royal-hotel/hotel/kaohsiung-tw.html', isLowest: true },
-      { name: 'Booking.com', price: 3950, url: 'https://www.booking.com/hotel/tw/e-da-royal.zh-tw.html' }
+      { name: 'Agoda', price: 3800, url: 'https://www.agoda.com/zh-tw/everrich-golden-lake-hotel/hotel/kinmen-tw.html', isLowest: true },
+      { name: 'Booking.com', price: 3950, url: 'https://www.booking.com/hotel/tw/everrich-golden-lake.zh-tw.html' }
     ]
   },
 
-  // 沖繩 (Okinawa)
+  // 18. 馬祖 (Matsu)
+  {
+    id: 'mz-1',
+    cityId: 'matsu',
+    cityName: '馬祖',
+    name: '馬祖南竿日光春和 (Dayspring Matsu Resort)',
+    type: 'B&B',
+    image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 890,
+    address: '連江縣南竿鄉仁愛村1-1號 (津沙聚落與鐵堡海景景觀)',
+    tags: ['極簡美學清水模', '無敵太平洋海景', '藍眼淚季節首選', '精緻手作早餐'],
+    lowestPriceProvider: 'Booking.com',
+    price: 3600,
+    originalPrice: 5500,
+    discountPercent: 35,
+    providers: [
+      { name: 'Booking.com', price: 3600, url: 'https://www.booking.com/hotel/tw/dayspring-matsu.zh-tw.html', isLowest: true },
+      { name: 'Agoda', price: 3720, url: 'https://www.agoda.com/zh-tw/dayspring-matsu/hotel/matsu-tw.html' }
+    ]
+  },
+
+  // 19. 沖繩 (Okinawa)
   {
     id: 'oki-1',
     cityId: 'okinawa',
@@ -461,28 +704,8 @@ export const mockStays = [
       { name: 'Booking.com', price: 2590, url: 'https://www.booking.com/hotel/jp/vessel-hotel-campana-okinawa.zh-tw.html' }
     ]
   },
-  {
-    id: 'oki-2',
-    cityId: 'okinawa',
-    cityName: '沖繩',
-    name: '那霸阿札特飯店 (Hotel Azat Okinawa)',
-    type: 'Hotel',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-    rating: 4.6,
-    reviewsCount: 2100,
-    address: '沖繩縣那霸市安里2-8-8 (單軌列車安里站 步行30秒)',
-    tags: ['單軌站旁30秒', '24小時超市旁', '平價乾淨', 'CP值極高首選'],
-    lowestPriceProvider: 'Booking.com',
-    price: 1250,
-    originalPrice: 2100,
-    discountPercent: 40,
-    providers: [
-      { name: 'Booking.com', price: 1250, url: 'https://www.booking.com/hotel/jp/azat.zh-tw.html', isLowest: true },
-      { name: 'Agoda', price: 1310, url: 'https://www.agoda.com/zh-tw/hotel-azat/hotel/okinawa-jp.html' }
-    ]
-  },
 
-  // 東京 (Tokyo)
+  // 20. 東京 (Tokyo)
   {
     id: 'tyo-1',
     cityId: 'tokyo',
@@ -501,6 +724,94 @@ export const mockStays = [
     providers: [
       { name: 'Agoda', price: 3500, url: 'https://www.agoda.com/zh-tw/hotel-gracery-shinjuku/hotel/tokyo-jp.html', isLowest: true },
       { name: 'Booking.com', price: 3650, url: 'https://www.booking.com/hotel/jp/gracery-shinjuku.zh-tw.html' }
+    ]
+  },
+
+  // 21. 大阪 (Osaka)
+  {
+    id: 'osa-1',
+    cityId: 'osaka',
+    cityName: '大阪',
+    name: '大阪環球影城港口飯店 (Hotel Universal Port)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 5100,
+    address: '大阪府大阪市此花區櫻島1-1-111 (USJ日本環球影城官方合作飯店)',
+    tags: ['小小兵主題大廳與客房', '環球影城步行3分', 'JR櫻島站旁', '親子家庭房'],
+    lowestPriceProvider: 'Agoda',
+    price: 3800,
+    originalPrice: 6200,
+    discountPercent: 39,
+    providers: [
+      { name: 'Agoda', price: 3800, url: 'https://www.agoda.com/zh-tw/hotel-universal-port/hotel/osaka-jp.html', isLowest: true },
+      { name: 'Booking.com', price: 3950, url: 'https://www.booking.com/hotel/jp/universal-port.zh-tw.html' }
+    ]
+  },
+
+  // 22. 首爾 (Seoul)
+  {
+    id: 'seo-1',
+    cityId: 'seoul',
+    cityName: '首爾',
+    name: '首爾明洞 L7 飯店 (L7 Myeongdong by LOTTE)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+    rating: 4.8,
+    reviewsCount: 3800,
+    address: '首爾特別市中區退溪路137 (明洞捷運站9號出口直達)',
+    tags: ['明洞商圈第一排', '首爾塔南山景觀露台', '捷運站口1秒到', '樂天時尚設計'],
+    lowestPriceProvider: 'Agoda',
+    price: 3200,
+    originalPrice: 5200,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 3200, url: 'https://www.agoda.com/zh-tw/l7-myeongdong/hotel/seoul-kr.html', isLowest: true },
+      { name: 'Booking.com', price: 3350, url: 'https://www.booking.com/hotel/kr/l7-myeongdong.zh-tw.html' }
+    ]
+  },
+
+  // 23. 京都 (Kyoto)
+  {
+    id: 'kyo-1',
+    cityId: 'kyoto',
+    cityName: '京都',
+    name: '京都站前 MIMARU 家族公寓式飯店 (MIMARU KYOTO STATION)',
+    type: 'Family Hotel',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 2900,
+    address: '京都府京都市南區東九條上殿田町15-1 (京都車站八條口步行 4分鐘)',
+    tags: ['四人與雙層床家庭房', '附設完整廚房與餐具', '寶可夢主題房', '京都車站旁'],
+    lowestPriceProvider: 'Agoda',
+    price: 4500,
+    originalPrice: 7200,
+    discountPercent: 38,
+    providers: [
+      { name: 'Agoda', price: 4500, url: 'https://www.agoda.com/zh-tw/mimaru-kyoto-station/hotel/kyoto-jp.html', isLowest: true },
+      { name: 'Booking.com', price: 4680, url: 'https://www.booking.com/hotel/jp/mimaru-kyoto-station.zh-tw.html' }
+    ]
+  },
+
+  // 24. 曼谷 (Bangkok)
+  {
+    id: 'bkk-1',
+    cityId: 'bangkok',
+    cityName: '曼谷',
+    name: '曼谷中心點大飯店 Terminal 21 館 (Grande Centre Point Hotel Terminal 21)',
+    type: 'Hotel',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    rating: 4.9,
+    reviewsCount: 6800,
+    address: '2 Sukhumvit Soi 19, Khwaeng Khlong Toei Nuea, Bangkok (BTS Asok 站連通)',
+    tags: ['Terminal 21 購物商場直通', 'BTS Asok / MRT 雙捷運交會', '高空露天無邊際泳池', '兒童遊戲室'],
+    lowestPriceProvider: 'Agoda',
+    price: 2800,
+    originalPrice: 4800,
+    discountPercent: 42,
+    providers: [
+      { name: 'Agoda', price: 2800, url: 'https://www.agoda.com/zh-tw/grande-centre-point-hotel-terminal-21/hotel/bangkok-th.html', isLowest: true },
+      { name: 'Booking.com', price: 2950, url: 'https://www.booking.com/hotel/th/grande-centre-point-terminal-21.zh-tw.html' }
     ]
   }
 ];
