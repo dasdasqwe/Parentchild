@@ -41,9 +41,9 @@ export default function Sidebar({
     <aside style={{
       width: '300px',
       flexShrink: 0,
-      background: 'rgba(15, 23, 42, 0.95)',
-      backdropFilter: 'blur(30px)',
-      borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+      background: '#ffffff',
+      borderRight: '1px solid rgba(15, 23, 42, 0.08)',
+      boxShadow: '4px 0 20px rgba(0, 0, 0, 0.03)',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
@@ -63,12 +63,12 @@ export default function Sidebar({
             width: '46px',
             height: '46px',
             borderRadius: '16px',
-            background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)',
+            background: 'linear-gradient(135deg, #059669 0%, #0284c7 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '24px',
-            boxShadow: '0 0 24px rgba(16, 185, 129, 0.5)',
+            boxShadow: '0 8px 20px rgba(5, 150, 105, 0.3)',
             position: 'relative'
           }}>
             🏨
@@ -79,21 +79,21 @@ export default function Sidebar({
               width: '12px',
               height: '12px',
               borderRadius: '50%',
-              background: '#34d399',
-              boxShadow: '0 0 10px #34d399'
+              background: '#10b981',
+              boxShadow: '0 0 10px #10b981'
             }} />
           </div>
 
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span className="font-display" style={{ fontSize: '1.45rem', fontWeight: '900', letterSpacing: '-0.5px', background: 'linear-gradient(90deg, #ffffff, #a7f3d0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <span className="font-display" style={{ fontSize: '1.45rem', fontWeight: '900', letterSpacing: '-0.5px', color: '#0f172a' }}>
                 StayPulse
               </span>
-              <span style={{ fontSize: '0.65rem', fontWeight: '900', background: 'rgba(16, 185, 129, 0.2)', color: '#34d399', padding: '2px 6px', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
+              <span style={{ fontSize: '0.65rem', fontWeight: '900', background: 'rgba(5, 150, 105, 0.12)', color: '#059669', padding: '2px 6px', borderRadius: '6px', border: '1px solid rgba(5, 150, 105, 0.25)' }}>
                 v2.0
               </span>
             </div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600', display: 'block', marginTop: '2px' }}>
+            <span style={{ fontSize: '0.75rem', color: '#475569', fontWeight: '600', display: 'block', marginTop: '2px' }}>
               AI 比價工作台 & LINE 機器人
             </span>
           </div>
@@ -101,7 +101,7 @@ export default function Sidebar({
 
         {/* Sidebar Nav Items */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '28px' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-dim)', letterSpacing: '0.5px', padding: '0 8px 4px 8px' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: '800', color: '#94a3b8', letterSpacing: '0.5px', padding: '0 8px 4px 8px' }}>
             WORKSPACES
           </div>
           {navItems.map(item => {
@@ -115,14 +115,14 @@ export default function Sidebar({
                   width: '100%',
                   padding: '12px 14px',
                   borderRadius: '14px',
-                  border: isActive ? '1px solid var(--primary)' : '1px solid transparent',
-                  background: isActive ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.15) 100%)' : 'rgba(255, 255, 255, 0.03)',
-                  color: isActive ? '#ffffff' : 'var(--text-muted)',
+                  border: isActive ? '1px solid #059669' : '1px solid transparent',
+                  background: isActive ? 'rgba(5, 150, 105, 0.08)' : 'transparent',
+                  color: isActive ? '#059669' : '#334155',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   cursor: 'pointer',
-                  transition: 'all 0.25s ease',
+                  transition: 'all 0.2s ease',
                   textAlign: 'left'
                 }}
               >
@@ -131,19 +131,19 @@ export default function Sidebar({
                     width: '34px',
                     height: '34px',
                     borderRadius: '10px',
-                    background: isActive ? 'var(--gradient-primary)' : 'rgba(255, 255, 255, 0.06)',
+                    background: isActive ? 'var(--gradient-primary)' : '#f1f5f9',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#ffffff'
+                    color: isActive ? '#ffffff' : '#64748b'
                   }}>
                     <Icon size={18} />
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.9rem', fontWeight: isActive ? '800' : '600', color: isActive ? '#ffffff' : 'var(--text-main)' }}>
+                    <div style={{ fontSize: '0.9rem', fontWeight: isActive ? '800' : '600', color: isActive ? '#059669' : '#0f172a' }}>
                       {item.label}
                     </div>
-                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                    <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
                       {item.desc}
                     </div>
                   </div>
@@ -153,8 +153,8 @@ export default function Sidebar({
                   <span style={{
                     fontSize: '0.68rem',
                     fontWeight: '800',
-                    background: isActive ? '#10b981' : 'rgba(255, 255, 255, 0.1)',
-                    color: '#ffffff',
+                    background: isActive ? '#059669' : '#f1f5f9',
+                    color: isActive ? '#ffffff' : '#475569',
                     padding: '2px 8px',
                     borderRadius: '999px'
                   }}>
@@ -169,19 +169,19 @@ export default function Sidebar({
         {/* Quick Filter Section in Sidebar */}
         {activeTab === 'stays' && (
           <div style={{
-            background: 'rgba(7, 10, 19, 0.65)',
+            background: '#f8fafc',
             padding: '16px',
             borderRadius: '16px',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            border: '1px solid rgba(15, 23, 42, 0.08)',
             marginBottom: '20px'
           }}>
-            <div style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--text-muted)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <SlidersHorizontal size={14} color="var(--primary)" /> 實時邊欄控制
+            <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#475569', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <SlidersHorizontal size={14} color="#059669" /> 實時邊欄控制
             </div>
 
             {/* Quick Cities */}
             <div style={{ marginBottom: '14px' }}>
-              <label style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: '700', display: 'block', marginBottom: '6px' }}>
+              <label style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', display: 'block', marginBottom: '6px' }}>
                 熱門目的地
               </label>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -190,9 +190,9 @@ export default function Sidebar({
                     key={c}
                     onClick={() => setSelectedCity(c)}
                     style={{
-                      background: selectedCity === c ? 'var(--primary)' : 'rgba(255, 255, 255, 0.06)',
-                      color: selectedCity === c ? '#0f172a' : 'var(--text-muted)',
-                      border: 'none',
+                      background: selectedCity === c ? '#059669' : '#ffffff',
+                      color: selectedCity === c ? '#ffffff' : '#475569',
+                      border: '1px solid rgba(15, 23, 42, 0.08)',
                       padding: '3px 10px',
                       borderRadius: '8px',
                       fontSize: '0.76rem',
@@ -209,8 +209,8 @@ export default function Sidebar({
             {/* Max Budget Slider */}
             <div style={{ marginBottom: '12px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: '700', marginBottom: '4px' }}>
-                <span style={{ color: 'var(--text-muted)' }}>最高預算</span>
-                <span style={{ color: '#34d399' }}>NT$ {maxPrice.toLocaleString()}</span>
+                <span style={{ color: '#64748b' }}>最高預算</span>
+                <span style={{ color: '#059669', fontWeight: '800' }}>NT$ {maxPrice.toLocaleString()}</span>
               </div>
               <input
                 type="range"
@@ -219,13 +219,13 @@ export default function Sidebar({
                 step="250"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(Number(e.target.value))}
-                style={{ width: '100%', accentColor: 'var(--primary)' }}
+                style={{ width: '100%', accentColor: '#059669' }}
               />
             </div>
 
             {/* Stay Type */}
             <div>
-              <label style={{ fontSize: '0.75rem', color: 'var(--text-dim)', fontWeight: '700', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', display: 'block', marginBottom: '4px' }}>
                 住宿類型
               </label>
               <select
@@ -234,12 +234,13 @@ export default function Sidebar({
                 style={{
                   width: '100%',
                   height: '36px',
-                  background: '#0f172a',
-                  color: '#fff',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: '#ffffff',
+                  color: '#0f172a',
+                  border: '1px solid rgba(15, 23, 42, 0.12)',
                   borderRadius: '8px',
                   padding: '0 8px',
-                  fontSize: '0.8rem'
+                  fontSize: '0.8rem',
+                  fontWeight: '600'
                 }}
               >
                 <option value="all">全部分類</option>
@@ -263,9 +264,9 @@ export default function Sidebar({
             width: '100%',
             padding: '12px',
             borderRadius: '14px',
-            background: 'rgba(6, 199, 85, 0.15)',
-            border: '1px solid rgba(6, 199, 85, 0.4)',
-            color: '#34d399',
+            background: 'rgba(6, 199, 85, 0.1)',
+            border: '1px solid rgba(6, 199, 85, 0.3)',
+            color: '#059669',
             fontWeight: '800',
             fontSize: '0.88rem',
             display: 'flex',
@@ -273,7 +274,7 @@ export default function Sidebar({
             justifyContent: 'center',
             gap: '8px',
             cursor: 'pointer',
-            boxShadow: '0 0 20px rgba(6, 199, 85, 0.2)'
+            boxShadow: '0 4px 12px rgba(6, 199, 85, 0.15)'
           }}
         >
           <Bot size={18} color="#06c755" />
@@ -288,9 +289,9 @@ export default function Sidebar({
               flex: 1,
               padding: '10px',
               borderRadius: '12px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: isConsoleOpen ? '1px solid var(--primary)' : '1px solid rgba(255, 255, 255, 0.1)',
-              color: isConsoleOpen ? 'var(--primary)' : 'var(--text-main)',
+              background: '#ffffff',
+              border: isConsoleOpen ? '1px solid #059669' : '1px solid rgba(15, 23, 42, 0.12)',
+              color: isConsoleOpen ? '#059669' : '#334155',
               fontSize: '0.8rem',
               fontWeight: '700',
               display: 'flex',
@@ -309,17 +310,16 @@ export default function Sidebar({
               flex: 1,
               padding: '10px',
               borderRadius: '12px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              color: 'var(--text-main)',
+              background: '#ffffff',
+              border: '1px solid rgba(15, 23, 42, 0.12)',
+              color: '#334155',
               fontSize: '0.8rem',
               fontWeight: '700',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '6px',
-              cursor: 'pointer',
-              position: 'relative'
+              cursor: 'pointer'
             }}
           >
             <Heart size={15} color="#f43f5e" fill={savedCount > 0 ? "#f43f5e" : "transparent"} />

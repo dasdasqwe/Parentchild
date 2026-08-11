@@ -30,8 +30,9 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
       borderRadius: '20px',
       overflow: 'hidden',
       position: 'relative',
-      background: 'rgba(15, 23, 42, 0.88)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      background: '#ffffff',
+      border: '1px solid rgba(15, 23, 42, 0.08)',
+      boxShadow: '0 10px 30px -5px rgba(15, 23, 42, 0.06)',
       display: 'flex',
       flexDirection: 'column'
     }}>
@@ -66,16 +67,16 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                 top: '50%',
                 left: '10px',
                 transform: 'translateY(-50%)',
-                background: 'rgba(15, 23, 42, 0.75)',
+                background: 'rgba(255, 255, 255, 0.85)',
                 backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(0, 0, 0, 0.1)',
                 borderRadius: '50%',
                 width: '32px',
                 height: '32px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ffffff',
+                color: '#0f172a',
                 cursor: 'pointer',
                 zIndex: 2
               }}
@@ -89,16 +90,16 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                 top: '50%',
                 right: '10px',
                 transform: 'translateY(-50%)',
-                background: 'rgba(15, 23, 42, 0.75)',
+                background: 'rgba(255, 255, 255, 0.85)',
                 backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                border: '1px solid rgba(0, 0, 0, 0.1)',
                 borderRadius: '50%',
                 width: '32px',
                 height: '32px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ffffff',
+                color: '#0f172a',
                 cursor: 'pointer',
                 zIndex: 2
               }}
@@ -133,9 +134,9 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             position: 'absolute',
             top: '12px',
             right: '12px',
-            background: 'rgba(15, 23, 42, 0.8)',
+            background: 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
+            border: '1px solid rgba(0, 0, 0, 0.1)',
             borderRadius: '50%',
             width: '38px',
             height: '38px',
@@ -155,7 +156,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           bottom: '0',
           left: '0',
           right: '0',
-          background: 'linear-gradient(to top, rgba(7, 10, 19, 0.96) 0%, rgba(7, 10, 19, 0.4) 70%, transparent 100%)',
+          background: 'linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.3) 70%, transparent 100%)',
           padding: '16px 16px 10px 16px',
           display: 'flex',
           justify: 'space-between',
@@ -163,20 +164,20 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           zIndex: 2
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#fbbf24', fontSize: '0.88rem', fontWeight: '800' }}>
-            <Star size={15} fill="#fbbf24" /> {stay.rating} <span style={{ color: 'var(--text-muted)', fontWeight: '500', fontSize: '0.78rem' }}>({stay.reviewsCount} 則評價)</span>
+            <Star size={15} fill="#fbbf24" /> {stay.rating} <span style={{ color: '#cbd5e1', fontWeight: '500', fontSize: '0.78rem' }}>({stay.reviewsCount} 則評價)</span>
           </div>
 
           <div style={{ textAlign: 'right' }}>
             {stay.originalPrice && (
-              <div style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '0.78rem' }}>
+              <div style={{ textDecoration: 'line-through', color: '#94a3b8', fontSize: '0.78rem' }}>
                 NT$ {stay.originalPrice.toLocaleString()}
               </div>
             )}
             <div>
-              <span className="font-display" style={{ fontSize: '1.45rem', fontWeight: '900', color: 'var(--primary-light)' }}>
+              <span className="font-display" style={{ fontSize: '1.45rem', fontWeight: '900', color: '#34d399' }}>
                 NT$ {stay.price.toLocaleString()}
               </span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>/晚起</span>
+              <span style={{ fontSize: '0.75rem', color: '#cbd5e1' }}>/晚起</span>
             </div>
           </div>
         </div>
@@ -190,20 +191,20 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
               href={officialUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: '#ffffff', textDecoration: 'none' }}
+              style={{ color: '#0f172a', textDecoration: 'none' }}
             >
               {stay.name}
             </a>
           </h3>
 
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+          <p style={{ fontSize: '0.82rem', color: '#475569', marginBottom: '12px' }}>
             <a
               href={mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: 'var(--text-muted)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              style={{ color: '#475569', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
             >
-              <MapPin size={15} color="var(--primary)" style={{ flexShrink: 0 }} />
+              <MapPin size={15} color="#059669" style={{ flexShrink: 0 }} />
               <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px' }}>
                 {stay.address}
               </span>
@@ -213,12 +214,13 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
             {stay.tags.map((tag, idx) => (
               <span key={idx} style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                color: 'var(--text-muted)',
+                background: '#f1f5f9',
+                color: '#475569',
                 fontSize: '0.76rem',
                 padding: '4px 10px',
                 borderRadius: '8px',
-                border: '1px solid rgba(255, 255, 255, 0.08)'
+                border: '1px solid rgba(15, 23, 42, 0.06)',
+                fontWeight: '600'
               }}>
                 {tag}
               </span>
@@ -229,8 +231,8 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
         {/* Provider Comparison Callout & Drawer */}
         <div>
           <div style={{
-            background: 'rgba(16, 185, 129, 0.1)',
-            border: '1px solid rgba(16, 185, 129, 0.25)',
+            background: 'rgba(5, 150, 105, 0.08)',
+            border: '1px solid rgba(5, 150, 105, 0.2)',
             borderRadius: '12px',
             padding: '10px 14px',
             display: 'flex',
@@ -239,8 +241,8 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             marginBottom: '12px'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Tag size={15} color="var(--primary)" />
-              <span style={{ fontSize: '0.84rem', fontWeight: '800', color: '#34d399' }}>
+              <Tag size={15} color="#059669" />
+              <span style={{ fontSize: '0.84rem', fontWeight: '800', color: '#059669' }}>
                 全網最低價: {providerName}
               </span>
             </div>
@@ -249,7 +251,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: 'var(--text-muted)',
+                color: '#475569',
                 fontSize: '0.78rem',
                 fontWeight: '700',
                 cursor: 'pointer',
@@ -264,12 +266,12 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
 
           {showProviders && (
             <div style={{
-              background: 'rgba(7, 10, 19, 0.95)',
+              background: '#f8fafc',
               borderRadius: '12px',
               padding: '12px',
               marginBottom: '12px',
               fontSize: '0.82rem',
-              border: '1px solid rgba(255, 255, 255, 0.1)'
+              border: '1px solid rgba(15, 23, 42, 0.08)'
             }}>
               {stay.providers.map((p, pIdx) => (
                 <div key={pIdx} style={{
@@ -277,13 +279,13 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   padding: '8px 0',
-                  borderBottom: pIdx !== stay.providers.length - 1 ? '1px dashed rgba(255, 255, 255, 0.1)' : 'none'
+                  borderBottom: pIdx !== stay.providers.length - 1 ? '1px dashed rgba(15, 23, 42, 0.1)' : 'none'
                 }}>
-                  <span style={{ color: p.isLowest ? '#34d399' : 'var(--text-muted)', fontWeight: p.isLowest ? '800' : '500' }}>
+                  <span style={{ color: p.isLowest ? '#059669' : '#475569', fontWeight: p.isLowest ? '800' : '500' }}>
                     {p.name} {p.isLowest && '👑 最低'}
                   </span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span style={{ color: p.isLowest ? '#34d399' : '#ffffff', fontWeight: '700' }}>
+                    <span style={{ color: p.isLowest ? '#059669' : '#0f172a', fontWeight: '700' }}>
                       NT$ {p.price.toLocaleString()}
                     </span>
                     <a
@@ -291,8 +293,8 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
-                        background: 'rgba(16, 185, 129, 0.2)',
-                        color: '#34d399',
+                        background: 'rgba(5, 150, 105, 0.15)',
+                        color: '#059669',
                         padding: '2px 8px',
                         borderRadius: '6px',
                         fontSize: '0.76rem',

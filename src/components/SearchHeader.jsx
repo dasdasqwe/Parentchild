@@ -21,9 +21,7 @@ export default function SearchHeader({
   setChildrenCount,
   onTriggerScrape,
   isScraping,
-  activeTab,
-  viewMode,
-  setViewMode
+  activeTab
 }) {
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -63,9 +61,9 @@ export default function SearchHeader({
     height: '42px',
     padding: '0 12px',
     borderRadius: '10px',
-    background: 'rgba(15, 23, 42, 0.95)',
-    color: '#ffffff',
-    border: '1px solid rgba(255, 255, 255, 0.12)',
+    background: '#ffffff',
+    color: '#0f172a',
+    border: '1px solid rgba(15, 23, 42, 0.12)',
     outline: 'none',
     fontSize: '0.86rem',
     fontWeight: '600',
@@ -75,25 +73,24 @@ export default function SearchHeader({
   return (
     <div style={{ marginBottom: '24px' }}>
       
-      {/* Workspace Top Command Bar */}
+      {/* Bright Command Bar */}
       <div style={{
-        background: 'rgba(15, 23, 42, 0.85)',
-        backdropFilter: 'blur(20px)',
+        background: '#ffffff',
         borderRadius: '20px',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
+        border: '1px solid rgba(15, 23, 42, 0.08)',
         padding: '16px 20px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '14px',
-        boxShadow: '0 15px 35px rgba(0, 0, 0, 0.4)'
+        boxShadow: '0 10px 30px -5px rgba(15, 23, 42, 0.05)'
       }}>
 
         {/* Global Command Search Bar */}
         <form onSubmit={handleFormSubmit} style={{ display: 'flex', gap: '8px', flex: 1, minWidth: '280px' }}>
           <div style={{ position: 'relative', flex: 1 }}>
-            <Search size={18} color="var(--primary)" style={{ position: 'absolute', left: '14px', top: '12px' }} />
+            <Search size={18} color="#059669" style={{ position: 'absolute', left: '14px', top: '12px' }} />
             <input
               type="text"
               list="workspace-city-suggestions"
@@ -104,7 +101,7 @@ export default function SearchHeader({
                 ...inputControlStyle,
                 width: '100%',
                 paddingLeft: '40px',
-                borderColor: 'var(--border-glass-glow)',
+                borderColor: 'rgba(5, 150, 105, 0.4)',
                 fontSize: '0.92rem',
                 fontWeight: '700'
               }}
@@ -140,7 +137,7 @@ export default function SearchHeader({
               style={inputControlStyle}
               title="入住日期"
             />
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>~</span>
+            <span style={{ color: '#64748b', fontSize: '0.8rem' }}>~</span>
             {/* Check-Out */}
             <input
               type="date"
@@ -156,17 +153,17 @@ export default function SearchHeader({
               onChange={(e) => handleNightsChange(Number(e.target.value))}
               style={{
                 ...inputControlStyle,
-                background: 'rgba(16, 185, 129, 0.15)',
-                color: '#34d399',
-                border: '1px solid var(--primary)',
+                background: 'rgba(5, 150, 105, 0.1)',
+                color: '#059669',
+                border: '1px solid #059669',
                 fontWeight: '800'
               }}
             >
-              <option value={1} style={{ background: '#0f172a' }}>1晚</option>
-              <option value={2} style={{ background: '#0f172a' }}>2晚</option>
-              <option value={3} style={{ background: '#0f172a' }}>3晚</option>
-              <option value={5} style={{ background: '#0f172a' }}>5晚</option>
-              <option value={7} style={{ background: '#0f172a' }}>7晚</option>
+              <option value={1} style={{ background: '#fff', color: '#0f172a' }}>1晚</option>
+              <option value={2} style={{ background: '#fff', color: '#0f172a' }}>2晚</option>
+              <option value={3} style={{ background: '#fff', color: '#0f172a' }}>3晚</option>
+              <option value={5} style={{ background: '#fff', color: '#0f172a' }}>5晚</option>
+              <option value={7} style={{ background: '#fff', color: '#0f172a' }}>7晚</option>
             </select>
 
             {/* Sort Selector */}
@@ -175,9 +172,9 @@ export default function SearchHeader({
               onChange={(e) => setSortBy(e.target.value)}
               style={inputControlStyle}
             >
-              <option value="price_asc" style={{ background: '#0f172a' }}>💰 價格低到高 (最低價優先)</option>
-              <option value="price_desc" style={{ background: '#0f172a' }}>💰 價格高到低</option>
-              <option value="rating_desc" style={{ background: '#0f172a' }}>⭐ 滿意評分最高</option>
+              <option value="price_asc" style={{ background: '#fff' }}>💰 價格低到高 (最低價優先)</option>
+              <option value="price_desc" style={{ background: '#fff' }}>💰 價格高到低</option>
+              <option value="rating_desc" style={{ background: '#fff' }}>⭐ 滿意評分最高</option>
             </select>
 
             {/* Scrape Refresh Trigger Button */}

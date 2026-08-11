@@ -7,23 +7,23 @@ export default function StayList({ stays, savedStays, onToggleSave }) {
 
   if (stays.length === 0) {
     return (
-      <div className="glass-panel" style={{ textAlign: 'center', padding: '70px 20px', borderRadius: '24px' }}>
+      <div className="glass-panel" style={{ textAlign: 'center', padding: '70px 20px', borderRadius: '24px', background: '#ffffff' }}>
         <div style={{
           width: '64px',
           height: '64px',
           borderRadius: '50%',
-          background: 'rgba(255, 255, 255, 0.05)',
+          background: '#f1f5f9',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: '20px'
         }}>
-          <SearchX size={36} color="var(--text-muted)" />
+          <SearchX size={36} color="#64748b" />
         </div>
-        <h3 style={{ fontSize: '1.3rem', color: 'var(--text-main)', fontWeight: '800', marginBottom: '8px' }}>
+        <h3 style={{ fontSize: '1.3rem', color: '#0f172a', fontWeight: '800', marginBottom: '8px' }}>
           未找到符合條件的平價住宿
         </h3>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', maxWidth: '480px', margin: '0 auto' }}>
+        <p style={{ color: '#475569', fontSize: '0.94rem', maxWidth: '480px', margin: '0 auto' }}>
           建議提高最高預算上限，或切換至「全部分類」重試爬取數據。
         </p>
       </div>
@@ -32,30 +32,31 @@ export default function StayList({ stays, savedStays, onToggleSave }) {
 
   return (
     <div>
-      {/* Results Workspace Header */}
+      {/* Bright Header */}
       <div style={{
         display: 'flex',
         justify: 'space-between',
         alignItems: 'center',
         marginBottom: '20px',
-        color: 'var(--text-muted)',
+        color: '#475569',
         fontSize: '0.9rem',
         flexWrap: 'wrap',
         gap: '12px',
-        background: 'rgba(15, 23, 42, 0.6)',
+        background: '#ffffff',
         padding: '12px 20px',
         borderRadius: '16px',
-        border: '1px solid rgba(255, 255, 255, 0.08)'
+        border: '1px solid rgba(15, 23, 42, 0.08)',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.03)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Sparkles size={17} color="var(--primary)" />
+          <Sparkles size={17} color="#059669" />
           <span>
-            已在雷達畫布中為您載入 <strong style={{ color: 'var(--primary-light)', fontSize: '1.05rem' }}>{stays.length}</strong> 間平價精選住宿（多平台實時比價）
+            已在雷達畫布中為您載入 <strong style={{ color: '#059669', fontSize: '1.05rem' }}>{stays.length}</strong> 間平價精選住宿（多平台實時比價）
           </span>
         </div>
 
-        <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', padding: '2px 8px', borderRadius: '6px', fontWeight: '700' }}>
+        <div style={{ fontSize: '0.82rem', color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ background: 'rgba(5, 150, 105, 0.12)', color: '#059669', padding: '2px 8px', borderRadius: '6px', fontWeight: '700' }}>
             👑 全網最低價
           </span>
           <span>已即時校正無效連結與優惠標籤</span>
