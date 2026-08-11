@@ -1,13 +1,13 @@
 import React from 'react';
 import StayCard from './StayCard';
-import { Building2, SearchX, Sparkles, Filter } from 'lucide-react';
+import { Building2, SearchX, Sparkles } from 'lucide-react';
 
 export default function StayList({ stays, savedStays, onToggleSave }) {
   const savedIds = new Set(savedStays.map(s => s.id));
 
   if (stays.length === 0) {
     return (
-      <div className="glass-panel" style={{ textAlign: 'center', padding: '70px 20px', margin: '0 auto', maxWidth: '1320px', borderRadius: '24px' }}>
+      <div className="glass-panel" style={{ textAlign: 'center', padding: '70px 20px', borderRadius: '24px' }}>
         <div style={{
           width: '64px',
           height: '64px',
@@ -24,16 +24,15 @@ export default function StayList({ stays, savedStays, onToggleSave }) {
           未找到符合條件的平價住宿
         </h3>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', maxWidth: '480px', margin: '0 auto' }}>
-          建議提高最高預算上限，或將住宿類型切換至「全部分類」重試爬取數據。
+          建議提高最高預算上限，或切換至「全部分類」重試爬取數據。
         </p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '1320px', margin: '0 auto' }}>
-      
-      {/* Results Header Bar */}
+    <div>
+      {/* Results Workspace Header */}
       <div style={{
         display: 'flex',
         justify: 'space-between',
@@ -51,7 +50,7 @@ export default function StayList({ stays, savedStays, onToggleSave }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Sparkles size={17} color="var(--primary)" />
           <span>
-            共為您找到 <strong style={{ color: 'var(--primary-light)', fontSize: '1.05rem' }}>{stays.length}</strong> 間平價精選住宿（全網多平台動態比價）
+            已在雷達畫布中為您載入 <strong style={{ color: 'var(--primary-light)', fontSize: '1.05rem' }}>{stays.length}</strong> 間平價精選住宿（多平台實時比價）
           </span>
         </div>
 
@@ -59,11 +58,11 @@ export default function StayList({ stays, savedStays, onToggleSave }) {
           <span style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', padding: '2px 8px', borderRadius: '6px', fontWeight: '700' }}>
             👑 全網最低價
           </span>
-          <span>已通過防禦過濾器實時校正</span>
+          <span>已即時校正無效連結與優惠標籤</span>
         </div>
       </div>
 
-      {/* Stay Card Grid */}
+      {/* Grid Canvas */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',

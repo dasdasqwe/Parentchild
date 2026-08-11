@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, MapPin, ExternalLink, Heart, Tag, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Sparkles, Building } from 'lucide-react';
+import { Star, MapPin, ExternalLink, Heart, Tag, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Sparkles, Building, CheckCircle2 } from 'lucide-react';
 
 export default function StayCard({ stay, isSaved, onToggleSave }) {
   const [showProviders, setShowProviders] = useState(false);
@@ -27,23 +27,22 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
 
   return (
     <div className="glass-panel glass-card-hover" style={{
-      display: 'flex',
-      flexDirection: 'column',
       borderRadius: '20px',
       overflow: 'hidden',
       position: 'relative',
-      background: 'rgba(15, 23, 42, 0.85)',
-      border: '1px solid rgba(255, 255, 255, 0.1)'
+      background: 'rgba(15, 23, 42, 0.88)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
 
-      {/* Media Image Banner */}
+      {/* Card Header Media Gallery */}
       <div style={{ position: 'relative', height: '220px', width: '100%', overflow: 'hidden' }}>
         <a
           href={officialUrl}
           target="_blank"
           rel="noopener noreferrer"
           style={{ display: 'block', width: '100%', height: '100%' }}
-          title="點擊查看飯店官網 / 詳細介紹"
         >
           <img
             src={activeImage}
@@ -57,7 +56,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           />
         </a>
 
-        {/* Image Navigation Arrows */}
+        {/* Gallery Controls */}
         {gallery.length > 1 && (
           <>
             <button
@@ -106,33 +105,6 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             >
               <ChevronRight size={18} />
             </button>
-
-            {/* Dots */}
-            <div style={{
-              position: 'absolute',
-              top: '46px',
-              right: '12px',
-              display: 'flex',
-              gap: '4px',
-              background: 'rgba(15, 23, 42, 0.7)',
-              padding: '3px 8px',
-              borderRadius: '999px',
-              zIndex: 2
-            }}>
-              {gallery.map((_, dotIdx) => (
-                <span
-                  key={dotIdx}
-                  onClick={(e) => { e.stopPropagation(); setCurrentImgIdx(dotIdx); }}
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background: currentImgIdx === dotIdx ? '#34d399' : 'rgba(255, 255, 255, 0.4)',
-                    cursor: 'pointer'
-                  }}
-                />
-              ))}
-            </div>
           </>
         )}
 
@@ -149,13 +121,12 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           {stay.type === 'Family Hotel' && <span className="badge-amber">👨‍👩‍👧‍👦 親子飯店</span>}
           {stay.type === 'Hotel' && <span className="badge-purple">🏨 平價飯店</span>}
           {stay.type === 'B&B' && <span className="badge-green">🏡 特色民宿</span>}
-          {!['Family Hotel', 'Hotel', 'B&B'].includes(stay.type) && <span className="badge-purple">{stay.type}</span>}
           {stay.discountPercent && (
             <span className="badge-rose">🔥 -{stay.discountPercent}%</span>
           )}
         </div>
 
-        {/* Favorite Heart Button */}
+        {/* Favorite Bookmark Heart */}
         <button
           onClick={() => onToggleSave(stay)}
           style={{
@@ -178,7 +149,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           <Heart size={18} color="#f43f5e" fill={isSaved ? "#f43f5e" : "transparent"} />
         </button>
 
-        {/* Bottom Price Floating Bar */}
+        {/* Floating Price Overlay */}
         <div style={{
           position: 'absolute',
           bottom: '0',
@@ -187,7 +158,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           background: 'linear-gradient(to top, rgba(7, 10, 19, 0.96) 0%, rgba(7, 10, 19, 0.4) 70%, transparent 100%)',
           padding: '16px 16px 10px 16px',
           display: 'flex',
-          justifyContent: 'space-between',
+          justify: 'space-between',
           alignItems: 'flex-end',
           zIndex: 2
         }}>
@@ -197,26 +168,21 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
 
           <div style={{ textAlign: 'right' }}>
             {stay.originalPrice && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'flex-end' }}>
-                <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '0.8rem' }}>
-                  NT$ {stay.originalPrice.toLocaleString()}
-                </span>
-                <span style={{ fontSize: '0.72rem', color: '#fb7185', fontWeight: '800', background: 'rgba(244, 63, 94, 0.15)', padding: '1px 6px', borderRadius: '4px' }}>
-                  省 ${stay.originalPrice - stay.price}
-                </span>
+              <div style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '0.78rem' }}>
+                NT$ {stay.originalPrice.toLocaleString()}
               </div>
             )}
             <div>
               <span className="font-display" style={{ fontSize: '1.45rem', fontWeight: '900', color: 'var(--primary-light)' }}>
                 NT$ {stay.price.toLocaleString()}
               </span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginLeft: '2px' }}>/晚起</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>/晚起</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Card Content Details */}
+      {/* Card Main Info */}
       <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
         <div>
           <h3 style={{ fontSize: '1.1rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '8px' }}>
@@ -224,51 +190,26 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
               href={officialUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                color: '#ffffff',
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-light)'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
-              title="點擊開啟飯店官網 / 介紹"
+              style={{ color: '#ffffff', textDecoration: 'none' }}
             >
-              <span>{stay.name}</span>
+              {stay.name}
             </a>
           </h3>
 
-          {/* Map Location Link */}
           <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
             <a
               href={mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                color: 'var(--text-muted)',
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                maxWidth: '100%'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
-              onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
-              title="點擊開啟 Google Maps 地圖導覽"
+              style={{ color: 'var(--text-muted)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
             >
               <MapPin size={15} color="var(--primary)" style={{ flexShrink: 0 }} />
-              <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px' }}>
                 {stay.address}
               </span>
             </a>
           </p>
 
-          {/* Amenity Tags */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
             {stay.tags.map((tag, idx) => (
               <span key={idx} style={{
@@ -277,8 +218,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                 fontSize: '0.76rem',
                 padding: '4px 10px',
                 borderRadius: '8px',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                fontWeight: '500'
+                border: '1px solid rgba(255, 255, 255, 0.08)'
               }}>
                 {tag}
               </span>
@@ -286,7 +226,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           </div>
         </div>
 
-        {/* Lowest Price Callout & Drawer */}
+        {/* Provider Comparison Callout & Drawer */}
         <div>
           <div style={{
             background: 'rgba(16, 185, 129, 0.1)',
@@ -322,7 +262,6 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             </button>
           </div>
 
-          {/* Providers Drawer Breakdown */}
           {showProviders && (
             <div style={{
               background: 'rgba(7, 10, 19, 0.95)',
@@ -369,7 +308,6 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             </div>
           )}
 
-          {/* Booking Action Button */}
           <a
             href={targetUrl}
             target="_blank"
@@ -390,8 +328,8 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
               boxSizing: 'border-box'
             }}
           >
-            <span>前往 {providerName} 搶購預訂</span>
-            <ExternalLink size={16} style={{ flexShrink: 0 }} />
+            <span>前往 {providerName} 預訂搶購</span>
+            <ExternalLink size={16} />
           </a>
         </div>
 

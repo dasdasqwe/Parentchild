@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
+import Sidebar from './components/Sidebar';
 import SearchHeader from './components/SearchHeader';
 import ScraperConsole from './components/ScraperConsole';
 import StayList from './components/StayList';
@@ -161,37 +160,18 @@ export default function App() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-dark)' }}>
       
-      {/* Floating Capsule Navbar */}
-      <Navbar
+      {/* 1. Left Command Studio Sidebar */}
+      <Sidebar
         activeTab={activeTab}
         setActiveTab={handleTabChange}
-        onOpenAlertModal={() => setIsAlertModalOpen(true)}
-        onOpenSavedModal={() => setIsSavedModalOpen(true)}
-        onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
-        savedCount={savedItems.length}
-        toggleConsole={() => setIsConsoleOpen(!isConsoleOpen)}
-        isConsoleOpen={isConsoleOpen}
-      />
-
-      {/* Hero Showcase Section */}
-      <HeroSection
-        onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
-        onOpenConsole={() => setIsConsoleOpen(true)}
-      />
-
-      {/* Search Filter Header */}
-      <SearchHeader
-        cities={mockCities}
         selectedCity={selectedCity}
         setSelectedCity={setSelectedCity}
         stayType={stayType}
         setStayType={setStayType}
         maxPrice={maxPrice}
         setMaxPrice={setMaxPrice}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
         checkInDate={checkInDate}
         setCheckInDate={setCheckInDate}
         checkOutDate={checkOutDate}
@@ -200,65 +180,109 @@ export default function App() {
         setAdultsCount={setAdultsCount}
         childrenCount={childrenCount}
         setChildrenCount={setChildrenCount}
+        onOpenAlertModal={() => setIsAlertModalOpen(true)}
+        onOpenSavedModal={() => setIsSavedModalOpen(true)}
+        onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
+        toggleConsole={() => setIsConsoleOpen(!isConsoleOpen)}
+        isConsoleOpen={isConsoleOpen}
+        savedCount={savedItems.length}
         onTriggerScrape={fetchData}
         isScraping={isScraping}
-        activeTab={activeTab}
       />
 
-      {/* Live Scraper Terminal Console */}
-      {isConsoleOpen && (
-        <ScraperConsole
-          logs={logs}
-          isScraping={isScraping}
-          onClose={() => setIsConsoleOpen(false)}
-          onClearLogs={() => setLogs([])}
+      {/* 2. Right Main Studio Canvas Workspace */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflowX: 'hidden' }}>
+        
+        <div style={{ padding: '24px 28px', flex: 1 }}>
+          
+          {/* Workspace Top Command Bar */}
+          <SearchHeader
+            cities={mockCities}
+            selectedCity={selectedCity}
+            setSelectedCity={setSelectedCity}
+            stayType={stayType}
+            setStayType={setStayType}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            checkInDate={checkInDate}
+            setCheckInDate={setCheckInDate}
+            checkOutDate={checkOutDate}
+            setCheckOutDate={setCheckOutDate}
+            adultsCount={adultsCount}
+            setAdultsCount={setAdultsCount}
+            childrenCount={childrenCount}
+            setChildrenCount={setChildrenCount}
+            onTriggerScrape={fetchData}
+            isScraping={isScraping}
+            activeTab={activeTab}
+          />
+
+          {/* Scraper Terminal Console Modal/Drawer */}
+          {isConsoleOpen && (
+            <ScraperConsole
+              logs={logs}
+              isScraping={isScraping}
+              onClose={() => setIsConsoleOpen(false)}
+              onClearLogs={() => setLogs([])}
+            />
+          )}
+
+          {/* Main View Area */}
+          <main>
+            {activeTab === 'stays' && (
+              <StayList
+                stays={stays}
+                savedStays={savedItems}
+                onToggleSave={handleToggleSave}
+              />
+            )}
+
+            {activeTab === 'packages' && (
+              <PackageTourList
+                packages={packages}
+                savedItems={savedItems}
+                onToggleSave={handleToggleSave}
+                onCityChange={(city) => { setSelectedCity(city); }}
+              />
+            )}
+
+            {activeTab === 'family' && (
+              <FamilyAttractionList
+                attractions={familyAttractions}
+                savedItems={savedItems}
+                onToggleSave={handleToggleSave}
+                onJumpToStay={() => setActiveTab('stays')}
+              />
+            )}
+
+            {activeTab === 'theaters' && (
+              <FamilyTheaterList
+                theaters={theaters}
+                savedItems={savedItems}
+                onToggleSave={handleToggleSave}
+              />
+            )}
+
+            {activeTab === 'trends' && (
+              <PriceChart
+                trendData={trendData}
+                cityId={selectedCity}
+                cityName={currentCityObj.name}
+              />
+            )}
+          </main>
+
+        </div>
+
+        {/* Studio Footer */}
+        <Footer
+          onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
+          onOpenConsole={() => setIsConsoleOpen(true)}
         />
-      )}
 
-      {/* Main View Area */}
-      <main style={{ padding: '0 16px', flex: 1 }}>
-        {activeTab === 'stays' && (
-          <StayList
-            stays={stays}
-            savedStays={savedItems}
-            onToggleSave={handleToggleSave}
-          />
-        )}
-
-        {activeTab === 'packages' && (
-          <PackageTourList
-            packages={packages}
-            savedItems={savedItems}
-            onToggleSave={handleToggleSave}
-            onCityChange={(city) => { setSelectedCity(city); }}
-          />
-        )}
-
-        {activeTab === 'family' && (
-          <FamilyAttractionList
-            attractions={familyAttractions}
-            savedItems={savedItems}
-            onToggleSave={handleToggleSave}
-            onJumpToStay={() => setActiveTab('stays')}
-          />
-        )}
-
-        {activeTab === 'theaters' && (
-          <FamilyTheaterList
-            theaters={theaters}
-            savedItems={savedItems}
-            onToggleSave={handleToggleSave}
-          />
-        )}
-
-        {activeTab === 'trends' && (
-          <PriceChart
-            trendData={trendData}
-            cityId={selectedCity}
-            cityName={currentCityObj.name}
-          />
-        )}
-      </main>
+      </div>
 
       {/* Modals */}
       <PriceAlertModal
@@ -278,12 +302,6 @@ export default function App() {
       <LineBotModal
         isOpen={isLineBotModalOpen}
         onClose={() => setIsLineBotModalOpen(false)}
-      />
-
-      {/* Modern Footer */}
-      <Footer
-        onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
-        onOpenConsole={() => setIsConsoleOpen(true)}
       />
 
     </div>
