@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
+import HeroSection from './components/HeroSection';
 import SearchHeader from './components/SearchHeader';
 import ScraperConsole from './components/ScraperConsole';
 import StayList from './components/StayList';
@@ -10,11 +11,12 @@ import PriceChart from './components/PriceChart';
 import PriceAlertModal from './components/PriceAlertModal';
 import SavedStaysModal from './components/SavedStaysModal';
 import LineBotModal from './components/LineBotModal';
+import Footer from './components/Footer';
 import { mockCities } from '../server/mockData.js';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('stays'); // 'stays' | 'packages' | 'family' | 'theaters' | 'trends'
-  const [selectedCity, setSelectedCity] = useState(''); // 預設目的地不設任何地點
+  const [activeTab, setActiveTab] = useState('stays');
+  const [selectedCity, setSelectedCity] = useState('');
   const [stayType, setStayType] = useState('all');
   const [maxPrice, setMaxPrice] = useState(10000);
   const [sortBy, setSortBy] = useState('price_asc');
@@ -66,7 +68,6 @@ export default function App() {
       (c.aliases && c.aliases.some(a => a.toLowerCase() === q || q.includes(a.toLowerCase())));
   }) || mockCities[0];
 
-  // 處理頁籤切換 (僅「親子景點與展覽」預設台中市，其它預設不設任何地點)
   const handleTabChange = (newTab) => {
     setActiveTab(newTab);
     if (newTab === 'family') {
@@ -76,7 +77,6 @@ export default function App() {
     }
   };
 
-  // Fetch initial data when parameters change
   useEffect(() => {
     fetchData();
   }, [selectedCity, stayType, maxPrice, sortBy, checkInDate, checkOutDate, adultsCount, childrenCount, activeTab]);
@@ -161,9 +161,9 @@ export default function App() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', paddingBottom: '60px' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       
-      {/* Navbar */}
+      {/* Floating Capsule Navbar */}
       <Navbar
         activeTab={activeTab}
         setActiveTab={handleTabChange}
@@ -175,7 +175,13 @@ export default function App() {
         isConsoleOpen={isConsoleOpen}
       />
 
-      {/* Search Header */}
+      {/* Hero Showcase Section */}
+      <HeroSection
+        onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
+        onOpenConsole={() => setIsConsoleOpen(true)}
+      />
+
+      {/* Search Filter Header */}
       <SearchHeader
         cities={mockCities}
         selectedCity={selectedCity}
@@ -209,8 +215,8 @@ export default function App() {
         />
       )}
 
-      {/* Main View Area based on activeTab */}
-      <main style={{ padding: '0 16px' }}>
+      {/* Main View Area */}
+      <main style={{ padding: '0 16px', flex: 1 }}>
         {activeTab === 'stays' && (
           <StayList
             stays={stays}
@@ -274,18 +280,11 @@ export default function App() {
         onClose={() => setIsLineBotModalOpen(false)}
       />
 
-      {/* Footer */}
-      <footer style={{
-        maxWidth: '1280px',
-        margin: '60px auto 0 auto',
-        padding: '24px 16px',
-        textAlign: 'center',
-        borderTop: '1px solid var(--border-glass)',
-        color: 'var(--text-muted)',
-        fontSize: '0.85rem'
-      }}>
-        <p>© 2026 StayPulse | 平價住宿比價 • 親子劇場 • 超值包套 • 動態抓取引擎</p>
-      </footer>
+      {/* Modern Footer */}
+      <Footer
+        onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
+        onOpenConsole={() => setIsConsoleOpen(true)}
+      />
 
     </div>
   );
