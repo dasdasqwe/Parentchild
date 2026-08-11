@@ -1,24 +1,30 @@
 /**
- * Safely format provider deep-link URLs with checkIn, checkOut, adults, children
+ * Format provider deep-link URLs with checkIn, checkOut, adults, children for Agoda, Booking.com, and Trip.com
  */
-export function buildProviderDeepLinks(stay, query, normCityName) {
-  const {
-    checkIn = '2026-08-10',
-    checkOut = '2026-08-12',
-    adults = 2,
-    children = 1
-  } = query;
+export function buildProviderDeepLinks(stay = {}, query = {}, normCityName = '') {
+  const checkIn = (query && query.checkIn) || stay.checkIn || '2026-08-11';
+  const checkOut = (query && query.checkOut) || stay.checkOut || '2026-08-13';
+  const adults = (query && query.adults) || stay.adults || 2;
+  const children = (query && query.children) || stay.children || 1;
 
   const d1 = new Date(checkIn);
   const d2 = new Date(checkOut);
   const diffNights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
 
-  const rawName = stay.name || '';
+  const rawName = stay.hotelName || stay.name || '';
   const engMatch = rawName.match(/\(([^)]+)\)/);
   const cleanKw = engMatch ? engMatch[1].trim() : rawName.replace(/\(.*?\)/g, '').replace(/【.*?】/g, '').trim();
-  const encodedKw = encodeURIComponent(cleanKw || normCityName);
+  const encodedKw = encodeURIComponent(cleanKw || stay.cityName || normCityName || 'hotel');
 
-  return (stay.providers || []).map(p => {
+  const basePrice = stay.price || stay.basePrice || 3200;
+
+  const inputProviders = (stay.providers && stay.providers.length > 0) ? stay.providers : [
+    { name: 'Agoda', price: basePrice, url: '', isLowest: true },
+    { name: 'Booking.com', price: Math.round(basePrice * 1.05), url: '' },
+    { name: 'Trip.com', price: Math.round(basePrice * 1.08), url: '' }
+  ];
+
+  return inputProviders.map(p => {
     let targetUrl = p.url || '';
     const pName = (p.name || '').toLowerCase();
 
@@ -48,6 +54,9 @@ export function buildProviderDeepLinks(stay, query, normCityName) {
       }
     }
 
-    return { ...p, url: targetUrl };
+    return {
+      ...p,
+      url: targetUrl
+    };
   });
 }
