@@ -20,9 +20,26 @@ export default function App() {
   const [maxPrice, setMaxPrice] = useState(10000);
   const [sortBy, setSortBy] = useState('price_asc');
 
+  const getTodayStr = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const getTomorrowStr = (addDays = 2) => {
+    const d = new Date();
+    d.setDate(d.getDate() + addDays);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   // Dates & Guests Filter
-  const [checkInDate, setCheckInDate] = useState('2026-08-10');
-  const [checkOutDate, setCheckOutDate] = useState('2026-08-12');
+  const [checkInDate, setCheckInDate] = useState(getTodayStr());
+  const [checkOutDate, setCheckOutDate] = useState(getTomorrowStr(2));
   const [adultsCount, setAdultsCount] = useState(2);
   const [childrenCount, setChildrenCount] = useState(1);
 

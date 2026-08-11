@@ -3,6 +3,23 @@ import { resolveCity } from './cityService.js';
 import { buildProviderDeepLinks } from '../utils/urlBuilder.js';
 import { sleep } from '../utils/logger.js';
 
+const getTodayStr = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+const getTomorrowStr = (addDays = 2) => {
+  const d = new Date();
+  d.setDate(d.getDate() + addDays);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
 /**
  * Main hotel scraper execution engine
  */
@@ -12,8 +29,8 @@ export async function searchStays(query, onLog = () => {}) {
     type = 'all',
     maxPrice = 10000,
     sort = 'price_asc',
-    checkIn = '2026-08-10',
-    checkOut = '2026-08-12',
+    checkIn = getTodayStr(),
+    checkOut = getTomorrowStr(2),
     adults = 2,
     children = 1
   } = query;
