@@ -1,4 +1,5 @@
-import { mockCities } from '../mockData.js';
+import axios from 'axios';
+import { config } from '../config/env.js';
 import { buildProviderDeepLinks } from '../utils/urlBuilder.js';
 import { paginateArray, sortStays } from '../utils/pagination.js';
 
@@ -27,7 +28,7 @@ const IMAGES_POOL = [
   'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'
 ];
 
-function generateCityHotels(cityName, count = 20) {
+function generateCityHotels(cityName, count = 24) {
   const list = [];
   const displayCity = cityName || '精選城市';
   for (let i = 1; i <= count; i++) {
@@ -75,6 +76,44 @@ function getTomorrowStr(addDays = 2) {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+/**
+ * Fetch real live hotel API data via SerpApi Google Hotels API if SERPAPI_KEY is configured
+ */
+async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }) {
+  if (!config.serpApiKey) return null;
+
+  try {
+    const url = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(destination)}&check_in_date=${checkIn}&check_out_date=${checkOut}&adults=${adults}&currency=TWD&api_key=${config.serpApiKey}`;
+    const res = await axios.get(url, { timeout: 10000 });
+    
+    if (res.data && res.data.properties && Array.isArray(res.data.properties)) {
+      return res.data.properties.map((item, idx) => {
+        const lowestPrice = item.rate_per_night?.extracted_lowest || item.price || 3200;
+        const origPrice = Math.round(lowestPrice * 1.35);
+        return {
+          id: `serpapi-${idx}`,
+          cityId: destination,
+          cityName: destination,
+          name: item.name || `${destination} 經典飯店`,
+          type: item.hotel_class ? `${item.hotel_class}星級飯店` : 'Hotel',
+          rating: item.overall_rating || 4.8,
+          reviewsCount: item.reviews || 1200,
+          price: lowestPrice,
+          originalPrice: origPrice,
+          discountPercent: Math.round((1 - lowestPrice / origPrice) * 100),
+          address: item.description || `${destination} 市中心`,
+          image: item.images?.[0]?.thumbnail || IMAGES_POOL[idx % IMAGES_POOL.length],
+          tags: item.amenities?.slice(0, 3) || ['官方實時房價', '捷運直達', '高CP值'],
+          providers: []
+        };
+      });
+    }
+  } catch (err) {
+    console.warn('[SERPAPI-WARNING] Real API fetch skipped, falling back to dynamic dataset:', err.message);
+  }
+  return null;
+}
+
 export async function searchGlobalHotels({
   destination = '',
   type = 'all',
@@ -88,10 +127,15 @@ export async function searchGlobalHotels({
   children = 1
 } = {}) {
   const queryTerm = (destination || '').trim();
-  const targetCityName = queryTerm || '熱門精選';
+  const targetCityName = queryTerm || '台北';
 
-  // Generate 24 dynamic, realistic hotels for the target city
-  let filtered = generateCityHotels(targetCityName, 24);
+  // 1. Try real live API fetching first if SERPAPI_KEY is set in .env
+  let filtered = await fetchLiveSerpApiHotels({ destination: targetCityName, checkIn, checkOut, adults });
+
+  // 2. If no SERPAPI_KEY or live API unavailable, use clean dynamic dataset generator
+  if (!filtered || filtered.length === 0) {
+    filtered = generateCityHotels(targetCityName, 24);
+  }
 
   // Filter by stay type & max budget limit
   if (type !== 'all') {
@@ -100,7 +144,7 @@ export async function searchGlobalHotels({
   const maxP = Number(maxPrice) || 10000;
   filtered = filtered.filter(i => i.price <= maxP);
 
-  // Attach provider deep links for each hotel
+  // Attach provider deep links (Agoda, Booking.com, Trip.com) for each hotel
   const processed = filtered.map(hotel => {
     const deepLinks = buildProviderDeepLinks(hotel, {
       checkIn,
