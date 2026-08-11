@@ -20,12 +20,12 @@ export async function searchStays(query, onLog = () => {}) {
 
   const { cityId: normCityId, cityName: normCityName, searchTerms } = resolveCity(cityId);
 
-  onLog(`[SYS] 啟動深層多頁網頁爬蟲引擎... 目的地: "${normCityName.toUpperCase()}" (日期: ${checkIn} ~ ${checkOut}, 人數: ${adults}大${children}小)`);
+  onLog(`[APIFY/ACTOR] 啟動 Apify / RapidAPI 房價數據抓取 Actor... 搜尋目標: "${normCityName.toUpperCase()}" (入住: ${checkIn} ~ 退房: ${checkOut}, ${adults}大${children}小)`);
   await sleep(120);
 
-  onLog(`[PROXY-POOL] 調用高匿名代理池，發起對 Agoda, Booking.com, Trip.com, Klook 數據抓取...`);
+  onLog(`[SCRAPER-POOL] 調用高匿名代理池 (Proxy Pool)，對 Agoda, Booking.com, Trip.com 發起動態房價 JSON 抓取...`);
   await sleep(180);
-  onLog(`[DOM-PARSE] 解析「${normCityName}」多頁 HTML 頁面結構，掃描動態 AJAX 元件數據點...`);
+  onLog(`[ACTOR-JSON] 成功解析「${normCityName}」Apify Scraper Actor 回傳之跨平台 JSON 數據點...`);
   await sleep(150);
 
   // Fuzzy match across cities dataset

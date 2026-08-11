@@ -9,6 +9,7 @@ import FamilyTheaterList from './components/FamilyTheaterList';
 import PriceChart from './components/PriceChart';
 import PriceAlertModal from './components/PriceAlertModal';
 import SavedStaysModal from './components/SavedStaysModal';
+import LineBotModal from './components/LineBotModal';
 import { mockCities } from '../server/mockData.js';
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
   // Modals
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
+  const [isLineBotModalOpen, setIsLineBotModalOpen] = useState(false);
   const [savedItems, setSavedItems] = useState(() => {
     try {
       const local = localStorage.getItem('staypulse_saved_items');
@@ -167,6 +169,7 @@ export default function App() {
         setActiveTab={handleTabChange}
         onOpenAlertModal={() => setIsAlertModalOpen(true)}
         onOpenSavedModal={() => setIsSavedModalOpen(true)}
+        onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
         savedCount={savedItems.length}
         toggleConsole={() => setIsConsoleOpen(!isConsoleOpen)}
         isConsoleOpen={isConsoleOpen}
@@ -264,6 +267,11 @@ export default function App() {
         savedItems={savedItems}
         onRemoveItem={handleRemoveSavedItem}
         onClearAll={handleClearSaved}
+      />
+
+      <LineBotModal
+        isOpen={isLineBotModalOpen}
+        onClose={() => setIsLineBotModalOpen(false)}
       />
 
       {/* Footer */}

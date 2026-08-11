@@ -1,7 +1,7 @@
 import React from 'react';
-import { Building2, Package, Baby, Theater, TrendingUp, Bell, Heart, Terminal } from 'lucide-react';
+import { Building2, Package, Baby, Theater, TrendingUp, Bell, Heart, Terminal, Bot } from 'lucide-react';
 
-export default function Navbar({ activeTab, setActiveTab, onOpenAlertModal, onOpenSavedModal, savedCount, toggleConsole, isConsoleOpen }) {
+export default function Navbar({ activeTab, setActiveTab, onOpenAlertModal, onOpenSavedModal, onOpenLineBotModal, savedCount, toggleConsole, isConsoleOpen }) {
   return (
     <nav className="glass-panel" style={{ margin: '16px auto', maxWidth: '1280px', padding: '14px 24px', borderRadius: '16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
@@ -72,6 +72,20 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAlertModal, onOp
 
         {/* Action Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            onClick={onOpenLineBotModal}
+            className="btn-secondary"
+            title="開啟 LINE 機器人關鍵字房價查詢模擬器"
+            style={{
+              borderColor: '#06c755',
+              color: '#34d399',
+              background: 'rgba(6, 199, 85, 0.1)'
+            }}
+          >
+            <Bot size={18} color="#06c755" />
+            <span style={{ fontSize: '0.85rem', fontWeight: '700' }}>LINE 關鍵字查詢</span>
+          </button>
+
           <button
             onClick={toggleConsole}
             className="btn-secondary"

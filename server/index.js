@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { config } from './config/env.js';
-import { handleLineWebhook } from './lineBot.js';
+import { handleLineWebhook, simulateLineMessage } from './lineBot.js';
 import { startCronScheduler } from './schedulers/attractionsCron.js';
 import {
   getCitiesHandler,
@@ -31,8 +31,18 @@ app.use(express.json());
 // Background periodic cron scheduler engine
 startCronScheduler();
 
-// LINE Bot Webhook Endpoint
+// LINE Bot Webhook Endpoint & Simulation Endpoint
 app.post('/api/line/webhook', handleLineWebhook);
+
+app.all('/api/line/simulate', async (req, res) => {
+  try {
+    const query = req.query.query || req.body?.query || req.body?.text || '宜蘭 3000';
+    const result = await simulateLineMessage(query);
+    res.json({ success: true, ...result });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 // Price Alerts Memory Store
 const priceAlerts = [];

@@ -20,6 +20,85 @@ export async function handleLineWebhook(req, res) {
 }
 
 /**
+ * Simulate LINE Bot processing for Web UI and API testing
+ */
+export async function simulateLineMessage(userText) {
+  const text = (userText || '').trim();
+  let category = 'stays';
+  let maxPrice = 10000;
+  let type = 'all';
+
+  const cleanNoise = (rawText) => {
+    return rawText
+      .replace(/請幫我查|請幫我|幫我查|幫我|請查|查詢|推薦|比價|平價|請|幫|查|找|的/g, '')
+      .replace(/劇|巧虎|表演|舞台劇|包套|行程|組合|套票|景點|親子|放電|遊樂|公園|住宿|飯店|民宿|旅館/g, '')
+      .replace(/\d+/g, '')
+      .trim();
+  };
+
+  if (text.includes('劇') || text.includes('巧虎') || text.includes('表演') || text.includes('舞台劇')) {
+    category = 'theaters';
+    const city = cleanNoise(text) || '台北';
+    const theaters = await runTheaterScraperJob({ cityId: city }, () => {});
+    return {
+      query: text,
+      category,
+      destination: city,
+      count: theaters.length,
+      data: theaters
+    };
+  }
+
+  if (text.includes('包套') || text.includes('行程')) {
+    category = 'packages';
+    const city = cleanNoise(text) || '宜蘭';
+    const packages = await runPackageScraperJob({ cityId: city }, () => {});
+    return {
+      query: text,
+      category,
+      destination: city,
+      count: packages.length,
+      data: packages
+    };
+  }
+
+  if (text.includes('景點') || text.includes('親子')) {
+    category = 'family';
+    const city = cleanNoise(text) || '宜蘭';
+    const attractions = await runFamilyAttractionScraperJob({ cityId: city }, () => {});
+    return {
+      query: text,
+      category,
+      destination: city,
+      count: attractions.length,
+      data: attractions
+    };
+  }
+
+  if (text.includes('飯店')) type = 'Hotel';
+  if (text.includes('親子旅館') || text.includes('親子飯店')) type = 'Family Hotel';
+  if (text.includes('民宿')) type = 'B&B';
+
+  const priceMatch = text.match(/\d+/);
+  if (priceMatch) {
+    maxPrice = Number(priceMatch[0]);
+  }
+
+  let destination = cleanNoise(text) || '宜蘭';
+  const stays = await runScraperJob({ cityId: destination, maxPrice, type }, () => {});
+
+  return {
+    query: text,
+    category: 'stays',
+    destination,
+    maxPrice,
+    type,
+    count: stays.length,
+    data: stays
+  };
+}
+
+/**
  * Process text query from LINE user & send response
  */
 async function processUserMessage(replyToken, userText) {
