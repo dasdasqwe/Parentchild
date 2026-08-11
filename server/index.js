@@ -1,3 +1,4 @@
+import fs from 'fs';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -10,8 +11,27 @@ import { startCronScheduler, refreshAllAttractionsCache, attractionsCache } from
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load local .env into process.env
+try {
+  const envPath = path.join(__dirname, '../.env');
+  if (fs.existsSync(envPath)) {
+    const envConfig = fs.readFileSync(envPath, 'utf-8');
+    envConfig.split('\n').forEach(line => {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {
+        const [key, ...vals] = trimmed.split('=');
+        const value = vals.join('=').trim().replace(/^["']|["']$/g, '');
+        if (key && !process.env[key.trim()]) {
+          process.env[key.trim()] = value;
+        }
+      }
+    });
+  }
+} catch (e) {}
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+
 
 app.use(cors());
 app.use(express.json());
