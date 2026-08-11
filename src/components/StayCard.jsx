@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, MapPin, ExternalLink, Heart, Tag, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, MapPin, ExternalLink, Heart, Tag, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Sparkles, Building } from 'lucide-react';
 
 export default function StayCard({ stay, isSaved, onToggleSave }) {
   const [showProviders, setShowProviders] = useState(false);
@@ -12,10 +12,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
   const targetUrl = lowestProvider?.url || stay.url || 'https://www.agoda.com';
   const providerName = stay.lowestPriceProvider || lowestProvider?.name || 'Agoda';
 
-  // 1. 直連飯店比價與訂房頁面 (標題與圖片均採用含有完整日期之 targetUrl)
   const officialUrl = stay.websiteUrl || targetUrl;
-  
-  // 2. 地圖導覽連結
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stay.name + ' ' + (stay.address || stay.cityName || ''))}`;
 
   const handlePrevImg = (e) => {
@@ -29,22 +26,24 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
   };
 
   return (
-    <div className="glass-panel" style={{
+    <div className="glass-panel glass-card-hover" style={{
       display: 'flex',
       flexDirection: 'column',
+      borderRadius: '20px',
       overflow: 'hidden',
-      transition: 'transform 0.25s ease, box-shadow 0.25s ease',
-      position: 'relative'
+      position: 'relative',
+      background: 'rgba(15, 23, 42, 0.85)',
+      border: '1px solid rgba(255, 255, 255, 0.1)'
     }}>
-      
-      {/* Top Media Banner & Gallery Carousel (連結至官網) */}
-      <div style={{ position: 'relative', height: '200px', width: '100%', overflow: 'hidden' }}>
+
+      {/* Media Image Banner */}
+      <div style={{ position: 'relative', height: '220px', width: '100%', overflow: 'hidden' }}>
         <a
           href={officialUrl}
           target="_blank"
           rel="noopener noreferrer"
           style={{ display: 'block', width: '100%', height: '100%' }}
-          title="點擊查看飯店官網 / 介紹"
+          title="點擊查看飯店官網 / 詳細介紹"
         >
           <img
             src={activeImage}
@@ -53,12 +52,12 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
               e.currentTarget.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
             }}
             style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.08)'}
             onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
           />
         </a>
 
-        {/* Carousel Navigation Arrows if multiple photos */}
+        {/* Image Navigation Arrows */}
         {gallery.length > 1 && (
           <>
             <button
@@ -66,14 +65,14 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
               style={{
                 position: 'absolute',
                 top: '50%',
-                left: '8px',
+                left: '10px',
                 transform: 'translateY(-50%)',
-                background: 'rgba(15, 23, 42, 0.65)',
-                backdropFilter: 'blur(4px)',
-                border: '1px solid var(--border-glass)',
+                background: 'rgba(15, 23, 42, 0.75)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
                 borderRadius: '50%',
-                width: '28px',
-                height: '28px',
+                width: '32px',
+                height: '32px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -82,21 +81,21 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                 zIndex: 2
               }}
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={18} />
             </button>
             <button
               onClick={handleNextImg}
               style={{
                 position: 'absolute',
                 top: '50%',
-                right: '8px',
+                right: '10px',
                 transform: 'translateY(-50%)',
-                background: 'rgba(15, 23, 42, 0.65)',
-                backdropFilter: 'blur(4px)',
-                border: '1px solid var(--border-glass)',
+                background: 'rgba(15, 23, 42, 0.75)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
                 borderRadius: '50%',
-                width: '28px',
-                height: '28px',
+                width: '32px',
+                height: '32px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -105,17 +104,17 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                 zIndex: 2
               }}
             >
-              <ChevronRight size={16} />
+              <ChevronRight size={18} />
             </button>
 
-            {/* Thumbnail Dots Indicator */}
+            {/* Dots */}
             <div style={{
               position: 'absolute',
-              top: '44px',
+              top: '46px',
               right: '12px',
               display: 'flex',
               gap: '4px',
-              background: 'rgba(15, 23, 42, 0.6)',
+              background: 'rgba(15, 23, 42, 0.7)',
               padding: '3px 8px',
               borderRadius: '999px',
               zIndex: 2
@@ -144,14 +143,15 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           left: '12px',
           display: 'flex',
           gap: '6px',
-          zIndex: 2
+          zIndex: 2,
+          flexWrap: 'wrap'
         }}>
-          {stay.type === 'Family Hotel' && <span className="badge-amber">👨‍👩‍👧‍👦 親子旅館</span>}
+          {stay.type === 'Family Hotel' && <span className="badge-amber">👨‍👩‍👧‍👦 親子飯店</span>}
           {stay.type === 'Hotel' && <span className="badge-purple">🏨 平價飯店</span>}
           {stay.type === 'B&B' && <span className="badge-green">🏡 特色民宿</span>}
           {!['Family Hotel', 'Hotel', 'B&B'].includes(stay.type) && <span className="badge-purple">{stay.type}</span>}
           {stay.discountPercent && (
-            <span className="badge-rose">-{stay.discountPercent}% OFF</span>
+            <span className="badge-rose">🔥 -{stay.discountPercent}%</span>
           )}
         </div>
 
@@ -162,64 +162,64 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             position: 'absolute',
             top: '12px',
             right: '12px',
-            background: 'rgba(15, 23, 42, 0.75)',
+            background: 'rgba(15, 23, 42, 0.8)',
             backdropFilter: 'blur(8px)',
-            border: '1px solid var(--border-glass)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
             borderRadius: '50%',
-            width: '36px',
-            height: '36px',
+            width: '38px',
+            height: '38px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
-            transition: 'transform 0.2s ease',
             zIndex: 3
           }}
         >
           <Heart size={18} color="#f43f5e" fill={isSaved ? "#f43f5e" : "transparent"} />
         </button>
 
-        {/* Lowest Price Callout Bar */}
+        {/* Bottom Price Floating Bar */}
         <div style={{
           position: 'absolute',
           bottom: '0',
           left: '0',
           right: '0',
-          background: 'linear-gradient(to top, rgba(11, 15, 25, 0.95), transparent)',
-          padding: '12px 16px 8px 16px',
+          background: 'linear-gradient(to top, rgba(7, 10, 19, 0.96) 0%, rgba(7, 10, 19, 0.4) 70%, transparent 100%)',
+          padding: '16px 16px 10px 16px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-end',
           zIndex: 2
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#fbbf24', fontSize: '0.85rem', fontWeight: '700' }}>
-            <Star size={14} fill="#fbbf24" /> {stay.rating} <span style={{ color: 'var(--text-muted)', fontWeight: '400' }}>({stay.reviewsCount} 則評價)</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#fbbf24', fontSize: '0.88rem', fontWeight: '800' }}>
+            <Star size={15} fill="#fbbf24" /> {stay.rating} <span style={{ color: 'var(--text-muted)', fontWeight: '500', fontSize: '0.78rem' }}>({stay.reviewsCount} 則評價)</span>
           </div>
 
           <div style={{ textAlign: 'right' }}>
             {stay.originalPrice && (
-              <>
-                <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '0.8rem', marginRight: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'flex-end' }}>
+                <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '0.8rem' }}>
                   NT$ {stay.originalPrice.toLocaleString()}
                 </span>
-                <span style={{ fontSize: '0.72rem', color: '#fb7185', fontWeight: '700', background: 'rgba(244,63,94,0.15)', padding: '1px 5px', borderRadius: '4px', marginRight: '4px' }}>
-                  省 NT$ {(stay.originalPrice - stay.price).toLocaleString()}
+                <span style={{ fontSize: '0.72rem', color: '#fb7185', fontWeight: '800', background: 'rgba(244, 63, 94, 0.15)', padding: '1px 6px', borderRadius: '4px' }}>
+                  省 ${stay.originalPrice - stay.price}
                 </span>
-              </>
+              </div>
             )}
-            <span style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--primary)' }}>
-              NT$ {stay.price.toLocaleString()}
-            </span>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>/晚起</span>
+            <div>
+              <span className="font-display" style={{ fontSize: '1.45rem', fontWeight: '900', color: 'var(--primary-light)' }}>
+                NT$ {stay.price.toLocaleString()}
+              </span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginLeft: '2px' }}>/晚起</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Card Content Details */}
-      <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+      <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
         <div>
-          {/* 大標題: 飯店官網/介紹 */}
-          <h3 style={{ fontSize: '1.05rem', fontWeight: '700', lineHeight: '1.4', marginBottom: '6px' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '8px' }}>
             <a
               href={officialUrl}
               target="_blank"
@@ -233,7 +233,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                 alignItems: 'center',
                 gap: '4px'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-light)'}
               onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
               title="點擊開啟飯店官網 / 介紹"
             >
@@ -241,8 +241,8 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             </a>
           </h3>
 
-          {/* 下方地址: Google Maps 地圖超連結 */}
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+          {/* Map Location Link */}
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
             <a
               href={mapUrl}
               target="_blank"
@@ -261,23 +261,24 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
               onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
               title="點擊開啟 Google Maps 地圖導覽"
             >
-              <MapPin size={14} color="var(--primary)" style={{ flexShrink: 0 }} />
+              <MapPin size={15} color="var(--primary)" style={{ flexShrink: 0 }} />
               <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {stay.address} 📍
+                {stay.address}
               </span>
             </a>
           </p>
 
           {/* Amenity Tags */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
             {stay.tags.map((tag, idx) => (
               <span key={idx} style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 color: 'var(--text-muted)',
-                fontSize: '0.75rem',
-                padding: '3px 8px',
-                borderRadius: '6px',
-                border: '1px solid var(--border-glass)'
+                fontSize: '0.76rem',
+                padding: '4px 10px',
+                borderRadius: '8px',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                fontWeight: '500'
               }}>
                 {tag}
               </span>
@@ -285,21 +286,21 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
           </div>
         </div>
 
-        {/* Price Comparison Provider Section */}
+        {/* Lowest Price Callout & Drawer */}
         <div>
           <div style={{
-            background: 'rgba(16, 185, 129, 0.08)',
-            border: '1px solid rgba(16, 185, 129, 0.2)',
-            borderRadius: '8px',
-            padding: '10px 12px',
+            background: 'rgba(16, 185, 129, 0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            borderRadius: '12px',
+            padding: '10px 14px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             marginBottom: '12px'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Tag size={14} color="var(--primary)" />
-              <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#34d399' }}>
+              <Tag size={15} color="var(--primary)" />
+              <span style={{ fontSize: '0.84rem', fontWeight: '800', color: '#34d399' }}>
                 全網最低價: {providerName}
               </span>
             </div>
@@ -309,47 +310,56 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
                 background: 'transparent',
                 border: 'none',
                 color: 'var(--text-muted)',
-                fontSize: '0.75rem',
+                fontSize: '0.78rem',
+                fontWeight: '700',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '2px'
+                gap: '4px'
               }}
             >
-              比價 ({stay.providers.length}平台) {showProviders ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              比價 ({stay.providers.length}家) {showProviders ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
             </button>
           </div>
 
           {/* Providers Drawer Breakdown */}
           {showProviders && (
             <div style={{
-              background: 'rgba(15, 23, 42, 0.9)',
-              borderRadius: '8px',
-              padding: '10px',
+              background: 'rgba(7, 10, 19, 0.95)',
+              borderRadius: '12px',
+              padding: '12px',
               marginBottom: '12px',
-              fontSize: '0.8rem',
-              border: '1px solid var(--border-glass)'
+              fontSize: '0.82rem',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
             }}>
               {stay.providers.map((p, pIdx) => (
                 <div key={pIdx} style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '6px 0',
-                  borderBottom: pIdx !== stay.providers.length - 1 ? '1px dashed var(--border-glass)' : 'none'
+                  padding: '8px 0',
+                  borderBottom: pIdx !== stay.providers.length - 1 ? '1px dashed rgba(255, 255, 255, 0.1)' : 'none'
                 }}>
-                  <span style={{ color: p.isLowest ? '#34d399' : 'var(--text-muted)', fontWeight: p.isLowest ? '700' : '400' }}>
-                    {p.name} {p.isLowest && '👑最低'}
+                  <span style={{ color: p.isLowest ? '#34d399' : 'var(--text-muted)', fontWeight: p.isLowest ? '800' : '500' }}>
+                    {p.name} {p.isLowest && '👑 最低'}
                   </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: p.isLowest ? '#34d399' : 'var(--text-main)', fontWeight: '600' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{ color: p.isLowest ? '#34d399' : '#ffffff', fontWeight: '700' }}>
                       NT$ {p.price.toLocaleString()}
                     </span>
                     <a
                       href={p.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ color: '#34d399', fontSize: '0.75rem', textDecoration: 'underline' }}
+                      style={{
+                        background: 'rgba(16, 185, 129, 0.2)',
+                        color: '#34d399',
+                        padding: '2px 8px',
+                        borderRadius: '6px',
+                        fontSize: '0.76rem',
+                        fontWeight: '700',
+                        textDecoration: 'none'
+                      }}
                     >
                       前往
                     </a>
@@ -359,7 +369,7 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             </div>
           )}
 
-          {/* Book Now Button */}
+          {/* Booking Action Button */}
           <a
             href={targetUrl}
             target="_blank"
@@ -367,21 +377,21 @@ export default function StayCard({ stay, isSaved, onToggleSave }) {
             className="btn-primary"
             style={{
               width: '100%',
-              height: '44px',
+              height: '46px',
               padding: '0 16px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px',
+              gap: '8px',
               textDecoration: 'none',
-              borderRadius: '10px',
-              fontSize: '0.9rem',
-              fontWeight: '700',
+              borderRadius: '12px',
+              fontSize: '0.92rem',
+              fontWeight: '800',
               boxSizing: 'border-box'
             }}
           >
-            <span>前往 {providerName} 預訂</span>
-            <ExternalLink size={15} style={{ flexShrink: 0 }} />
+            <span>前往 {providerName} 搶購預訂</span>
+            <ExternalLink size={16} style={{ flexShrink: 0 }} />
           </a>
         </div>
 
