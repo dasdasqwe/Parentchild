@@ -1,25 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from './components/Sidebar';
-import SearchHeader from './components/SearchHeader';
-import ScraperConsole from './components/ScraperConsole';
-import StayList from './components/StayList';
-import PackageTourList from './components/PackageTourList';
-import FamilyAttractionList from './components/FamilyAttractionList';
-import FamilyTheaterList from './components/FamilyTheaterList';
-import PriceChart from './components/PriceChart';
-import PriceAlertModal from './components/PriceAlertModal';
+import Navbar from './components/Navbar';
+import SearchPanel from './components/SearchPanel';
+import HotelGrid from './components/HotelGrid';
+import PaginationBar from './components/PaginationBar';
+import LineBotDrawer from './components/LineBotDrawer';
 import SavedStaysModal from './components/SavedStaysModal';
-import LineBotModal from './components/LineBotModal';
 import Footer from './components/Footer';
-import { mockCities } from '../server/mockData.js';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('stays');
-  const [selectedCity, setSelectedCity] = useState('');
-  const [stayType, setStayType] = useState('all');
-  const [maxPrice, setMaxPrice] = useState(10000);
-  const [sortBy, setSortBy] = useState('price_asc');
-
   const getTodayStr = () => {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -37,28 +25,33 @@ export default function App() {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  // Dates & Guests Filter
+  // State Management
+  const [destination, setDestination] = useState('');
+  const [sortBy, setSortBy] = useState('price_asc'); // 'price_asc' | 'price_desc' | 'rating_desc'
+  const [maxPrice, setMaxPrice] = useState(10000);
+  const [stayType, setStayType] = useState('all');
   const [checkInDate, setCheckInDate] = useState(getTodayStr());
   const [checkOutDate, setCheckOutDate] = useState(getTomorrowStr(2));
-  const [adultsCount, setAdultsCount] = useState(2);
-  const [childrenCount, setChildrenCount] = useState(1);
+  
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
 
-  // Data states
+  // Data & Loading States
   const [stays, setStays] = useState([]);
-  const [packages, setPackages] = useState([]);
-  const [familyAttractions, setFamilyAttractions] = useState([]);
-  const [theaters, setTheaters] = useState([]);
-  const [trendData, setTrendData] = useState([]);
-
-  // Scraper console states
-  const [logs, setLogs] = useState([]);
-  const [isScraping, setIsScraping] = useState(false);
-  const [isConsoleOpen, setIsConsoleOpen] = useState(false);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: 12,
+    totalPages: 1,
+    totalCount: 0,
+    hasNextPage: false,
+    hasPrevPage: false
+  });
+  const [isSearching, setIsSearching] = useState(false);
 
   // Modals
-  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [isLineBotDrawerOpen, setIsLineBotDrawerOpen] = useState(false);
   const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
-  const [isLineBotModalOpen, setIsLineBotModalOpen] = useState(false);
   const [savedItems, setSavedItems] = useState(() => {
     try {
       const local = localStorage.getItem('staypulse_saved_items');
@@ -76,84 +69,42 @@ export default function App() {
     }
   }, [savedItems]);
 
-  const currentCityObj = mockCities.find(c => {
-    if (!selectedCity) return false;
-    const q = selectedCity.trim().toLowerCase();
-    return c.id.toLowerCase() === q ||
-      c.name.toLowerCase().includes(q) ||
-      (c.aliases && c.aliases.some(a => a.toLowerCase() === q || q.includes(a.toLowerCase())));
-  }) || mockCities[0];
-
-  const handleTabChange = (newTab) => {
-    setActiveTab(newTab);
-    if (newTab === 'family') {
-      setSelectedCity('台中');
-    } else {
-      setSelectedCity('');
-    }
-  };
-
+  // Reset page to 1 when search inputs change
   useEffect(() => {
-    fetchData();
-  }, [selectedCity, stayType, maxPrice, sortBy, checkInDate, checkOutDate, adultsCount, childrenCount, activeTab]);
+    setCurrentPage(1);
+  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate]);
 
-  const fetchData = async () => {
-    setIsScraping(true);
+  // Fetch hotel data from backend API
+  useEffect(() => {
+    fetchStaysData();
+  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, currentPage]);
+
+  const fetchStaysData = async () => {
+    setIsSearching(true);
     try {
-      if (activeTab === 'stays') {
-        const query = new URLSearchParams({
-          cityId: selectedCity,
-          type: stayType,
-          maxPrice,
-          sort: sortBy,
-          checkIn: checkInDate,
-          checkOut: checkOutDate,
-          adults: adultsCount,
-          children: childrenCount
-        });
-        const res = await fetch(`/api/search?${query}`);
-        const data = await res.json();
-        if (data.success) {
-          setStays(data.data);
-          if (data.logs) setLogs(prev => [...data.logs, ...prev].slice(0, 30));
-        }
-      } else if (activeTab === 'packages') {
-        const query = new URLSearchParams({ cityId: selectedCity });
-        const res = await fetch(`/api/packages?${query}`);
-        const data = await res.json();
-        if (data.success) {
-          setPackages(data.data);
-          if (data.logs) setLogs(prev => [...data.logs, ...prev].slice(0, 30));
-        }
-      } else if (activeTab === 'family') {
-        const familyCity = selectedCity || '台中';
-        const query = new URLSearchParams({ cityId: familyCity });
-        const res = await fetch(`/api/family-attractions?${query}`);
-        const data = await res.json();
-        if (data.success) {
-          setFamilyAttractions(data.data);
-          if (data.logs) setLogs(prev => [...data.logs, ...prev].slice(0, 30));
-        }
-      } else if (activeTab === 'theaters') {
-        const query = new URLSearchParams({ cityId: selectedCity });
-        const res = await fetch(`/api/theaters?${query}`);
-        const data = await res.json();
-        if (data.success) {
-          setTheaters(data.data);
-          if (data.logs) setLogs(prev => [...data.logs, ...prev].slice(0, 30));
-        }
-      } else if (activeTab === 'trends') {
-        const query = new URLSearchParams({ cityId: selectedCity });
-        const res = await fetch(`/api/trends?${query}`);
-        const data = await res.json();
-        if (data.success) {
-          setTrendData(data.data);
+      const query = new URLSearchParams({
+        destination: destination.trim(),
+        sort: sortBy,
+        maxPrice,
+        type: stayType,
+        page: currentPage,
+        pageSize: pageSize,
+        checkIn: checkInDate,
+        checkOut: checkOutDate
+      });
+
+      const res = await fetch(`/api/stays/search?${query}`);
+      const data = await res.json();
+      if (data.success) {
+        setStays(data.data || []);
+        if (data.pagination) {
+          setPagination(data.pagination);
         }
       }
     } catch (err) {
-      console.error('Fetch error:', err);
+      console.error('Fetch Stays Error:', err);
     } finally {
-      setIsScraping(false);
+      setIsSearching(false);
     }
   };
 
@@ -177,137 +128,59 @@ export default function App() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-dark)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#f8fafc' }}>
       
-      {/* 1. Left Command Studio Sidebar */}
-      <Sidebar
-        activeTab={activeTab}
-        setActiveTab={handleTabChange}
-        selectedCity={selectedCity}
-        setSelectedCity={setSelectedCity}
-        stayType={stayType}
-        setStayType={setStayType}
-        maxPrice={maxPrice}
-        setMaxPrice={setMaxPrice}
-        checkInDate={checkInDate}
-        setCheckInDate={setCheckInDate}
-        checkOutDate={checkOutDate}
-        setCheckOutDate={setCheckOutDate}
-        adultsCount={adultsCount}
-        setAdultsCount={setAdultsCount}
-        childrenCount={childrenCount}
-        setChildrenCount={setChildrenCount}
-        onOpenAlertModal={() => setIsAlertModalOpen(true)}
+      {/* 1. Clean Minimalist Navbar */}
+      <Navbar
+        onOpenLineBotDrawer={() => setIsLineBotDrawerOpen(true)}
         onOpenSavedModal={() => setIsSavedModalOpen(true)}
-        onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
-        toggleConsole={() => setIsConsoleOpen(!isConsoleOpen)}
-        isConsoleOpen={isConsoleOpen}
         savedCount={savedItems.length}
-        onTriggerScrape={fetchData}
-        isScraping={isScraping}
       />
 
-      {/* 2. Right Main Studio Canvas Workspace */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflowX: 'hidden' }}>
+      {/* 2. Main Page Container */}
+      <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 24px', flex: 1, width: '100%' }}>
         
-        <div style={{ padding: '24px 28px', flex: 1 }}>
-          
-          {/* Workspace Top Command Bar */}
-          <SearchHeader
-            cities={mockCities}
-            selectedCity={selectedCity}
-            setSelectedCity={setSelectedCity}
-            stayType={stayType}
-            setStayType={setStayType}
-            maxPrice={maxPrice}
-            setMaxPrice={setMaxPrice}
-            sortBy={sortBy}
-            setSortBy={setSortBy}
-            checkInDate={checkInDate}
-            setCheckInDate={setCheckInDate}
-            checkOutDate={checkOutDate}
-            setCheckOutDate={setCheckOutDate}
-            adultsCount={adultsCount}
-            setAdultsCount={setAdultsCount}
-            childrenCount={childrenCount}
-            setChildrenCount={setChildrenCount}
-            onTriggerScrape={fetchData}
-            isScraping={isScraping}
-            activeTab={activeTab}
-          />
-
-          {/* Scraper Terminal Console Modal/Drawer */}
-          {isConsoleOpen && (
-            <ScraperConsole
-              logs={logs}
-              isScraping={isScraping}
-              onClose={() => setIsConsoleOpen(false)}
-              onClearLogs={() => setLogs([])}
-            />
-          )}
-
-          {/* Main View Area */}
-          <main>
-            {activeTab === 'stays' && (
-              <StayList
-                stays={stays}
-                savedStays={savedItems}
-                onToggleSave={handleToggleSave}
-              />
-            )}
-
-            {activeTab === 'packages' && (
-              <PackageTourList
-                packages={packages}
-                savedItems={savedItems}
-                onToggleSave={handleToggleSave}
-                onCityChange={(city) => { setSelectedCity(city); }}
-              />
-            )}
-
-            {activeTab === 'family' && (
-              <FamilyAttractionList
-                attractions={familyAttractions}
-                savedItems={savedItems}
-                onToggleSave={handleToggleSave}
-                onJumpToStay={() => setActiveTab('stays')}
-              />
-            )}
-
-            {activeTab === 'theaters' && (
-              <FamilyTheaterList
-                theaters={theaters}
-                savedItems={savedItems}
-                onToggleSave={handleToggleSave}
-              />
-            )}
-
-            {activeTab === 'trends' && (
-              <PriceChart
-                trendData={trendData}
-                cityId={selectedCity}
-                cityName={currentCityObj.name}
-              />
-            )}
-          </main>
-
-        </div>
-
-        {/* Studio Footer */}
-        <Footer
-          onOpenLineBotModal={() => setIsLineBotModalOpen(true)}
-          onOpenConsole={() => setIsConsoleOpen(true)}
+        {/* Search & Sort Panel */}
+        <SearchPanel
+          destination={destination}
+          setDestination={setDestination}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+          stayType={stayType}
+          setStayType={setStayType}
+          checkInDate={checkInDate}
+          setCheckInDate={setCheckInDate}
+          checkOutDate={checkOutDate}
+          setCheckOutDate={setCheckOutDate}
+          onSearch={fetchStaysData}
+          isSearching={isSearching}
         />
 
-      </div>
+        {/* Hotel Grid Canvas */}
+        <HotelGrid
+          stays={stays}
+          savedStays={savedItems}
+          onToggleSave={handleToggleSave}
+          destination={destination}
+        />
 
-      {/* Modals */}
-      <PriceAlertModal
-        isOpen={isAlertModalOpen}
-        onClose={() => setIsAlertModalOpen(false)}
-        selectedCityName={currentCityObj.name}
+        {/* Multi-page Pagination Bar */}
+        <PaginationBar
+          pagination={pagination}
+          onPageChange={(p) => setCurrentPage(p)}
+        />
+
+      </main>
+
+      {/* 3. LINE Bot Testing Drawer */}
+      <LineBotDrawer
+        isOpen={isLineBotDrawerOpen}
+        onClose={() => setIsLineBotDrawerOpen(false)}
       />
 
+      {/* 4. Saved Stays Modal */}
       <SavedStaysModal
         isOpen={isSavedModalOpen}
         onClose={() => setIsSavedModalOpen(false)}
@@ -316,9 +189,10 @@ export default function App() {
         onClearAll={handleClearSaved}
       />
 
-      <LineBotModal
-        isOpen={isLineBotModalOpen}
-        onClose={() => setIsLineBotModalOpen(false)}
+      {/* 5. Clean Footer */}
+      <Footer
+        onOpenLineBotModal={() => setIsLineBotDrawerOpen(true)}
+        onOpenConsole={() => {}}
       />
 
     </div>

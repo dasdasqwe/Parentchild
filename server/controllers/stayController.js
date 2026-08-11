@@ -1,38 +1,43 @@
-import { getAllCities, resolveCity } from '../services/cityService.js';
-import { searchStays } from '../services/hotelScraperService.js';
-import { priceTrends } from '../data/dataset.js';
-import { createLogger } from '../utils/logger.js';
+import { searchGlobalHotels } from '../services/hotelService.js';
 
-export function getCitiesHandler(req, res) {
-  res.json({ success: true, data: getAllCities() });
-}
-
-export async function searchStaysHandler(req, res) {
+export async function getStays(req, res) {
   try {
-    const logger = createLogger();
-    const results = await searchStays(req.query, logger.log);
+    const {
+      destination = '',
+      cityId = '',
+      type = 'all',
+      maxPrice = 10000,
+      sort = 'price_asc',
+      page = 1,
+      pageSize = 12,
+      checkIn,
+      checkOut,
+      adults = 2,
+      children = 1
+    } = req.query;
 
-    res.json({
-      success: true,
-      logs: logger.logs,
-      count: results.length,
-      data: results
+    const targetDest = destination || cityId || '';
+
+    const result = await searchGlobalHotels({
+      destination: targetDest,
+      type,
+      maxPrice: Number(maxPrice),
+      sort,
+      page: Number(page),
+      pageSize: Number(pageSize),
+      checkIn,
+      checkOut,
+      adults: Number(adults),
+      children: Number(children)
     });
+
+    return res.json(result);
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    console.error('Stay Search Error:', err);
+    return res.status(500).json({
+      success: false,
+      message: '抓取飯店數據失敗',
+      error: err.message
+    });
   }
-}
-
-export function getTrendsHandler(req, res) {
-  const { cityId = 'taipei' } = req.query;
-  const resolved = resolveCity(cityId);
-  const targetKey = resolved.cityId === 'all' ? 'taipei' : resolved.cityId;
-  const trendData = priceTrends[targetKey] || priceTrends['taipei'];
-
-  res.json({
-    success: true,
-    cityId: targetKey,
-    cityName: resolved.cityName,
-    data: trendData
-  });
 }
