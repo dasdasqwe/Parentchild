@@ -249,6 +249,25 @@ function getTomorrowStr(addDays = 2) {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+const AMENITIES_ZH_MAP = {
+  'Free breakfast': '免費早餐',
+  'Free Wi-Fi': '免費 Wi-Fi',
+  'Free parking': '免費停車場',
+  'Air conditioning': '冷氣空調',
+  'Pool': '游泳池',
+  'Outdoor pool': '室外泳池',
+  'Indoor pool': '室內泳池',
+  'Spa': 'SPA水療',
+  'Fitness center': '健身中心',
+  'Restaurant': '附設餐廳',
+  'Bar': '酒吧',
+  'Room service': '客房服務',
+  'Beach access': '直通沙灘',
+  'Kid-friendly': '親子友善',
+  'Hot tub': '溫泉 SPA',
+  'Airport shuttle': '機場接送'
+};
+
 /**
  * Fetch real live hotel API data via SerpApi Google Hotels API with On-Demand Cache
  */
@@ -272,7 +291,7 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 
     }
 
     const childrenParam = (children > 0 && childAges) ? `&children=${children}&children_ages=${childAges}` : '';
-    const url = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(queryTarget)}&check_in_date=${checkIn}&check_out_date=${checkOut}&adults=${adults}${childrenParam}&currency=TWD&api_key=${config.serpApiKey}`;
+    const url = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(queryTarget)}&check_in_date=${checkIn}&check_out_date=${checkOut}&adults=${adults}${childrenParam}&currency=TWD&hl=zh-TW&gl=tw&api_key=${config.serpApiKey}`;
     const res = await axios.get(url, { timeout: 12000 });
     
     if (res.data && res.data.properties && Array.isArray(res.data.properties) && res.data.properties.length > 0) {
@@ -302,6 +321,10 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 
         // Format primary high-res image
         const mainImage = item.images?.[0]?.original_image || item.images?.[0]?.thumbnail || IMAGES_POOL[idx % IMAGES_POOL.length];
 
+        // Format tags with Traditional Chinese translation map
+        const rawTags = item.amenities?.slice(0, 3) || ['Google 實時房價', '捷運直達', '高CP值'];
+        const zhTags = rawTags.map(t => AMENITIES_ZH_MAP[t] || t);
+
         return {
           id: `serpapi-${idx}`,
           cityId: destination,
@@ -318,7 +341,7 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 
           address: item.description || `${destination} 市中心`,
           image: mainImage,
           gps: item.gps_coordinates || null,
-          tags: item.amenities?.slice(0, 3) || ['Google 實時房價', '捷運直達', '高CP值'],
+          tags: zhTags,
           providers: apiProviders
         };
       });
