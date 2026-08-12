@@ -3,6 +3,26 @@ import { config } from '../config/env.js';
 import { buildProviderDeepLinks } from '../utils/urlBuilder.js';
 import { paginateArray, sortStays } from '../utils/pagination.js';
 
+// In-Memory API Cache Strategy (TTL: 15 minutes) for On-Demand API cost reduction
+const apiCacheMap = new Map();
+const CACHE_TTL_MS = 15 * 60 * 1000; // 15 Minutes Cache
+
+function getCachedResult(cacheKey) {
+  const cached = apiCacheMap.get(cacheKey);
+  if (cached && (Date.now() - cached.timestamp < CACHE_TTL_MS)) {
+    console.log(`[API-CACHE-HIT] Instant response from cache for key: "${cacheKey}" (0 API quota used)`);
+    return cached.data;
+  }
+  return null;
+}
+
+function setCachedResult(cacheKey, data) {
+  apiCacheMap.set(cacheKey, {
+    timestamp: Date.now(),
+    data
+  });
+}
+
 const CITY_SERP_MAP = {
   '台北': 'Taipei Hotels',
   '臺北': 'Taipei Hotels',
@@ -226,10 +246,14 @@ function getTomorrowStr(addDays = 2) {
 }
 
 /**
- * Fetch real live hotel API data via SerpApi Google Hotels API if SERPAPI_KEY is configured
+ * Fetch real live hotel API data via SerpApi Google Hotels API with On-Demand Cache
  */
 async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }) {
   if (!config.serpApiKey) return null;
+
+  const cacheKey = `${destination.trim().toLowerCase()}_${checkIn}_${checkOut}_${adults}`;
+  const cached = getCachedResult(cacheKey);
+  if (cached) return cached;
 
   try {
     const queryTarget = CITY_SERP_MAP[destination] || `${destination} Hotels`;
@@ -237,7 +261,7 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
     const res = await axios.get(url, { timeout: 12000 });
     
     if (res.data && res.data.properties && Array.isArray(res.data.properties) && res.data.properties.length > 0) {
-      return res.data.properties.map((item, idx) => {
+      const parsedList = res.data.properties.map((item, idx) => {
         const lowestPrice = item.rate_per_night?.extracted_lowest || item.price || 3200;
         const origPrice = Math.round(lowestPrice * 1.35);
         return {
@@ -257,6 +281,10 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
           providers: []
         };
       });
+
+      // Save into On-Demand TTL Cache
+      setCachedResult(cacheKey, parsedList);
+      return parsedList;
     }
   } catch (err) {
     console.warn('[SERPAPI-WARNING] Real API fetch skipped, falling back to real individual hotel dataset:', err.message);
@@ -280,7 +308,7 @@ export async function searchGlobalHotels({
   const queryTerm = (destination || '').trim();
   const targetCityName = queryTerm || '台北';
 
-  // 1. Try real live SerpApi Google Hotels fetching with CITY_SERP_MAP query translation
+  // 1. Try real live SerpApi Google Hotels fetching with On-Demand Caching Strategy
   let filtered = await fetchLiveSerpApiHotels({ destination: targetCityName, checkIn, checkOut, adults });
 
   // 2. If SerpApi limits or unavailable, use authentic real-world individual hotels database
