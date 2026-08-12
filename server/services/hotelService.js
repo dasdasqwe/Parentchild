@@ -265,6 +265,13 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
         const lowestPrice = item.rate_per_night?.extracted_lowest || item.price || 3200;
         const beforeTax = item.rate_per_night?.extracted_before_taxes_fees || Math.round(lowestPrice * 0.86);
         const origPrice = Math.round(lowestPrice * 1.35);
+
+        const apiProviders = Array.isArray(item.prices) && item.prices.length > 0 ? item.prices.map(p => ({
+          name: p.source || 'OTA Booking',
+          price: p.rate_per_night?.extracted_lowest || lowestPrice,
+          url: p.link || ''
+        })) : [];
+
         return {
           id: `serpapi-${idx}`,
           cityId: destination,
@@ -280,7 +287,7 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
           address: item.description || `${destination} 市中心`,
           image: item.images?.[0]?.thumbnail || item.images?.[0]?.original_image || IMAGES_POOL[idx % IMAGES_POOL.length],
           tags: item.amenities?.slice(0, 3) || ['Google 實時房價', '捷運直達', '高CP值'],
-          providers: []
+          providers: apiProviders
         };
       });
 
