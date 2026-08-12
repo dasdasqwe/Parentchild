@@ -3,6 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getStays } from './controllers/stayController.js';
+import { getTourPackages, getFamilyAttractions, getFamilyShows } from './controllers/exploreController.js';
 import { handleLineWebhook, simulateLineMessage } from './controllers/lineController.js';
 import { scrapeOpenDataAttractions } from './services/openDataService.js';
 
@@ -18,6 +19,11 @@ app.use(express.json());
 // RESTful API Routes
 app.get('/api/stays/search', getStays);
 app.get('/api/search', getStays); // Backward-compatible alias
+
+// SQLite Multi-Module API Endpoints
+app.get('/api/explore/packages', getTourPackages);
+app.get('/api/explore/attractions', getFamilyAttractions);
+app.get('/api/explore/shows', getFamilyShows);
 
 app.post('/api/line/webhook', handleLineWebhook);
 app.post('/api/line/simulate', simulateLineMessage);
