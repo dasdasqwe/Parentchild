@@ -34,6 +34,7 @@ export default function App() {
   const [checkOutDate, setCheckOutDate] = useState(getTomorrowStr(2));
   const [adults, setAdults] = useState(2);
   const [childrenCount, setChildrenCount] = useState(2);
+  const [childAge, setChildAge] = useState(6);
   
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,12 +75,12 @@ export default function App() {
   // Reset page to 1 when search inputs change
   useEffect(() => {
     setCurrentPage(1);
-  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, adults, childrenCount]);
+  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, adults, childrenCount, childAge]);
 
   // Fetch hotel data from backend API
   useEffect(() => {
     fetchStaysData();
-  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, adults, childrenCount, currentPage]);
+  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, adults, childrenCount, childAge, currentPage]);
 
   const fetchStaysData = async () => {
     setIsSearching(true);
@@ -94,7 +95,8 @@ export default function App() {
         checkIn: checkInDate,
         checkOut: checkOutDate,
         adults: adults,
-        children: childrenCount
+        children: childrenCount,
+        childAge: childAge
       });
 
       const res = await fetch(`/api/stays/search?${query}`);
@@ -162,6 +164,8 @@ export default function App() {
           setAdults={setAdults}
           childrenCount={childrenCount}
           setChildrenCount={setChildrenCount}
+          childAge={childAge}
+          setChildAge={setChildAge}
           onSearch={fetchStaysData}
           isSearching={isSearching}
         />

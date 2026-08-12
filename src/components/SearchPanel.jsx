@@ -18,6 +18,8 @@ export default function SearchPanel({
   setAdults,
   childrenCount = 2,
   setChildrenCount,
+  childAge = 6,
+  setChildAge,
   onSearch,
   isSearching
 }) {
@@ -161,7 +163,7 @@ export default function SearchPanel({
           borderTop: '1px solid rgba(15, 23, 42, 0.06)'
         }}>
 
-          {/* Adults & Children Count Dropdowns (Placed directly in front of Check-in Date) */}
+          {/* Adults, Children & Child Age Dropdowns (Placed directly in front of Check-in Date) */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <Users size={15} color="#059669" /> 入住人數：
@@ -193,6 +195,28 @@ export default function SearchPanel({
               <option value={3}>小孩 3 位</option>
               <option value={4}>小孩 4 位</option>
             </select>
+
+            {/* Child Age Select (Visible when childrenCount > 0) */}
+            {childrenCount > 0 && (
+              <select
+                value={childAge}
+                onChange={(e) => setChildAge && setChildAge(Number(e.target.value))}
+                style={{ ...inputStyle, fontWeight: '700', minWidth: '105px', borderColor: 'rgba(5, 150, 105, 0.4)', background: '#f0fdf4' }}
+              >
+                <option value={1}>兒童 1 歲</option>
+                <option value={2}>兒童 2 歲</option>
+                <option value={3}>兒童 3 歲</option>
+                <option value={4}>兒童 4 歲</option>
+                <option value={5}>兒童 5 歲</option>
+                <option value={6}>兒童 6 歲 (預設)</option>
+                <option value={7}>兒童 7 歲</option>
+                <option value={8}>兒童 8 歲</option>
+                <option value={9}>兒童 9 歲</option>
+                <option value={10}>兒童 10 歲</option>
+                <option value={11}>兒童 11 歲</option>
+                <option value={12}>兒童 12 歲</option>
+              </select>
+            )}
 
             <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', marginLeft: '6px' }}>入住退房：</span>
             <input

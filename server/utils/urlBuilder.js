@@ -1,12 +1,13 @@
 /**
- * Format provider deep-link URLs with checkIn, checkOut, adults, children for Agoda, Booking.com, and Trip.com
- * Pre-fills exact hotel name, dates, adults, and children count for all 3 booking channels.
+ * Format provider deep-link URLs with checkIn, checkOut, adults, children, and childAge for Agoda, Booking.com, and Trip.com
+ * Pre-fills exact hotel name, dates, adults, children count, and selected child age for all 3 booking channels.
  */
 export function buildProviderDeepLinks(stay = {}, query = {}, normCityName = '') {
   const checkIn = (query && query.checkIn) || stay.checkIn || '2026-08-12';
   const checkOut = (query && query.checkOut) || stay.checkOut || '2026-08-14';
   const adults = Number((query && query.adults) || stay.adults || 2);
   const children = Number((query && query.children) || stay.children || 2);
+  const childAge = Number((query && query.childAge) || stay.childAge || 6);
 
   const d1 = new Date(checkIn);
   const d2 = new Date(checkOut);
@@ -15,7 +16,7 @@ export function buildProviderDeepLinks(stay = {}, query = {}, normCityName = '')
   const rawName = stay.hotelName || stay.name || stay.cityName || normCityName || '飯店';
   const fullHotelKw = encodeURIComponent(rawName);
 
-  const childAgesParam = children > 0 ? `&childAges=${Array(children).fill(6).join(',')}` : '';
+  const childAgesParam = children > 0 ? `&childAges=${Array(children).fill(childAge).join(',')}` : '';
 
   const basePrice = stay.price || stay.basePrice || 3200;
 
