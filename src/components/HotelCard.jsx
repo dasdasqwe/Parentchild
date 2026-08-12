@@ -178,107 +178,171 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
           )}
         </div>
 
-        {/* Multi-Provider Price Comparison Card (Matching Image 1 Screenshot) */}
-        <div style={{
-          background: '#f8fafc',
-          border: '1px solid rgba(15, 23, 42, 0.08)',
-          borderRadius: '16px',
-          padding: '10px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '6px',
-          marginTop: '8px'
-        }}>
-          {(() => {
-            const defaultProviders = [
-              { name: 'Agoda', price: stay.price, url: officialUrl },
-              { name: 'Booking.com', price: Math.round(stay.price * 1.05), url: officialUrl },
-              { name: 'Trip.com', price: Math.round(stay.price * 1.08), url: officialUrl }
-            ];
+        {/* Provider Comparison Callout & Drawer */}
+        <div>
+          <div style={{
+            background: 'rgba(5, 150, 105, 0.08)',
+            border: '1px solid rgba(5, 150, 105, 0.2)',
+            borderRadius: '12px',
+            padding: '10px 14px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '10px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.84rem', fontWeight: '800', color: '#059669' }}>
+              <Tag size={15} />
+              <span>全網最低價: {lowestProvider ? lowestProvider.name : 'Agoda'}</span>
+            </div>
 
-            const rawProviders = (stay.providers && stay.providers.length > 0)
-              ? stay.providers
-              : defaultProviders;
+            <button
+              onClick={() => setShowProviders(!showProviders)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#059669',
+                fontSize: '0.8rem',
+                fontWeight: '700',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '2px',
+                outline: 'none'
+              }}
+            >
+              <span>比價 ({stay.providers ? stay.providers.length : 3}家)</span>
+              {showProviders ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+          </div>
 
-            const sortedProviders = rawProviders.slice().sort((a, b) => a.price - b.price);
+          {/* Expandable Multi-Provider Price Drawer (Matching Image 1 Screenshot) */}
+          {showProviders && (
+            <div style={{
+              background: '#f8fafc',
+              border: '1px solid rgba(15, 23, 42, 0.08)',
+              borderRadius: '16px',
+              padding: '10px',
+              marginBottom: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '6px'
+            }}>
+              {(() => {
+                const defaultProviders = [
+                  { name: 'Agoda', price: stay.price, url: officialUrl },
+                  { name: 'Booking.com', price: Math.round(stay.price * 1.05), url: officialUrl },
+                  { name: 'Trip.com', price: Math.round(stay.price * 1.08), url: officialUrl }
+                ];
 
-            return sortedProviders.map((p, idx) => {
-              const isLowest = idx === 0;
+                const rawProviders = (stay.providers && stay.providers.length > 0)
+                  ? stay.providers
+                  : defaultProviders;
 
-              return (
-                <div
-                  key={idx}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: isLowest ? '8px 12px' : '6px 12px',
-                    borderRadius: isLowest ? '12px' : '8px',
-                    background: isLowest ? '#ffffff' : 'transparent',
-                    border: isLowest ? '1.5px solid #10b981' : '1px solid transparent',
-                    boxShadow: isLowest ? '0 2px 8px rgba(16, 185, 129, 0.08)' : 'none'
-                  }}
-                >
-                  {/* Left: Channel Name & Badge */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{
-                      fontWeight: isLowest ? '800' : '700',
-                      fontSize: '0.88rem',
-                      color: isLowest ? '#047857' : '#1e293b'
-                    }}>
-                      {p.name}
-                    </span>
+                const sortedProviders = rawProviders.slice().sort((a, b) => a.price - b.price);
 
-                    {isLowest && (
-                      <span style={{
-                        background: '#059669',
-                        color: '#ffffff',
-                        fontSize: '0.7rem',
-                        fontWeight: '700',
-                        padding: '1px 7px',
-                        borderRadius: '6px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '2px'
-                      }}>
-                        👑 最低
-                      </span>
-                    )}
-                  </div>
+                return sortedProviders.map((p, idx) => {
+                  const isLowest = idx === 0;
 
-                  {/* Right: Price & Go Button */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span style={{
-                      fontWeight: '800',
-                      fontSize: isLowest ? '0.98rem' : '0.92rem',
-                      color: isLowest ? '#047857' : '#0f172a'
-                    }}>
-                      NT$ {p.price.toLocaleString()}
-                    </span>
-
-                    <a
-                      href={p.url || officialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  return (
+                    <div
+                      key={idx}
                       style={{
-                        background: '#ecfdf5',
-                        color: '#047857',
-                        padding: '4px 12px',
-                        borderRadius: '8px',
-                        textDecoration: 'none',
-                        fontSize: '0.78rem',
-                        fontWeight: '700',
-                        border: '1px solid rgba(5, 150, 105, 0.18)',
-                        transition: 'background 0.2s ease'
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: isLowest ? '8px 12px' : '6px 12px',
+                        borderRadius: isLowest ? '12px' : '8px',
+                        background: isLowest ? '#ffffff' : 'transparent',
+                        border: isLowest ? '1.5px solid #10b981' : '1px solid transparent',
+                        boxShadow: isLowest ? '0 2px 8px rgba(16, 185, 129, 0.08)' : 'none'
                       }}
                     >
-                      前往
-                    </a>
-                  </div>
-                </div>
-              );
-            });
-          })()}
+                      {/* Left: Channel Name & Badge */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{
+                          fontWeight: isLowest ? '800' : '700',
+                          fontSize: '0.88rem',
+                          color: isLowest ? '#047857' : '#1e293b'
+                        }}>
+                          {p.name}
+                        </span>
+
+                        {isLowest && (
+                          <span style={{
+                            background: '#059669',
+                            color: '#ffffff',
+                            fontSize: '0.7rem',
+                            fontWeight: '700',
+                            padding: '1px 7px',
+                            borderRadius: '6px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '2px'
+                          }}>
+                            👑 最低
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Right: Price & Go Button */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span style={{
+                          fontWeight: '800',
+                          fontSize: isLowest ? '0.98rem' : '0.92rem',
+                          color: isLowest ? '#047857' : '#0f172a'
+                        }}>
+                          NT$ {p.price.toLocaleString()}
+                        </span>
+
+                        <a
+                          href={p.url || officialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            background: '#ecfdf5',
+                            color: '#047857',
+                            padding: '4px 12px',
+                            borderRadius: '8px',
+                            textDecoration: 'none',
+                            fontSize: '0.78rem',
+                            fontWeight: '700',
+                            border: '1px solid rgba(5, 150, 105, 0.18)',
+                            transition: 'background 0.2s ease'
+                          }}
+                        >
+                          前往
+                        </a>
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
+            </div>
+          )}
+
+          {/* Primary Direct Booking CTA */}
+          <a
+            href={officialUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              width: '100%',
+              padding: '12px 0',
+              borderRadius: '12px',
+              fontSize: '0.92rem',
+              fontWeight: '800',
+              textDecoration: 'none',
+              boxSizing: 'border-box'
+            }}
+          >
+            <span>前往 {lowestProvider ? lowestProvider.name : 'Agoda'} 預訂搶購</span>
+            <ExternalLink size={16} />
+          </a>
         </div>
 
       </div>
