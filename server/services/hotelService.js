@@ -343,12 +343,18 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 
           zhTags = ['廣受好評', '交通極為便利', '舒適冷氣空調', '免費 Wi-Fi'];
         }
 
-        // Clean Address: NEVER assign description sentence to address!
+        // Clean Address: NEVER assign description sentence or append hotel name to address!
         let cleanAddress = `${destination}觀光熱門特區`;
-        if (item.address && !item.address.includes('提供') && !item.address.includes('客房') && !item.address.includes('設有') && !item.address.includes('附設')) {
+        const isHotelWord = destination.includes('飯店') || destination.includes('酒店') || destination.includes('Hotel') || destination.includes('Resort') || destination.includes('民宿') || destination.includes('館');
+        const cleanCityName = destination.replace(/飯店|酒店|hotel|resort|b&b|民宿|會館|館|旅店|旅館/gi, '').trim();
+        const displayRegion = (isHotelWord && cleanCityName.length < 2) ? '市中心' : (cleanCityName || destination);
+
+        if (item.address && !item.address.includes('提供') && !item.address.includes('客房') && !item.address.includes('設有') && !item.address.includes('附設') && !item.address.includes('飯店') && !item.address.includes('酒店')) {
           cleanAddress = item.address;
-        } else if (item.location) {
-          cleanAddress = `${destination} ${item.location}`;
+        } else if (item.location || item.neighborhood) {
+          cleanAddress = `${displayRegion} ${item.neighborhood || item.location}`;
+        } else {
+          cleanAddress = `${displayRegion}觀光熱門特區`;
         }
 
         return {
@@ -450,8 +456,11 @@ export async function searchGlobalHotels({
       let cleanAddress = item.address;
       if (sqliteHotel && sqliteHotel.address) {
         cleanAddress = sqliteHotel.address;
-      } else if (cleanAddress.includes('提供') || cleanAddress.includes('客房') || cleanAddress.includes('設有') || cleanAddress.includes('風格') || cleanAddress.includes('附設') || cleanAddress.length > 35) {
-        cleanAddress = `${targetCityName}市觀光特區`;
+      } else if (!cleanAddress || cleanAddress.includes('提供') || cleanAddress.includes('客房') || cleanAddress.includes('設有') || cleanAddress.includes('風格') || cleanAddress.includes('附設') || cleanAddress.includes('飯店') || cleanAddress.includes('酒店') || cleanAddress.length > 35) {
+        const isHotelWord = targetCityName.includes('飯店') || targetCityName.includes('酒店') || targetCityName.includes('Hotel') || targetCityName.includes('Resort') || targetCityName.includes('民宿');
+        const cleanRegion = targetCityName.replace(/飯店|酒店|hotel|resort|b&b|民宿|會館|館|旅店|旅館/gi, '').trim();
+        const displayCity = (isHotelWord && cleanRegion.length < 2) ? '市中心' : (cleanRegion || '市中心');
+        cleanAddress = `${displayCity}觀光熱門特區`;
       }
 
       const cleanTags = (sqliteHotel && sqliteHotel.amenities)
