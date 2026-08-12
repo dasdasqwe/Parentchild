@@ -2,17 +2,33 @@ import axios from 'axios';
 import { config } from '../config/env.js';
 import { buildProviderDeepLinks } from '../utils/urlBuilder.js';
 import { paginateArray, sortStays } from '../utils/pagination.js';
-import { queryHotelsFromSQLite, queryCitiesFromSQLite, getCachedApiFromSQLite, setCachedApiToSQLite } from '../db/sqliteEngine.js';
+import {
+  queryHotelsFromSQLite,
+  queryCitiesFromSQLite,
+  queryDistrictFromSQLite,
+  getCachedApiFromSQLite,
+  setCachedApiToSQLite
+} from '../db/sqliteEngine.js';
 
-// In-Memory API Cache Strategy (TTL: 15 minutes) for On-Demand API cost reduction
-// Persistent SQLite API Cache Strategy (TTL: 15 minutes) for On-Demand API cost reduction
+// Helper Date string generators
+function getTodayStr() {
+  const d = new Date();
+  return d.toISOString().split('T')[0];
+}
+
+function getTomorrowStr(addDays = 2) {
+  const d = new Date();
+  d.setDate(d.getDate() + addDays);
+  return d.toISOString().split('T')[0];
+}
+
+// Persistent SQLite API Cache Strategy (TTL: 15 minutes)
 function getCachedResult(cacheKey) {
   return getCachedApiFromSQLite(cacheKey);
 }
 
 function setCachedResult(cacheKey, data) {
   setCachedApiToSQLite(cacheKey, data, 15 * 60 * 1000);
-});
 }
 
 const CITY_SERP_MAP = {
@@ -46,128 +62,15 @@ const CITY_SERP_MAP = {
   '紐約': 'New York Hotels'
 };
 
-// Authentic Real-World Individual Hotels Database for Domestic & Overseas Cities
 const REAL_INDIVIDUAL_HOTELS = {
-  '台北': [
-    '台北晶華酒店 (Regent Taipei)',
-    '台北君品酒店 (Palais de Chine Hotel)',
-    '台北W飯店 (W Taipei)',
-    '台北寒舍艾美酒店 (Le Meridien Taipei)',
-    '台北圓山大飯店 (The Grand Hotel Taipei)',
-    '台北美福大飯店 (Grand Mayfull Hotel Taipei)',
-    '台北萬豪酒店 (Taipei Marriott Hotel)',
-    '台北加賀屋國際溫泉飯店 (Radium Kagaya Taipei)',
-    '台北喜來登大飯店 (Sheraton Grand Taipei Hotel)',
-    '台北華國大飯店 (Imperial Hotel Taipei)',
-    '台北天成大飯店 (Cosmos Hotel Taipei)',
-    '台北格絲麗飯店 (Hotel Gracery Taipei)',
-    '台北時代寓所 (Tapestry Collection by Hilton)',
-    '台北和逸飯店 - 台北民生館 (Hotel COZZI Minsheng)',
-    '台北寒居酒店 (Humble Boutique Hotel)',
-    '台北大倉久和大飯店 (The Okura Prestige Taipei)',
-    '台北三井花園飯店 (Mitsui Garden Hotel Taipei)',
-    '台北和苑三井花園飯店 (Mitsui Garden Hotel Zhongxiao)'
-  ],
-  '台中': [
-    '台中林酒店 (The Lin Hotel Taichung)',
-    '台中麗寶福容大飯店 (Fullon Hotel Lihpao Land)',
-    '台中日月千禧酒店 (Millennium Hotel Taichung)',
-    '台中金典酒店 (The Splendor Hotel Taichung)',
-    '台中裕元花園酒店 (Windsor Hotel Taichung)',
-    '台中逢甲夜市親子歡樂行館 (Fengjia Joyous Family Hotel)',
-    '台中萬楓酒店 (Fairfield by Marriott Taichung)',
-    '台中薆悅酒店五權館 (Inhouse Hotel Grand Taichung)',
-    '台中長榮桂冠酒店 (Evergreen Laurel Hotel Taichung)',
-    '台中李方艾美酒店 (Le Meridien Taichung)',
-    '台中莫內花園渡假酒店 (Monet Garden Hotel)',
-    '台中豐邑Moxy酒店 (Moxy Taichung)',
-    '台中頭等艙飯店 - 綠園道館 (Airline Inn Green Park Way)',
-    '台中綠宿行旅 (Green Hotel Taichung)',
-    '台中1969藍天飯店 (1969 Blue Sky Hotel)',
-    '台中薆悅酒店台中館 (Inhouse Hotel Taichung)',
-    '台中新驛旅店 - 台中車站店 (CityInn Hotel Taichung Station)',
-    '台中成旅晶贊飯店 - 台中民權館 (Park City Hotel Taichung)'
-  ],
-  '宜蘭': [
-    '宜蘭礁溪晶泉楓旅 (Wellspring by Silks Jiaoxi)',
-    '捷絲旅宜蘭礁溪館 (Just Sleep Jiaoxi)',
-    '宜蘭蘭城晶英酒店 (Silks Place Yilan)',
-    '宜蘭綠舞國際觀光飯店 (Dancewoods Hotel & Resort)',
-    '宜蘭礁溪老爺酒店 (Hotel Royal Jiaoxi)',
-    '宜蘭礁溪寒沐酒店 (MU JIAO XI HOTEL)',
-    '宜蘭川湯春天旗艦館 (Chuan Tang Spring Flagship)',
-    '宜蘭長榮鳳凰酒店 - 礁溪 (Evergreen Resort Hotel Jiaoxi)',
-    '宜蘭中冠礁溪大飯店 (Art Spa Hotel Jiaoxi)',
-    '宜蘭村卻國際溫泉酒店 (Cuncyue Resort & Spa)',
-    '宜蘭東旅湯宿 - 風華漾 (Yunoyado Onsen)',
-    '宜蘭鳳凰德陽川泉旅 (Evergreen Deyang)',
-    '宜蘭山多利大飯店 (Shandori Hotel Yilan)',
-    '宜蘭悅川酒店 (WALDEN HOTEL Yilan)',
-    '宜蘭松風文旅 (Matsukaze Hotel)',
-    '宜蘭煙波大飯店 - 宜蘭館 (Lakeshore Hotel Yilan)',
-    '宜蘭白宮渡假勝地 (White House Resort)',
-    '宜蘭凱渡廣場酒店 (THE ARCHIPELAGO Hotel)'
-  ],
-  '高雄': [
-    '高雄萬豪酒店 (Kaohsiung Marriott Hotel)',
-    '高雄義大皇家酒店 (E-Da Royal Hotel)',
-    '高雄漢來大飯店 (Grand Hi-Lai Hotel)',
-    '高雄晶英國際行館 (Silks Club Kaohsiung)',
-    '高雄洲際酒店 (InterContinental Kaohsiung)',
-    '高雄國賓大飯店 (The Ambassador Hotel Kaohsiung)',
-    '高雄福華大飯店 (Howard Plaza Hotel Kaohsiung)',
-    '高雄城市商旅 - 真愛館 (City Suites Chenai)',
-    '高雄宮賞藝術大飯店 (Kung Shang Design Hotel)',
-    '高雄水京棧國際酒店 (H2O Hotel Kaohsiung)',
-    '高雄寒軒國際大飯店 (Han-Hsien International Hotel)',
-    '高雄承億酒店 (TAI Urban Resort)',
-    '高雄比歐緻居 (Brio Hotel Kaohsiung)',
-    '高雄中央公園英迪格酒店 (Hotel Indigo Kaohsiung)',
-    '高雄和逸飯店 - 高雄中山館 (Hotel COZZI Zhongshan)',
-    '高雄捷絲旅 - 高雄站前館 (Just Sleep Kaohsiung Station)',
-    '高雄義大天悅飯店 (E-Da Skylark Hotel)',
-    '高雄黑沙渡假會館 (Black Sand Resort)'
-  ],
-  '沖繩': [
-    '沖繩蒙特利水療度假飯店 (Hotel Monterey Okinawa)',
-    '沖繩那霸休伊特度假飯店 (Hewitt Resort Naha)',
-    '沖繩恩納村萬豪渡假酒店 (Okinawa Marriott Resort)',
-    '沖繩美國村坎帕納船舶飯店 (Vessel Hotel Campana Okinawa)',
-    '沖繩琉球溫泉瀨長島飯店 (Ryukyu Onsen Senagajima Hotel)',
-    '沖繩海港景致全日空皇冠假日酒店 (ANA Crowne Plaza Harborview)',
-    '沖繩那霸雙樹希爾頓酒店 (DoubleTree by Hilton Naha)',
-    '沖繩宜野灣王子大飯店 (Okinawa Prince Hotel Ocean Grid)',
-    '沖繩哈雷庫拉尼渡假飯店 (Halekulani Okinawa)',
-    '沖繩北谷海濱希爾頓度假酒店 (Hilton Okinawa Chatan Resort)',
-    '沖繩那霸走廊快捷酒店 (Prostyle Ryokan Naha)',
-    '沖繩海濱塔渡假酒店 (The Beach Tower Okinawa)',
-    '沖繩阿札馬渡假大飯店 (Azama Beach Hotel Okinawa)',
-    '沖繩利山海舟渡假飯店 (Rizzan Sea-Park Hotel Tancha Bay)',
-    '沖繩日航アリビラ度假酒店 (Hotel Nikko Alivila)',
-    '沖繩萬座海灘全日空洲際度假酒店 (ANA InterContinental Manza Beach)',
-    '沖繩那霸休伊特精緻渡假飯店 (Hewitt Deluxe Naha)',
-    '沖繩喜來登聖瑪莉娜海濱度假飯店 (Sheraton Okinawa Sunmarina Resort)'
-  ],
-  '東京': [
-    '東京星野奢華溫泉旅館 (Hoshinoya Tokyo)',
-    '東京新宿格拉斯麗飯店 (Hotel Gracery Shinjuku)',
-    '東京迪士尼樂園大飯店 (Tokyo Disneyland Hotel)',
-    '東京淺草集市大飯店 (The Gate Hotel Asakusa)',
-    '東京半島酒店 (The Peninsula Tokyo)',
-    '東京文華東方酒店 (Mandarin Oriental Tokyo)',
-    '東京安達仕酒店 (Andaz Tokyo Toranomon Hills)',
-    '東京香格里拉大酒店 (Shangri-La Tokyo)',
-    '東京巨蛋飯店 (Tokyo Dome Hotel)',
-    '東京新宿燦路都廣場大飯店 (Hotel Sunroute Plaza Shinjuku)',
-    '東京品川王子大飯店 (Shinagawa Prince Hotel)',
-    '東京澀谷 Stream Excel 飯店 (Shibuya Stream Excel Hotel Tokyu)',
-    '東京京王廣場大飯店 (Keio Plaza Hotel Tokyo)',
-    '東京目黑雅敘園酒店 (Hotel Gajoen Tokyo)',
-    '東京上野寶石飯店 (Hotel Crown Hills Ueno)',
-    '東京銀座蒙特利酒店 (Hotel Monterey Ginza)',
-    '東京大倉飯店 (The Okura Tokyo)',
-    '東京押上Richmond國際酒店 (Richmond Hotel Premier Oshiage)'
-  ]
+  '台北': ['台北 W 飯店 (W Taipei)', '台北晶華酒店 (Regent Taipei)', '和逸飯店・台北民生館', '同一大飯店 (Tong Yi Hotel)', '台北君悅酒店', '寒舍艾美酒店', '圓山大飯店', '美麗信花園酒店'],
+  '宜蘭': ['煙波大飯店・宜蘭館', '蘭城晶英酒店', '田野居宜蘭民宿', '礁溪老爺酒店', '長榮鳳凰酒店(礁溪)', '川湯春天旗艦館', '捷絲旅宜蘭礁溪館', '綠舞國際觀光飯店'],
+  '台中': ['台中日月千禧酒店', '長榮桂冠酒店(台中)', '和逸飯店・台中館', '逢甲商旅', '林酒店 (The Lin)', '裕元花園酒店', '薆悅酒店五權館'],
+  '高雄': ['高雄洲際酒店', '漢來大飯店', '高雄萬豪酒店', '晶英國際行館', '福華大飯店(高雄)', '巨蛋旅店', '城市商旅真愛館'],
+  '台南': ['台南晶英酒店', '香格里拉台南遠東國際大飯店', '和逸飯店・台南西門館', '台南大飯店', '友愛街旅館 (UIJ Hotel)', '康橋慢旅'],
+  '沖繩': ['沖繩蒙特利水療度假飯店', '那霸格拉斯麗飯店', '琉球溫泉瀨長島飯店', '沖繩南海海灘酒店', '沖繩哈雷克拉尼酒店'],
+  '東京': ['東京希爾頓飯店', '東京半島酒店', '東京帝國飯店', '新宿格拉斯麗飯店', '澀谷 Stream Excel Hotel'],
+  '大阪': ['大阪瑞士南海酒店', '大阪萬豪都飯店', '大阪南海輝盛庭國際公寓', '難波日航飯店']
 };
 
 const TAG_TEMPLATES = [
@@ -187,151 +90,144 @@ const IMAGES_POOL = [
   'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'
 ];
 
+export function resolveRealAddress(item, cityKey, idx) {
+  if (item.address && !item.address.includes('提供') && !item.address.includes('客房') && !item.address.includes('設有') && !item.address.includes('附設') && !item.address.includes('飯店') && !item.address.includes('酒店') && item.address.length < 40) {
+    return item.address;
+  }
+  if (item.neighborhood || item.location) {
+    return `${cityKey} ${item.neighborhood || item.location}`;
+  }
+  return queryDistrictFromSQLite(cityKey, idx, item.name || '');
+}
+
 function generateCityHotels(cityName, count = 24, rooms = 1) {
   const list = [];
   const displayCity = cityName || '精選城市';
-  const realNames = REAL_INDIVIDUAL_HOTELS[displayCity] || REAL_INDIVIDUAL_HOTELS['台北'];
-  const isExactHotelName = displayCity.includes('飯店') || displayCity.includes('酒店') || displayCity.inclimport { 
-  queryHotelsFromSQLite, 
-  queryDistrictFromSQLite 
-} from '../db/sqliteEngine.js';
+  const realNames = REAL_INDIVIDUAL_HOTELS[displayCity] || REAL_INDIVIDUAL_HOTELS['台北'] || ['精選飯店'];
+  const effectiveRooms = Math.max(1, Number(rooms) || 1);
 
-function resolveRealAddress(item, cityKey, idx) {
-  if (item.address && !item.address.includes('提供') && !item.address.includes('客房') && !item.address.includes('設有') && !item.address.includes('附設') && !item.address.includes('飯店') && !item.address.includes('酒店') && item.address.length < 40) {
-    return item.address;
+  for (let i = 0; i < count; i++) {
+    const basePrice = (2200 + (i * 350) % 4500) * effectiveRooms;
+    const name = `${displayCity} ${realNames[i % realNames.length]}`;
+    const tags = TAG_TEMPLATES[i % TAG_TEMPLATES.length];
+    const img = IMAGES_POOL[i % IMAGES_POOL.length];
+
+    list.push({
+      id: `mock-${i}`,
+      cityId: displayCity,
+      cityName: displayCity,
+      name,
+      type: i % 3 === 0 ? 'Family Hotel' : (i % 2 === 0 ? 'Hotel' : 'B&B'),
+      rating: +(4.5 + (i % 5) * 0.1).toFixed(1),
+      reviewsCount: 300 + i * 85,
+      price: basePrice,
+      beforeTaxPrice: Math.round(basePrice * 0.86),
+      originalPrice: Math.round(basePrice * 1.4),
+      discountPercent: 30,
+      address: resolveRealAddress({}, displayCity, i),
+      description: `座落於${displayCity}核心地段，環境優雅靜謐，交通生活機能極佳。`,
+      image: img,
+      tags,
+      providers: []
+    });
   }
-  if (item.neighborhood || item.location) {
-    return `${cityKey} ${item.neighborhood || item.location}`;
-  }
-
-  // Query SQLite city_districts table in staypulse_hotels.db (< 1ms)
-  return queryDistrictFromSQLite(cityKey, idx, item.name || '');
-}�� (泰安溫泉風景區)', '頭份市 (尚順育樂世界)'],
-  '台中': ['西屯區 (逢甲夜市/七期重劃區)', '中區 (台中火車站周邊)', '北區 (一中街商圈)', '西區 (勤美草悟道商圈)', '和平區 (谷關溫泉風景區)'],
-  '臺中': ['西屯區 (逢甲夜市/七期重劃區)', '中區 (台中火車站周邊)', '北區 (一中街商圈)', '西區 (勤美草悟道商圈)'],
-  '彰化': ['彰化市 (八卦山大佛風景區)', '鹿港鎮 (鹿港老街古蹟區)', '員林市 (員林火車站商圈)'],
-  '南投': ['魚池鄉 (日月潭國家風景區)', '仁愛鄉 (清境農場/合歡山)', '埔里鎮 (埔里酒廠觀光區)', '鹿谷鄉 (溪頭自然教育園區)'],
-  '雲林': ['北港鎮 (北港朝天宮周邊)', '古坑鄉 (劍湖山世界/綠色隧道)', '斗六市 (斗六人文夜市)'],
-  '嘉義': ['西區 (文化路夜市/嘉義火車站)', '阿里山鄉 (阿里山國家森林遊樂區)', '民雄鄉 (民雄鬼屋/鵝肉一條街)', '東區 (蘭潭風景區)'],
-  '台南': ['中西區 (國華街古蹟美食區)', '安平區 (安平古堡老街區)', '東區 (成功大學商圈)', '白河區 (關子嶺泥漿溫泉)'],
-  '臺南': ['中西區 (國華街古蹟美食區)', '安平區 (安平古堡老街區)', '東區 (成功大學商圈)'],
-  '高雄': ['前鎮區 (三多商圈)', '新興區 (六合夜市/美麗島)', '鹽埕區 (駁二藝術特區)', '左營區 (蓮池潭/高鐵特區)', '鼓山區 (西子灣/壽山景觀區)'],
-  '屏東': ['恆春鎮 (墾丁國家公園/南灣海景區)', '屏東市 (勝利星村眷村園區)', '琉球鄉 (小琉球海龜潛水特區)', '車城鄉 (海生館/四重溪溫泉)'],
-  '墾丁': ['恆春鎮 (墾丁大街商圈)', '南灣 (南灣沙灘水上活動區)', '船帆石 (船帆石海景區)', '白沙灣 (白砂海灘風景區)'],
-  '宜蘭': ['礁溪鄉 (溫泉觀光特區)', '宜蘭市 (幾米公園/縣政特區)', '羅東鎮 (夜市觀光商圈)', '五結鄉 (冬山河親水特區)', '頭城鎮 (烏石港海景區)', '蘇澳鎮 (南方澳漁港/冷泉)'],
-  '花蓮': ['花蓮市 (東大門夜市/七星潭)', '秀林鄉 (太魯閣國家公園)', '吉安鄉 (慶修院周邊)', '瑞穗鄉 (瑞穗溫泉/秀姑巒溪)'],
-  '台東': ['台東市 (鐵花村/森林公園)', '鹿野鄉 (高台熱氣球特區)', '池上鄉 (伯朗大道稻田區)', '卑南鄉 (知本溫泉特區)'],
-  '臺東': ['台東市 (鐵花村/森林公園)', '鹿野鄉 (高台熱氣球特區)', '池上鄉 (伯朗大道稻田區)'],
-  '澎湖': ['馬公市 (觀音亭觀海/中央老街)', '白沙鄉 (跨海大橋景區)', '西嶼鄉 (二崁傳統聚落)'],
-  '金門': ['金城鎮 (莒光樓/模範街)', '金湖鎮 (太武山/昇恆昌特區)', '金沙鎮 (陽翟老街)'],
-  '馬祖': ['南竿鄉 (藍眼淚觀賞區/媽祖巨神像)', '北竿鄉 (芹壁傳統聚落)'],
-
-  // 國際熱門旅遊城市
-  '沖繩': ['那霸市 (國際通觀光商圈)', '恩納村 (虎灘海景度假區)', '北谷町 (美國村度假區)', '名護市 (部瀨名海景區)'],
-  '東京': ['新宿區 (歌舞伎町/車站商圈)', '澀谷區 (原宿/竹下通商圈)', '千代田區 (東京車站/丸之內)', '台東區 (淺草寺/上野公園)', '中央區 (銀座精品特區)'],
-  '大阪': ['中央區 (道頓堀/心齋橋商圈)', '浪速區 (難波車站/通天閣)', '北區 (梅田藍天大廈)'],
-  '京都': ['東山區 (清水寺/祇園花見小路)', '中京區 (四條烏丸/錦市場)', '右京區 (嵐山竹林小徑)'],
-  '首爾': ['中區 (明洞商圈/南山塔)', '麻浦區 (弘大商圈)', '江南區 (三成洞/COEX)'],
-  '曼谷': ['Pathum Wan (暹羅百麗宮 Siam)', 'Khlong Toei (素坤逸 Sukhumvit)', 'Rattanakosin (大皇宮/臥佛寺)']
-};
-
-function resolveRealAddress(item, cityKey, idx) {
-  if (item.address && !item.address.includes('提供') && !item.address.includes('客房') && !item.address.includes('設有') && !item.address.includes('附設') && !item.address.includes('飯店') && !item.address.includes('酒店') && item.address.length < 40) {
-    return item.address;
-  }
-  if (item.neighborhood || item.location) {
-    return `${cityKey} ${item.neighborhood || item.location}`;
-  }
-
-  const cleanCity = cityKey.replace(/飯店|酒店|hotel|resort|b&b|民宿|會館|館|旅店|旅館/gi, '').trim();
-  const mainCity = (cleanCity.length >= 2) ? cleanCity : '台北';
-  const districts = CITY_DISTRICTS_MAP[mainCity] || CITY_DISTRICTS_MAP['台北'];
-  
-  const nameStr = item.name || '';
-  if (nameStr.includes('西門')) return `${mainCity} 萬華區 (西門町觀光商圈)`;
-  if (nameStr.includes('中山')) return `${mainCity} 中山區 (捷運中山站周邊)`;
-  if (nameStr.includes('信義') || nameStr.includes('101') || nameStr.includes('W ')) return `${mainCity} 信義區 (市府101商圈)`;
-  if (nameStr.includes('礁溪')) return `宜蘭縣 礁溪鄉 (溫泉觀光特區)`;
-  if (nameStr.includes('羅東')) return `宜蘭縣 羅東鎮 (夜市觀光商圈)`;
-
-  return `${mainCity} ${districts[idx % districts.length]}`;
+  return list;
 }
 
-/**
- * Fetch real live hotel API data via SerpApi Google Hotels API with On-Demand Cache
- */
 async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 1, adults = 2, children = 0, childAges = '' }) {
   if (!config.serpApiKey) return null;
 
-  const effectiveRooms = Math.max(1, Number(rooms) || 1);
-  const cacheKey = `${destination.trim().toLowerCase()}_${checkIn}_${checkOut}_r${effectiveRooms}_a${adults}_c${children}_ag${childAges}`;
+  const queryLoc = CITY_SERP_MAP[destination] || `${destination} Hotels`;
+  const cacheKey = `serpapi_${queryLoc}_${checkIn}_${checkOut}_${rooms}_${adults}_${children}_${childAges}`;
+
   const cached = getCachedResult(cacheKey);
   if (cached) return cached;
 
   try {
-    let queryTarget = CITY_SERP_MAP[destination];
-    if (!queryTarget) {
-      const lower = destination.toLowerCase();
-      if (lower.includes('hotel') || lower.includes('resort') || lower.includes('inn') || lower.includes('villa') || destination.includes('飯店') || destination.includes('酒店') || destination.includes('民宿') || destination.includes('會館')) {
-        queryTarget = destination;
-      } else {
-        queryTarget = `${destination} Hotels`;
-      }
+    const params = {
+      engine: 'google_hotels',
+      q: queryLoc,
+      check_in_date: checkIn,
+      check_out_date: checkOut,
+      adults: adults,
+      children: children,
+      rooms: rooms,
+      currency: 'TWD',
+      hl: 'zh-tw',
+      gl: 'tw',
+      api_key: config.serpApiKey
+    };
+
+    if (children > 0 && childAges) {
+      params.children_ages = childAges;
     }
 
-    const childrenParam = (children > 0 && childAges) ? `&children=${children}&children_ages=${childAges}` : '';
-    const url = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(queryTarget)}&check_in_date=${checkIn}&check_out_date=${checkOut}&adults=${adults}${childrenParam}&currency=TWD&hl=zh-TW&gl=tw&api_key=${config.serpApiKey}`;
-    const res = await axios.get(url, { timeout: 12000 });
-    
-    if (res.data && res.data.properties && Array.isArray(res.data.properties) && res.data.properties.length > 0) {
-      const parsedList = res.data.properties.map((item, idx) => {
-        const singleRoomPrice = item.rate_per_night?.extracted_lowest || item.price || 3200;
-        const lowestPrice = singleRoomPrice * effectiveRooms;
-        const singleBeforeTax = item.rate_per_night?.extracted_before_taxes_fees || Math.round(singleRoomPrice * 0.86);
-        const beforeTax = singleBeforeTax * effectiveRooms;
-        const totalStayRate = item.total_rate?.extracted_lowest ? item.total_rate.extracted_lowest * effectiveRooms : null;
-        const origPrice = Math.round(lowestPrice * 1.35);
+    const response = await axios.get('https://serpapi.com/search.json', {
+      params,
+      timeout: 12000
+    });
 
-        // Map real booking channels from item.prices if present
-        const apiProviders = Array.isArray(item.prices) && item.prices.length > 0 ? item.prices.map(p => ({
-          name: p.source || 'OTA Booking',
-          price: (p.rate_per_night?.extracted_lowest || singleRoomPrice) * effectiveRooms,
-          url: p.link || ''
-        })) : [];
+    if (response.data && response.data.properties && Array.isArray(response.data.properties)) {
+      const properties = response.data.properties;
 
-        // Format hotel class/type label
-        let hotelTypeLabel = 'Hotel';
-        if (item.extracted_hotel_class) {
-          hotelTypeLabel = `${item.extracted_hotel_class}星級飯店`;
-        } else if (item.hotel_class) {
-          hotelTypeLabel = typeof item.hotel_class === 'number' ? `${item.hotel_class}星級飯店` : item.hotel_class;
+      const parsedList = properties.map((item, idx) => {
+        let lowestPrice = 3200;
+        let beforeTax = 2750;
+        let totalStayRate = 6400;
+        let apiProviders = [];
+
+        if (item.rate_per_night && item.rate_per_night.lowest) {
+          const numStr = String(item.rate_per_night.lowest).replace(/[^0-9]/g, '');
+          if (numStr) lowestPrice = parseInt(numStr, 10);
+        } else if (item.total_rate && item.total_rate.lowest) {
+          const numStr = String(item.total_rate.lowest).replace(/[^0-9]/g, '');
+          if (numStr) lowestPrice = Math.round(parseInt(numStr, 10) / 2);
         }
 
-        // Format primary high-res image
-        const mainImage = item.images?.[0]?.original_image || item.images?.[0]?.thumbnail || IMAGES_POOL[idx % IMAGES_POOL.length];
+        if (item.prices && Array.isArray(item.prices)) {
+          apiProviders = item.prices.map(p => {
+            let pPrice = lowestPrice;
+            if (p.rate_per_night && p.rate_per_night.lowest) {
+              const pNum = String(p.rate_per_night.lowest).replace(/[^0-9]/g, '');
+              if (pNum) pPrice = parseInt(pNum, 10);
+            }
+            return {
+              name: p.source || 'Agoda',
+              price: pPrice,
+              official: Boolean(p.official),
+              url: p.link || 'https://www.agoda.com'
+            };
+          });
+        }
 
-        // Format tags with Traditional Chinese translation map
-        const rawTags = (item.amenities && item.amenities.length > 0) 
-          ? item.amenities.slice(0, 4) 
-          : [];
-        let zhTags = rawTags.map(t => AMENITIES_ZH_MAP[t] || t);
+        beforeTax = Math.round(lowestPrice * 0.86);
+        totalStayRate = lowestPrice * 2;
+        const origPrice = Math.round(lowestPrice * 1.45);
 
-        // Extract feature tags from description if amenities are missing
-        if (zhTags.length === 0 && item.description) {
+        const hotelTypeLabel = (item.hotel_class && parseInt(item.hotel_class, 10) >= 4)
+          ? ((item.description || '').includes('親子') ? 'Family Hotel' : 'Hotel')
+          : 'B&B';
+
+        let mainImage = IMAGES_POOL[idx % IMAGES_POOL.length];
+        if (item.images && Array.isArray(item.images) && item.images.length > 0) {
+          mainImage = item.images[0].original_image || item.images[0].thumbnail || mainImage;
+        }
+
+        let zhTags = [];
+        if (item.amenities && Array.isArray(item.amenities)) {
+          zhTags = item.amenities.slice(0, 4);
+        } else if (item.description) {
           const desc = item.description;
-          if (desc.includes('泳池')) zhTags.push('室內外泳池');
+          if (desc.includes('泳池')) zhTags.push('高空泳池');
+          if (desc.includes('免費 Wi-Fi') || desc.includes('Wi-Fi')) zhTags.push('免費 Wi-Fi');
+          if (desc.includes('停車')) zhTags.push('專屬停車場');
+          if (desc.includes('早餐')) zhTags.push('附設早餐');
           if (desc.includes('SPA')) zhTags.push('SPA 水療中心');
-          if (desc.includes('健身房')) zhTags.push('健身中心');
-          if (desc.includes('餐廳')) zhTags.push('附設頂級餐廳');
-          if (desc.includes('酒吧')) zhTags.push('景觀酒吧');
-          if (desc.includes('溫泉')) zhTags.push('天然溫泉');
-          if (desc.includes('親子') || desc.includes('兒童')) zhTags.push('親子友善設施');
         }
         if (zhTags.length === 0) {
-          zhTags = ['廣受好評', '交通極為便利', '舒適冷氣空調', '免費 Wi-Fi'];
+          zhTags = ['位置優越', '交通極為便利', '舒適冷氣空調', '免費 Wi-Fi'];
         }
 
-        // Clean Address: Use authentic district address resolution!
         const cleanAddress = resolveRealAddress(item, destination, idx);
 
         return {
@@ -356,7 +252,6 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 
         };
       });
 
-      // Save into On-Demand TTL Cache
       setCachedResult(cacheKey, parsedList);
       return parsedList;
     }
@@ -383,7 +278,7 @@ export async function searchGlobalHotels({
   const queryTerm = (destination || '').trim();
   const targetCityName = queryTerm || '台北';
 
-  // 1. SQLite Master Database Lookup for 100% Exact Hotel / City Matching
+  // 1. SQLite Master Database Lookup
   const sqliteMatches = queryHotelsFromSQLite(queryTerm);
   let sqliteHotelMap = new Map();
   if (sqliteMatches && sqliteMatches.length > 0) {
@@ -393,10 +288,10 @@ export async function searchGlobalHotels({
     });
   }
 
-  // 2. Try real live SerpApi Google Hotels fetching with On-Demand Caching Strategy
+  // 2. Try real live SerpApi Google Hotels fetching
   let filtered = await fetchLiveSerpApiHotels({ destination: targetCityName, checkIn, checkOut, rooms, adults, children, childAges });
 
-  // 3. If SerpApi limits or unavailable, use SQLite master database entries first
+  // 3. Fallback to SQLite master DB or dynamic hotel generator
   if (!filtered || filtered.length === 0) {
     if (sqliteMatches && sqliteMatches.length > 0) {
       const effectiveRooms = Math.max(1, Number(rooms) || 1);
@@ -422,14 +317,12 @@ export async function searchGlobalHotels({
       filtered = generateCityHotels(targetCityName, 24, rooms);
     }
   } else {
-    // Enrich SerpApi items with complete postal addresses and clean amenity tags if matched in SQLite
     filtered = filtered.map(item => {
       const nameKey = (item.name || '').toLowerCase();
       const sqliteHotel = Array.from(sqliteHotelMap.values()).find(h => 
         nameKey.includes(h.name_zh.toLowerCase()) || nameKey.includes(h.name_en.toLowerCase()) || (h.keywords && nameKey.includes(h.keywords.split(',')[0].toLowerCase()))
       );
 
-      // Clean address: ensure address is a real postal address (not an introduction description sentence)
       let cleanAddress = item.address;
       if (sqliteHotel && sqliteHotel.address) {
         cleanAddress = sqliteHotel.address;
@@ -452,7 +345,6 @@ export async function searchGlobalHotels({
     });
   }
 
-  // Broad Cities list for regional search vs specific hotel search
   const dbCities = queryCitiesFromSQLite();
   const BROAD_CITIES_SET = new Set([
     '台北', '臺北', '宜蘭', '台中', '臺中', '高雄', '台南', '臺南', '桃園', '新竹', '苗栗', '彰化',
@@ -460,11 +352,18 @@ export async function searchGlobalHotels({
     '首爾', '京都', '曼谷', '巴黎', '紐約', 'taipei', 'yilan', 'taichung', 'kaohsiung', 'tainan',
     'taoyuan', 'hsinchu', 'okinawa', 'tokyo', 'osaka', 'seoul', 'kyoto', 'bangkok', 'paris', 'new york'
   ]);
+  if (dbCities && dbCities.length > 0) {
+    dbCities.forEach(c => {
+      BROAD_CITIES_SET.add(c.name.toLowerCase());
+      if (c.aliases) {
+        c.aliases.split(',').forEach(a => BROAD_CITIES_SET.add(a.trim().toLowerCase()));
+      }
+    });
+  }
 
   const normQuery = queryTerm.toLowerCase().trim();
   const isBroadCity = BROAD_CITIES_SET.has(normQuery) || Boolean(CITY_SERP_MAP[queryTerm]);
 
-  // Exact hotel name precision filtering (Only trigger when searching specific hotel/landmark)
   if (!isBroadCity && normQuery.length > 0 && filtered && filtered.length > 0) {
     const cleanKw = normQuery.replace(/飯店|酒店|hotel|resort|b&b|民宿|會館|館|旅店|旅館/gi, '').trim();
 
@@ -480,14 +379,12 @@ export async function searchGlobalHotels({
     }
   }
 
-  // Filter by stay type & max budget limit
   if (type !== 'all') {
     filtered = filtered.filter(i => i.type === type);
   }
   const maxP = Number(maxPrice) || 30000;
   filtered = filtered.filter(i => i.price <= maxP);
 
-  // Attach provider deep links (Agoda, Booking.com, Trip.com) for each hotel
   const processed = filtered.map(hotel => {
     const deepLinks = buildProviderDeepLinks(hotel, {
       checkIn,
@@ -509,10 +406,7 @@ export async function searchGlobalHotels({
     };
   });
 
-  // Apply Sorting (price_asc, price_desc, rating_desc)
   const sortedStays = sortStays(processed, sort);
-
-  // Apply Pagination
   const result = paginateArray(sortedStays, page, pageSize);
 
   return {
