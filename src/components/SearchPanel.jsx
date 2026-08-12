@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, ArrowUpDown, Calendar, DollarSign, SlidersHorizontal, RefreshCw, Globe, Sparkles } from 'lucide-react';
+import { Search, ArrowUpDown, Calendar, DollarSign, SlidersHorizontal, RefreshCw, Globe, Users } from 'lucide-react';
 
 export default function SearchPanel({
   destination,
@@ -14,6 +14,10 @@ export default function SearchPanel({
   setCheckInDate,
   checkOutDate,
   setCheckOutDate,
+  adults = 2,
+  setAdults,
+  childrenCount = 1,
+  setChildrenCount,
   onSearch,
   isSearching
 }) {
@@ -157,9 +161,40 @@ export default function SearchPanel({
           borderTop: '1px solid rgba(15, 23, 42, 0.06)'
         }}>
 
-          {/* Check-In / Check-Out */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700' }}>入住退房：</span>
+          {/* Adults & Children Count Dropdowns (Placed directly in front of Check-in Date) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Users size={15} color="#059669" /> 入住人數：
+            </span>
+            
+            {/* Adult Select */}
+            <select
+              value={adults}
+              onChange={(e) => setAdults && setAdults(Number(e.target.value))}
+              style={{ ...inputStyle, fontWeight: '700', minWidth: '95px' }}
+            >
+              <option value={1}>大人 1 位</option>
+              <option value={2}>大人 2 位</option>
+              <option value={3}>大人 3 位</option>
+              <option value={4}>大人 4 位</option>
+              <option value={5}>大人 5 位</option>
+              <option value={6}>大人 6 位</option>
+            </select>
+
+            {/* Children Select */}
+            <select
+              value={childrenCount}
+              onChange={(e) => setChildrenCount && setChildrenCount(Number(e.target.value))}
+              style={{ ...inputStyle, fontWeight: '700', minWidth: '95px' }}
+            >
+              <option value={0}>小孩 0 位</option>
+              <option value={1}>小孩 1 位</option>
+              <option value={2}>小孩 2 位</option>
+              <option value={3}>小孩 3 位</option>
+              <option value={4}>小孩 4 位</option>
+            </select>
+
+            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', marginLeft: '6px' }}>入住退房：</span>
             <input
               type="date"
               value={checkInDate}
