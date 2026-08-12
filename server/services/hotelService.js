@@ -264,28 +264,43 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
       const parsedList = res.data.properties.map((item, idx) => {
         const lowestPrice = item.rate_per_night?.extracted_lowest || item.price || 3200;
         const beforeTax = item.rate_per_night?.extracted_before_taxes_fees || Math.round(lowestPrice * 0.86);
+        const totalStayRate = item.total_rate?.extracted_lowest || null;
         const origPrice = Math.round(lowestPrice * 1.35);
 
+        // Map real booking channels from item.prices if present
         const apiProviders = Array.isArray(item.prices) && item.prices.length > 0 ? item.prices.map(p => ({
           name: p.source || 'OTA Booking',
           price: p.rate_per_night?.extracted_lowest || lowestPrice,
           url: p.link || ''
         })) : [];
 
+        // Format hotel class/type label
+        let hotelTypeLabel = 'Hotel';
+        if (item.extracted_hotel_class) {
+          hotelTypeLabel = `${item.extracted_hotel_class}星級飯店`;
+        } else if (item.hotel_class) {
+          hotelTypeLabel = typeof item.hotel_class === 'number' ? `${item.hotel_class}星級飯店` : item.hotel_class;
+        }
+
+        // Format primary high-res image
+        const mainImage = item.images?.[0]?.original_image || item.images?.[0]?.thumbnail || IMAGES_POOL[idx % IMAGES_POOL.length];
+
         return {
           id: `serpapi-${idx}`,
           cityId: destination,
           cityName: destination,
           name: item.name || `${destination} 經典飯店`,
-          type: item.hotel_class ? `${item.hotel_class}星級飯店` : 'Hotel',
+          type: hotelTypeLabel,
           rating: item.overall_rating || 4.8,
           reviewsCount: item.reviews || 1200,
           price: lowestPrice,
           beforeTaxPrice: beforeTax,
+          totalStayPrice: totalStayRate,
           originalPrice: origPrice,
           discountPercent: Math.round((1 - lowestPrice / origPrice) * 100),
           address: item.description || `${destination} 市中心`,
-          image: item.images?.[0]?.thumbnail || item.images?.[0]?.original_image || IMAGES_POOL[idx % IMAGES_POOL.length],
+          image: mainImage,
+          gps: item.gps_coordinates || null,
           tags: item.amenities?.slice(0, 3) || ['Google 實時房價', '捷運直達', '高CP值'],
           providers: apiProviders
         };
