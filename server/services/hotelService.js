@@ -199,9 +199,10 @@ function generateCityHotels(cityName, count = 24) {
   const list = [];
   const displayCity = cityName || '精選城市';
   const realNames = REAL_INDIVIDUAL_HOTELS[displayCity] || REAL_INDIVIDUAL_HOTELS['台北'];
+  const isExactHotelName = displayCity.includes('飯店') || displayCity.includes('酒店') || displayCity.includes('Hotel') || displayCity.includes('Resort') || displayCity.includes('民宿');
 
   for (let i = 1; i <= count; i++) {
-    const hotelName = realNames[(i - 1) % realNames.length] || `${displayCity} 經典精品飯店 ${i}`;
+    const hotelName = (i === 1 && isExactHotelName) ? displayCity : (realNames[(i - 1) % realNames.length] || `${displayCity} 經典精品飯店 ${i}`);
     const basePrice = 1450 + (i * 430) % 5200;
     const origPrice = Math.round(basePrice * 1.45);
     const rating = Math.min(5.0, Number((4.6 + (i * 0.07) % 0.38).toFixed(1)));

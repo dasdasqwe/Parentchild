@@ -78,7 +78,7 @@ export default function SearchPanel({
               list="global-destinations-list"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
-              placeholder="搜尋國內外目的地飯店 (例如：沖繩, 東京, 宜蘭, 台北, 巴黎)..."
+              placeholder="搜尋飯店名稱或地點 (例如：台北晶華酒店, 沖繩, Regent Taipei, 宜蘭, 東京)..."
               style={{
                 ...inputStyle,
                 width: '100%',
