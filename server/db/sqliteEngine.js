@@ -21,6 +21,7 @@ db.pragma('synchronous = NORMAL');
  * 2. tour_packages (套裝行程)
  * 3. family_attractions (親子景點)
  * 4. family_shows_galleries (親子表演藝廊)
+ * 5. city_districts (全台22縣市與國際行政區商圈對照表)
  */
 db.exec(`
   -- 1. Hotels & Stays Master Table
@@ -92,6 +93,40 @@ db.exec(`
     keywords TEXT
   );
   CREATE INDEX IF NOT EXISTS idx_shows_city ON family_shows_galleries(city_name);
+
+  -- 5. City Districts Table (全台與國際行政區商圈主表)
+  CREATE TABLE IF NOT EXISTS city_districts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    city_name TEXT NOT NULL,
+    district_name TEXT NOT NULL,
+    keywords TEXT
+  );
+  CREATE INDEX IF NOT EXISTS idx_districts_city ON city_districts(city_name);
+
+  -- 6. Cities Table (熱門城市與別名表)
+  CREATE TABLE IF NOT EXISTS cities (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    city_id TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    country TEXT NOT NULL,
+    aliases TEXT
+  );
+  CREATE INDEX IF NOT EXISTS idx_cities_name ON cities(name);
+
+  -- 7. Persistent API Cache Table (API 快取表)
+  CREATE TABLE IF NOT EXISTS api_cache (
+    cache_key TEXT PRIMARY KEY,
+    response_json TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    expires_at INTEGER NOT NULL
+  );
+
+  -- 8. Server-side User Saved Stays Table (我的最愛收藏表)
+  CREATE TABLE IF NOT EXISTS saved_stays (
+    id TEXT PRIMARY KEY,
+    stay_data TEXT NOT NULL,
+    created_at INTEGER NOT NULL
+  );
 `);
 
 // Seed Hotels Master Seed
@@ -218,79 +253,206 @@ const HOTELS_SEED = [
   }
 ];
 
-// Seed Tour Packages Seed (套裝行程模組)
+// Seed City Districts Seed (全台22縣市與國際熱門商圈)
+const DISTRICTS_SEED = [
+  { city_name: '台北', district_name: '中山區 (捷運中山站周邊)', keywords: '中山' },
+  { city_name: '台北', district_name: '信義區 (市府101商圈)', keywords: '信義, 101' },
+  { city_name: '台北', district_name: '萬華區 (西門町觀光商圈)', keywords: '萬華, 西門町' },
+  { city_name: '台北', district_name: '大安區 (東區忠孝商圈)', keywords: '大安, 東區' },
+  { city_name: '台北', district_name: '中正區 (台北車站特區)', keywords: '中正, 台北車站' },
+  { city_name: '台北', district_name: '士林區 (士林天母商圈)', keywords: '士林, 天母' },
+  { city_name: '新北', district_name: '板橋區 (新北車站/歡樂耶誕城)', keywords: '板橋' },
+  { city_name: '新北', district_name: '淡水區 (淡水老街/漁人碼頭)', keywords: '淡水' },
+  { city_name: '新北', district_name: '瑞芳區 (九份老街/金瓜石)', keywords: '九份, 瑞芳' },
+  { city_name: '宜蘭', district_name: '礁溪鄉 (溫泉觀光特區)', keywords: '礁溪, 溫泉' },
+  { city_name: '宜蘭', district_name: '宜蘭市 (幾米公園/縣政特區)', keywords: '宜蘭市' },
+  { city_name: '宜蘭', district_name: '羅東鎮 (夜市觀光商圈)', keywords: '羅東' },
+  { city_name: '宜蘭', district_name: '五結鄉 (冬山河親水特區)', keywords: '五結, 冬山河' },
+  { city_name: '台中', district_name: '西屯區 (逢甲夜市/七期重劃區)', keywords: '西屯, 逢甲' },
+  { city_name: '台中', district_name: '中區 (台中火車站周邊)', keywords: '中區, 火車站' },
+  { city_name: '台中', district_name: '西區 (勤美草悟道商圈)', keywords: '草悟道, 勤美' },
+  { city_name: '高雄', district_name: '前鎮區 (三多商圈)', keywords: '三多' },
+  { city_name: '高雄', district_name: '新興區 (六合夜市/美麗島)', keywords: '六合, 美麗島' },
+  { city_name: '高雄', district_name: '鹽埕區 (駁二藝術特區)', keywords: '駁二, 鹽埕' },
+  { city_name: '台南', district_name: '中西區 (國華街古蹟美食區)', keywords: '國華街, 中西區' },
+  { city_name: '台南', district_name: '安平區 (安平古堡老街區)', keywords: '安平' },
+  { city_name: '花蓮', district_name: '花蓮市 (東大門夜市/七星潭)', keywords: '花蓮市, 東大門' },
+  { city_name: '花蓮', district_name: '秀林鄉 (太魯閣國家公園)', keywords: '太魯閣' },
+  { city_name: '台東', district_name: '台東市 (鐵花村/森林公園)', keywords: '鐵花村' },
+  { city_name: '台東', district_name: '鹿野鄉 (高台熱氣球特區)', keywords: '鹿野, 熱氣球' },
+  { city_name: '屏東', district_name: '恆春鎮 (墾丁大街商圈)', keywords: '墾丁' },
+  { city_name: '沖繩', district_name: '那霸市 (國際通觀光商圈)', keywords: '那霸, 國際通' },
+  { city_name: '沖繩', district_name: '恩納村 (虎灘海景度假區)', keywords: '恩納村' },
+  { city_name: '東京', district_name: '新宿區 (歌舞伎町/車站商圈)', keywords: '新宿' },
+  { city_name: '東京', district_name: '澀谷區 (原宿/竹下通商圈)', keywords: '澀谷, 原宿' }
+];
+
+// Seed Cities Table
+const CITIES_SEED = [
+  { city_id: 'taipei', name: '台北 (Taipei)', country: '台灣', aliases: '台北, taipei, 臺北, 信義區, 中山區' },
+  { city_id: 'yilan', name: '宜蘭 (Yilan)', country: '台灣', aliases: '宜蘭, yilan, 礁溪, 羅東, 頭城' },
+  { city_id: 'taichung', name: '台中 (Taichung)', country: '台灣', aliases: '台中, taichung, 臺中, 逢甲, 西屯' },
+  { city_id: 'kaohsiung', name: '高雄 (Kaohsiung)', country: '台灣', aliases: '高雄, kaohsiung, 左營, 鹽埕' },
+  { city_id: 'tainan', name: '台南 (Tainan)', country: '台灣', aliases: '台南, tainan, 安平, 赤崁樓' },
+  { city_id: 'taoyuan', name: '桃園 (Taoyuan)', country: '台灣', aliases: '桃園, taoyuan, 中壢, 青埔' },
+  { city_id: 'hsinchu', name: '新竹 (Hsinchu)', country: '台灣', aliases: '新竹, hsinchu, 竹北, 關西' },
+  { city_id: 'hualien', name: '花蓮 (Hualien)', country: '台灣', aliases: '花蓮, hualien, 壽豐, 太魯閣' },
+  { city_id: 'taitung', name: '台東 (Taitung)', country: '台灣', aliases: '台東, taitung, 知本, 池上' },
+  { city_id: 'pingtung', name: '屏東 (Pingtung)', country: '台灣', aliases: '屏東, pingtung, 恆春, 墾丁' },
+  { city_id: 'okinawa', name: '沖繩 (Okinawa)', country: '日本', aliases: '沖繩, okinawa, 那霸, 美國村' },
+  { city_id: 'tokyo', name: '東京 (Tokyo)', country: '日本', aliases: '東京, tokyo, 新宿, 銀座, 淺草' },
+  { city_id: 'osaka', name: '大阪 (Osaka)', country: '日本', aliases: '大阪, osaka, 難波, 心齋橋' },
+  { city_id: 'seoul', name: '首爾 (Seoul)', country: '韓國', aliases: '首爾, seoul, 明洞, 弘大' },
+  { city_id: 'bangkok', name: '曼谷 (Bangkok)', country: '泰國', aliases: '曼谷, bangkok, 暹羅, 素坤逸' }
+];
+
+// Seed Tour Packages Table
 const PACKAGES_SEED = [
   {
-    package_key: 'yilan_family_2d',
-    title: '【宜蘭親子好食光】蘭城晶英二日奢華一泊二食＋櫻桃鴨饗宴',
+    package_key: 'yilan_family_2d1n',
+    title: '宜蘭蘭城晶英＋芬朵奇堡賽車 2天1夜尊榮親子遊',
     city_name: '宜蘭',
     duration: '2天1夜',
-    price: 8800,
+    price: 6990,
     rating: 4.9,
-    reviews_count: 650,
+    reviews_count: 1250,
     image_url: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
-    highlights: JSON.stringify(['芬朵奇堡跑車暢玩', '頂級櫻桃烤鴨美饌', '新月影城免費觀影', '免費飯店接駁']),
-    keywords: '宜蘭套裝, 蘭城晶英套裝, 親子二日遊'
+    highlights: '含蘭城晶英飯店住宿、櫻桃霸王鴨美饌饗宴與專屬賽車體驗。',
+    keywords: '宜蘭, 蘭城晶英, 親子, 賽車, 2天1夜'
   },
   {
-    package_key: 'taipei_museum_tour',
-    title: '【台北親子探險】市立天文館＋兒童新樂園一日FUN走透',
+    package_key: 'taipei_skyline_2d1n',
+    title: '台北 W 飯店高空泳池＋信義商圈購物 2天1夜奢華假期',
     city_name: '台北',
-    duration: '1天全日',
-    price: 1290,
+    duration: '2天1夜',
+    price: 7800,
     rating: 4.8,
-    reviews_count: 1200,
+    reviews_count: 980,
+    image_url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    highlights: '含 WET Bar 飲品招待與高空景色，捷運市府站步行連通。',
+    keywords: '台北, W Hotel, 信義區, 奢華, 高空泳池'
+  },
+  {
+    package_key: 'taichung_fengjia_2d1n',
+    title: '台中草悟道文青輕旅行＋逢甲美食探索 2天1夜',
+    city_name: '台中',
+    duration: '2天1夜',
+    price: 3980,
+    rating: 4.7,
+    reviews_count: 860,
     image_url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
-    highlights: JSON.stringify(['兒童新樂園一日手環', '天文館 3D 宇宙劇場票', '專車接送', '星光野餐點心盒']),
-    keywords: '台北套裝, 兒童新樂園, 天文館一日遊'
+    highlights: '含精選設計旅店住宿、夜市美食優惠券與免費接駁。',
+    keywords: '台中, 逢甲, 草悟道, 夜市, 2天1夜'
+  },
+  {
+    package_key: 'kaohsiung_pier2_2d1n',
+    title: '高雄駁二特區藝術巡禮＋海洋音樂館 2天1夜灣區之旅',
+    city_name: '高雄',
+    duration: '2天1夜',
+    price: 4200,
+    rating: 4.8,
+    reviews_count: 670,
+    image_url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
+    highlights: '輕軌周遊券、海景客房住宿與駁二展覽門票。',
+    keywords: '高雄, 駁二, 海洋音樂中心, 輕軌, 渡假'
+  },
+  {
+    package_key: 'okinawa_beach_3d2n',
+    title: '沖繩恩納村無敵海景＋水療渡假村 3天2夜海島自駕',
+    city_name: '沖繩',
+    duration: '3天2夜',
+    price: 12800,
+    rating: 4.9,
+    reviews_count: 2100,
+    image_url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80',
+    highlights: '全海景豪華客房、機場租車自駕方案與溫泉水療體驗。',
+    keywords: '沖繩, 蒙特利, 自駕, 海景房, 水療'
   }
 ];
 
-// Seed Family Attractions Seed (親子景點模組)
+// Seed Family Attractions Table
 const ATTRACTIONS_SEED = [
   {
-    attraction_key: 'children_amusement_park',
-    name: '台北市立兒童新樂園',
+    attraction_key: 'tom_bear_taipei',
+    name: '湯姆熊歡樂世界 (台北信義旗艦店)',
     city_name: '台北',
-    address: '台北市士林區承德路五段55號',
-    category: '戶外遊樂園',
-    ticket_price: 200,
+    address: '台北市信義區松高路12號B1',
+    category: '室內遊樂園',
+    ticket_price: 300,
     rating: 4.8,
-    reviews_count: 12500,
-    image_url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
-    features: JSON.stringify(['水果摩天輪', '銀河號單軌列車', '兒童海盜船', '室內球池樂園']),
-    keywords: '兒童新樂園, 士林兒童樂園, 台北親子景點'
+    reviews_count: 2400,
+    image_url: 'https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?auto=format&fit=crop&w=800&q=80',
+    features: '大型VR體驗, 親子賽車機台, 兌獎贈品中心',
+    keywords: '台北, 湯姆熊, 信義區, 室內樂園, 賽車'
   },
   {
-    attraction_key: 'zhang_mei_ama_farm',
-    name: '張美阿嬤農場',
+    attraction_key: 'bambino_yilan',
+    name: '斑比山丘 Bambi Land',
     city_name: '宜蘭',
-    address: '宜蘭縣三星鄉行健溪一路二段161號',
-    category: '萌寵體驗農場',
+    address: '宜蘭縣冬山鄉下湖路285號',
+    category: '戶外農場',
     ticket_price: 200,
     rating: 4.9,
-    reviews_count: 18900,
-    image_url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80',
-    features: JSON.stringify(['水豚君餵食體驗', '笑笑羊與水豚互動', '日式庭園和服體驗', '手作草餅 DIY']),
-    keywords: '張美阿嬤, 張美阿嬤農場, 水豚君, 宜蘭親子景點'
+    reviews_count: 5800,
+    image_url: 'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=800&q=80',
+    features: '梅花鹿互動喂食, 美美子美式甜點, 大片綠地森林',
+    keywords: '宜蘭, 斑比山丘, 梅花鹿, 冬山, 親子農場'
+  },
+  {
+    attraction_key: 'taichung_science_museum',
+    name: '國立自然科學博物館',
+    city_name: '台中',
+    address: '台中市北區館前路1號',
+    category: '科普教育館',
+    ticket_price: 100,
+    rating: 4.9,
+    reviews_count: 12000,
+    image_url: 'https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=800&q=80',
+    features: '逼真恐龍展廳, 太空劇場, 植物園水族館',
+    keywords: '台中, 科博館, 恐龍, 自然科學, 教育'
+  },
+  {
+    attraction_key: 'kaohsiung_aquarium',
+    name: '高雄國立海洋生物博物館',
+    city_name: '高雄',
+    address: '屏東縣車城鄉後灣路2號',
+    category: '海洋水族館',
+    ticket_price: 450,
+    rating: 4.9,
+    reviews_count: 15400,
+    image_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    features: '海底隧道, 白鯨表演, 夜宿水族館體驗',
+    keywords: '高雄, 屏東, 海生館, 水族館, 白鯨'
   }
 ];
 
-// Seed Family Shows Seed (親子表演藝廊模組)
+// Seed Family Shows Table
 const SHOWS_SEED = [
   {
-    show_key: 'paper_windmill_theater',
-    name: '紙風車劇團《368鄉鎮市區兒童藝術工程》公演',
-    title: '紙風車劇團《368鄉鎮市區兒童藝術工程》公演',
-    venue: '台北市藝文推廣處城市舞台',
+    show_key: 'paper_windmill_taipei',
+    title: '紙風車劇團《368鄉鎮親子幻想曲》',
+    venue: '台北市國家戲劇院',
     city_name: '台北',
-    ticket_price: 450,
+    ticket_price: 500,
     rating: 4.9,
-    reviews_count: 890,
-    image_url: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
-    event_date: '2026-09-15',
-    highlights: JSON.stringify(['互動式兒童舞台劇', '大型偶戲造型演出', '寓教於樂親子劇展']),
-    keywords: '紙風車, 紙風車劇團, 兒童舞台劇, 藝文表演'
+    reviews_count: 850,
+    image_url: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+    event_date: '2026-09-15 ~ 2026-10-10',
+    highlights: '專為兒童設計的互動式舞台劇，結合巨大偶戲與魔法特效。',
+    keywords: '台北, 紙風車, 兒童劇, 國家戲劇院, 舞台劇'
+  },
+  {
+    show_key: 'yilan_art_festival',
+    title: '宜蘭傳藝中心《孫悟空大鬧天宮》布袋戲',
+    venue: '國立傳統藝術中心廟埕廣場',
+    city_name: '宜蘭',
+    ticket_price: 150,
+    rating: 4.8,
+    reviews_count: 620,
+    image_url: 'https://images.unsplash.com/photo-1469488865564-c2de10f69f96?auto=format&fit=crop&w=800&q=80',
+    event_date: '每週六日 14:00/16:00',
+    highlights: '傳統技藝掌中戲實境演出，搭配兒童DIY體驗手作偶。',
+    keywords: '宜蘭, 傳藝中心, 布袋戲, 孫悟空, 傳統藝術'
   }
 ];
 
@@ -300,12 +462,22 @@ const insertHotel = db.prepare(`
   VALUES (@hotel_key, @name_zh, @name_en, @city_name, @address, @description, @rating, @reviews_count, @hotel_class, @base_price, @image_url, @amenities, @keywords)
 `);
 
-const insertPkg = db.prepare(`
+const insertDistrict = db.prepare(`
+  INSERT OR REPLACE INTO city_districts (city_name, district_name, keywords)
+  VALUES (@city_name, @district_name, @keywords)
+`);
+
+const insertCity = db.prepare(`
+  INSERT OR REPLACE INTO cities (city_id, name, country, aliases)
+  VALUES (@city_id, @name, @country, @aliases)
+`);
+
+const insertPackage = db.prepare(`
   INSERT OR REPLACE INTO tour_packages (package_key, title, city_name, duration, price, rating, reviews_count, image_url, highlights, keywords)
   VALUES (@package_key, @title, @city_name, @duration, @price, @rating, @reviews_count, @image_url, @highlights, @keywords)
 `);
 
-const insertAttr = db.prepare(`
+const insertAttraction = db.prepare(`
   INSERT OR REPLACE INTO family_attractions (attraction_key, name, city_name, address, category, ticket_price, rating, reviews_count, image_url, features, keywords)
   VALUES (@attraction_key, @name, @city_name, @address, @category, @ticket_price, @rating, @reviews_count, @image_url, @features, @keywords)
 `);
@@ -317,14 +489,37 @@ const insertShow = db.prepare(`
 
 db.transaction(() => {
   for (const h of HOTELS_SEED) insertHotel.run(h);
-  for (const p of PACKAGES_SEED) insertPkg.run(p);
-  for (const a of ATTRACTIONS_SEED) insertAttr.run(a);
+  for (const d of DISTRICTS_SEED) insertDistrict.run(d);
+  for (const c of CITIES_SEED) insertCity.run(c);
+  for (const p of PACKAGES_SEED) insertPackage.run(p);
+  for (const a of ATTRACTIONS_SEED) insertAttraction.run(a);
   for (const s of SHOWS_SEED) insertShow.run(s);
 })();
 
 /**
- * SQLite High-Performance Query APIs for All Modules
+ * High-Performance SQLite District Query Engine
  */
+export function queryDistrictFromSQLite(cityName = '台北', idx = 0, nameStr = '') {
+  const cleanCity = cityName.replace(/飯店|酒店|hotel|resort|b&b|民宿|會館|館|旅店|旅館/gi, '').trim();
+  const searchCity = (cleanCity.length >= 2) ? cleanCity : '台北';
+
+  // 1. Try keyword match in SQLite city_districts
+  if (nameStr) {
+    const kwStmt = db.prepare('SELECT district_name FROM city_districts WHERE city_name LIKE ? AND keywords LIKE ?');
+    const kwRow = kwStmt.get(`%${searchCity}%`, `%${nameStr.slice(0, 2)}%`);
+    if (kwRow) return `${searchCity} ${kwRow.district_name}`;
+  }
+
+  // 2. Query districts list from SQLite
+  const stmt = db.prepare('SELECT district_name FROM city_districts WHERE city_name LIKE ?');
+  const rows = stmt.all(`%${searchCity}%`);
+
+  if (rows && rows.length > 0) {
+    return `${searchCity} ${rows[idx % rows.length].district_name}`;
+  }
+
+  return `${searchCity} 市中心觀光特區`;
+}
 
 // 1. Hotels Query Engine
 export function queryHotelsFromSQLite(searchTerm = '', cityName = '') {
@@ -378,4 +573,91 @@ export function queryShowsFromSQLite(searchTerm = '') {
   return db.prepare('SELECT * FROM family_shows_galleries WHERE LOWER(title) LIKE ? OR LOWER(city_name) LIKE ? OR LOWER(keywords) LIKE ?').all(pattern, pattern, pattern);
 }
 
+// 5. Cities Query Engine (熱門城市與別名表)
+export function queryCitiesFromSQLite(searchTerm = '') {
+  const term = searchTerm.trim().toLowerCase();
+  if (!term) {
+    return db.prepare('SELECT * FROM cities').all();
+  }
+  const pattern = `%${term}%`;
+  return db.prepare('SELECT * FROM cities WHERE LOWER(name) LIKE ? OR LOWER(aliases) LIKE ? OR LOWER(country) LIKE ?').all(pattern, pattern, pattern);
+}
+
+// 6. Persistent API Cache Engine (SQLite API 持久化快取)
+export function getCachedApiFromSQLite(cacheKey) {
+  try {
+    const stmt = db.prepare('SELECT response_json, expires_at FROM api_cache WHERE cache_key = ?');
+    const row = stmt.get(cacheKey);
+    if (row && row.expires_at > Date.now()) {
+      console.log(`[SQLITE-CACHE-HIT] Loaded cached API response from SQLite for key: "${cacheKey}"`);
+      return JSON.parse(row.response_json);
+    }
+  } catch (err) {
+    console.error('SQLite Cache Get Error:', err);
+  }
+  return null;
+}
+
+export function setCachedApiToSQLite(cacheKey, data, ttlMs = 15 * 60 * 1000) {
+  try {
+    const stmt = db.prepare(`
+      INSERT OR REPLACE INTO api_cache (cache_key, response_json, created_at, expires_at)
+      VALUES (?, ?, ?, ?)
+    `);
+    const now = Date.now();
+    stmt.run(cacheKey, JSON.stringify(data), now, now + ttlMs);
+  } catch (err) {
+    console.error('SQLite Cache Set Error:', err);
+  }
+}
+
+// 7. Server-side User Saved Stays CRUD Engine (最愛收藏表)
+export function getSavedStaysFromSQLite() {
+  try {
+    const rows = db.prepare('SELECT stay_data FROM saved_stays ORDER BY created_at DESC').all();
+    return rows.map(r => JSON.parse(r.stay_data));
+  } catch (err) {
+    console.error('SQLite Saved Stays Get Error:', err);
+    return [];
+  }
+}
+
+export function addSavedStayToSQLite(item) {
+  try {
+    if (!item || !item.id) return false;
+    const stmt = db.prepare(`
+      INSERT OR REPLACE INTO saved_stays (id, stay_data, created_at)
+      VALUES (?, ?, ?)
+    `);
+    stmt.run(String(item.id), JSON.stringify(item), Date.now());
+    return true;
+  } catch (err) {
+    console.error('SQLite Add Saved Stay Error:', err);
+    return false;
+  }
+}
+
+export function removeSavedStayFromSQLite(id) {
+  try {
+    if (!id) return false;
+    const stmt = db.prepare('DELETE FROM saved_stays WHERE id = ?');
+    stmt.run(String(id));
+    return true;
+  } catch (err) {
+    console.error('SQLite Remove Saved Stay Error:', err);
+    return false;
+  }
+}
+
+export function clearSavedStaysFromSQLite() {
+  try {
+    db.prepare('DELETE FROM saved_stays').run();
+    return true;
+  } catch (err) {
+    console.error('SQLite Clear Saved Stays Error:', err);
+    return false;
+  }
+}
+
 export default db;
+

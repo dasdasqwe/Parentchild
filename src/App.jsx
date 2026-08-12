@@ -78,6 +78,23 @@ export default function App() {
     }
   }, [savedItems]);
 
+  // Load saved stays from SQLite DB API on mount
+  useEffect(() => {
+    fetchSavedStays();
+  }, []);
+
+  const fetchSavedStays = async () => {
+    try {
+      const res = await fetch('/api/saved-stays');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        setSavedItems(data.data);
+      }
+    } catch (err) {
+      console.warn('SQLite saved-stays sync fallback to localStorage:', err);
+    }
+  };
+
   // Reset page to 1 when search inputs change
   useEffect(() => {
     setCurrentPage(1);
@@ -122,23 +139,40 @@ export default function App() {
     }
   };
 
-  const handleToggleSave = (item) => {
-    setSavedItems(prev => {
-      const exists = prev.some(i => i.id === item.id);
-      if (exists) {
-        return prev.filter(i => i.id !== item.id);
-      } else {
-        return [...prev, item];
+  const handleToggleSave = async (item) => {
+    const exists = savedItems.some(i => i.id === item.id);
+    if (exists) {
+      handleRemoveSavedItem(item.id);
+    } else {
+      setSavedItems(prev => [...prev, item]);
+      try {
+        await fetch('/api/saved-stays', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(item)
+        });
+      } catch (err) {
+        console.error('Failed to save to SQLite:', err);
       }
-    });
+    }
   };
 
-  const handleRemoveSavedItem = (id) => {
+  const handleRemoveSavedItem = async (id) => {
     setSavedItems(prev => prev.filter(i => i.id !== id));
+    try {
+      await fetch(`/api/saved-stays/${id}`, { method: 'DELETE' });
+    } catch (err) {
+      console.error('Failed to remove from SQLite:', err);
+    }
   };
 
-  const handleClearSaved = () => {
+  const handleClearSaved = async () => {
     setSavedItems([]);
+    try {
+      await fetch('/api/saved-stays', { method: 'DELETE' });
+    } catch (err) {
+      console.error('Failed to clear SQLite saved stays:', err);
+    }
   };
 
   return (

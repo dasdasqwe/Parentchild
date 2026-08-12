@@ -2,26 +2,17 @@ import axios from 'axios';
 import { config } from '../config/env.js';
 import { buildProviderDeepLinks } from '../utils/urlBuilder.js';
 import { paginateArray, sortStays } from '../utils/pagination.js';
-import { queryHotelsFromSQLite } from '../db/sqliteEngine.js';
+import { queryHotelsFromSQLite, getCachedApiFromSQLite, setCachedApiToSQLite } from '../db/sqliteEngine.js';
 
 // In-Memory API Cache Strategy (TTL: 15 minutes) for On-Demand API cost reduction
-const apiCacheMap = new Map();
-const CACHE_TTL_MS = 15 * 60 * 1000; // 15 Minutes Cache
-
+// Persistent SQLite API Cache Strategy (TTL: 15 minutes) for On-Demand API cost reduction
 function getCachedResult(cacheKey) {
-  const cached = apiCacheMap.get(cacheKey);
-  if (cached && (Date.now() - cached.timestamp < CACHE_TTL_MS)) {
-    console.log(`[API-CACHE-HIT] Instant response from cache for key: "${cacheKey}" (0 API quota used)`);
-    return cached.data;
-  }
-  return null;
+  return getCachedApiFromSQLite(cacheKey);
 }
 
 function setCachedResult(cacheKey, data) {
-  apiCacheMap.set(cacheKey, {
-    timestamp: Date.now(),
-    data
-  });
+  setCachedApiToSQLite(cacheKey, data, 15 * 60 * 1000);
+});
 }
 
 const CITY_SERP_MAP = {
@@ -200,84 +191,22 @@ function generateCityHotels(cityName, count = 24, rooms = 1) {
   const list = [];
   const displayCity = cityName || '精選城市';
   const realNames = REAL_INDIVIDUAL_HOTELS[displayCity] || REAL_INDIVIDUAL_HOTELS['台北'];
-  const isExactHotelName = displayCity.includes('飯店') || displayCity.includes('酒店') || displayCity.includes('Hotel') || displayCity.includes('Resort') || displayCity.includes('民宿');
-  const effectiveRooms = Math.max(1, Number(rooms) || 1);
+  const isExactHotelName = displayCity.includes('飯店') || displayCity.includes('酒店') || displayCity.inclimport { 
+  queryHotelsFromSQLite, 
+  queryDistrictFromSQLite 
+} from '../db/sqliteEngine.js';
 
-  for (let i = 1; i <= count; i++) {
-    const hotelName = (i === 1 && isExactHotelName) ? displayCity : (realNames[(i - 1) % realNames.length] || `${displayCity} 經典精品飯店 ${i}`);
-    const singlePrice = 1450 + (i * 430) % 5200;
-    const basePrice = singlePrice * effectiveRooms;
-    const origPrice = Math.round(basePrice * 1.45);
-    const rating = Math.min(5.0, Number((4.6 + (i * 0.07) % 0.38).toFixed(1)));
-    const reviewsCount = 650 + i * 280;
-    const type = i % 3 === 0 ? 'Family Hotel' : (i % 5 === 0 ? 'B&B' : 'Hotel');
-    
-    list.push({
-      id: `hotel-${displayCity}-${i}`,
-      cityId: displayCity,
-      cityName: displayCity,
-      name: hotelName,
-      type,
-      rating,
-      reviewsCount,
-      price: basePrice,
-      beforeTaxPrice: Math.round(basePrice * 0.86),
-      originalPrice: origPrice,
-      discountPercent: Math.round((1 - basePrice / origPrice) * 100),
-      address: `${displayCity}市中心觀光景點特區`,
-      image: IMAGES_POOL[(i - 1) % IMAGES_POOL.length],
-      tags: TAG_TEMPLATES[(i - 1) % TAG_TEMPLATES.length],
-      providers: []
-    });
+function resolveRealAddress(item, cityKey, idx) {
+  if (item.address && !item.address.includes('提供') && !item.address.includes('客房') && !item.address.includes('設有') && !item.address.includes('附設') && !item.address.includes('飯店') && !item.address.includes('酒店') && item.address.length < 40) {
+    return item.address;
   }
-  return list;
-}
+  if (item.neighborhood || item.location) {
+    return `${cityKey} ${item.neighborhood || item.location}`;
+  }
 
-function getTodayStr() {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-function getTomorrowStr(addDays = 2) {
-  const d = new Date();
-  d.setDate(d.getDate() + addDays);
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-const AMENITIES_ZH_MAP = {
-  'Free breakfast': '免費早餐',
-  'Free Wi-Fi': '免費 Wi-Fi',
-  'Free parking': '免費停車場',
-  'Air conditioning': '冷氣空調',
-  'Pool': '游泳池',
-  'Outdoor pool': '室外泳池',
-  'Indoor pool': '室內泳池',
-  'Spa': 'SPA水療',
-  'Fitness center': '健身中心',
-  'Restaurant': '附設餐廳',
-  'Bar': '酒吧',
-  'Room service': '客房服務',
-  'Beach access': '直通沙灘',
-  'Kid-friendly': '親子友善',
-  'Hot tub': '溫泉 SPA',
-  'Airport shuttle': '機場接送'
-};
-
-const CITY_DISTRICTS_MAP = {
-  // 全台灣 22 縣市完整覆蓋
-  '台北': ['中山區 (捷運中山站周邊)', '信義區 (市府101商圈)', '萬華區 (西門町觀光商圈)', '大安區 (東區忠孝商圈)', '中正區 (台北車站特區)', '士林區 (士林天母商圈)', '松山區 (南京復興特區)', '內湖區 (美麗華商圈)'],
-  '臺北': ['中山區 (捷運中山站周邊)', '信義區 (市府101商圈)', '萬華區 (西門町觀光商圈)', '大安區 (東區忠孝商圈)', '中正區 (台北車站特區)', '士林區 (士林天母商圈)'],
-  '新北': ['板橋區 (新北車站/歡樂耶誕城)', '淡水區 (淡水老街/漁人碼頭)', '新店區 (碧潭風景區)', '烏來區 (烏來溫泉特區)', '瑞芳區 (九份老街/金瓜石)', '三峽區 (三峽老街)'],
-  '基隆': ['仁愛區 (基隆廟口夜市)', '中正區 (正濱漁港彩虹屋)', '中山區 (白米甕砲台)'],
-  '桃園': ['中壢區 (高鐵桃園站/華泰名品城)', '桃園區 (桃園藝文特區)', '大溪區 (大溪老街風景區)', '龜山區 (林口長庚商圈)'],
-  '新竹': ['東區 (新竹科學園區/巨城商圈)', '北區 (新竹城隍廟商圈)', '竹北市 (高鐵新竹站特區)', '竹東鎮 (內灣老街風景區)'],
-  '苗栗': ['三義鄉 (勝興車站/木雕老街)', '南庄鄉 (南庄老街)', '泰安鄉 (泰安溫泉風景區)', '頭份市 (尚順育樂世界)'],
+  // Query SQLite city_districts table in staypulse_hotels.db (< 1ms)
+  return queryDistrictFromSQLite(cityKey, idx, item.name || '');
+}�� (泰安溫泉風景區)', '頭份市 (尚順育樂世界)'],
   '台中': ['西屯區 (逢甲夜市/七期重劃區)', '中區 (台中火車站周邊)', '北區 (一中街商圈)', '西區 (勤美草悟道商圈)', '和平區 (谷關溫泉風景區)'],
   '臺中': ['西屯區 (逢甲夜市/七期重劃區)', '中區 (台中火車站周邊)', '北區 (一中街商圈)', '西區 (勤美草悟道商圈)'],
   '彰化': ['彰化市 (八卦山大佛風景區)', '鹿港鎮 (鹿港老街古蹟區)', '員林市 (員林火車站商圈)'],

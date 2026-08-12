@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { getStays } from './controllers/stayController.js';
 import { getTourPackages, getFamilyAttractions, getFamilyShows } from './controllers/exploreController.js';
 import { handleLineWebhook, simulateLineMessage } from './controllers/lineController.js';
+import { getSavedStays, saveStay, deleteSavedStay, clearSavedStays, getCities } from './controllers/savedStaysController.js';
 import { scrapeOpenDataAttractions } from './services/openDataService.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,6 +25,13 @@ app.get('/api/search', getStays); // Backward-compatible alias
 app.get('/api/explore/packages', getTourPackages);
 app.get('/api/explore/attractions', getFamilyAttractions);
 app.get('/api/explore/shows', getFamilyShows);
+app.get('/api/cities', getCities);
+
+// SQLite User Saved Stays Endpoints
+app.get('/api/saved-stays', getSavedStays);
+app.post('/api/saved-stays', saveStay);
+app.delete('/api/saved-stays/:id', deleteSavedStay);
+app.delete('/api/saved-stays', clearSavedStays);
 
 app.post('/api/line/webhook', handleLineWebhook);
 app.post('/api/line/simulate', simulateLineMessage);
