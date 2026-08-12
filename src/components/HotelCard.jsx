@@ -1,8 +1,22 @@
-import React, { useState } from 'react';
-import { Heart, Star, ExternalLink, Tag, MapPin, ChevronDown, ChevronUp, ShieldCheck } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Heart, Star, ExternalLink, Tag, MapPin, ChevronDown, ChevronUp, X } from 'lucide-react';
 
 export default function HotelCard({ stay, isSaved, onToggleSave }) {
   const [showProviders, setShowProviders] = useState(false);
+  const popoverRef = useRef(null);
+
+  // Close popover when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+        setShowProviders(false);
+      }
+    };
+    if (showProviders) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showProviders]);
 
   const getLowestProvider = () => {
     if (!stay.providers || stay.providers.length === 0) return null;
@@ -26,7 +40,7 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
         borderRadius: '20px',
         border: '1px solid rgba(15, 23, 42, 0.08)',
         boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.05)',
-        overflow: 'hidden',
+        overflow: 'visible',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
@@ -35,7 +49,7 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
     >
       
       {/* Hotel Image Container */}
-      <div style={{ position: 'relative', width: '100%', height: '220px', overflow: 'hidden', background: '#e2e8f0' }}>
+      <div style={{ position: 'relative', width: '100%', height: '220px', overflow: 'hidden', background: '#e2e8f0', borderRadius: '20px 20px 0 0' }}>
         <img
           src={stay.image}
           alt={stay.name}
@@ -101,7 +115,7 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
           background: 'linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.2) 70%, transparent 100%)',
           padding: '16px 16px 10px 16px',
           display: 'flex',
-          justify: 'space-between',
+          justifyContent: 'space-between',
           alignItems: 'flex-end',
           zIndex: 2
         }}>
@@ -140,7 +154,7 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
             </a>
           </h3>
 
-          {/* Complete Detailed Postal Address (Requirement 2) */}
+          {/* Complete Detailed Postal Address */}
           <div style={{ marginBottom: '12px' }}>
             <a
               href={mapUrl}
@@ -155,7 +169,7 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
             </a>
           </div>
 
-          {/* Bulleted Amenities List (Requirement 1) */}
+          {/* Bulleted Amenities List */}
           {stay.tags && stay.tags.length > 0 && (
             <div style={{
               background: '#f8fafc',
@@ -178,8 +192,8 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
           )}
         </div>
 
-        {/* Provider Comparison Callout & Drawer */}
-        <div>
+        {/* Provider Comparison Callout & Floating Popover (Matching Image 2 Display Style) */}
+        <div ref={popoverRef} style={{ position: 'relative' }}>
           <div style={{
             background: 'rgba(5, 150, 105, 0.08)',
             border: '1px solid rgba(5, 150, 105, 0.2)',
@@ -196,6 +210,7 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
             </div>
 
             <button
+              type="button"
               onClick={() => setShowProviders(!showProviders)}
               style={{
                 background: 'transparent',
@@ -215,18 +230,54 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
             </button>
           </div>
 
-          {/* Expandable Multi-Provider Price Drawer (Matching Image 1 Screenshot) */}
+          {/* Floating Popover Overlay Card (Matching Image 2 Style) */}
           {showProviders && (
             <div style={{
-              background: '#f8fafc',
-              border: '1px solid rgba(15, 23, 42, 0.08)',
-              borderRadius: '16px',
-              padding: '10px',
-              marginBottom: '12px',
+              position: 'absolute',
+              bottom: 'calc(100% + 6px)',
+              left: '0',
+              right: '0',
+              zIndex: 100,
+              background: '#ffffff',
+              borderRadius: '20px',
+              boxShadow: '0 20px 45px -10px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.08)',
+              padding: '16px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '6px'
+              gap: '10px'
             }}>
+              {/* Header Title Bar */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid #f1f5f9',
+                paddingBottom: '8px'
+              }}>
+                <div style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Tag size={15} color="#059669" />
+                  <span>全網即時比價方案</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowProviders(false)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#94a3b8',
+                    cursor: 'pointer',
+                    padding: '2px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    outline: 'none'
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Multi-Provider List */}
               {(() => {
                 const defaultProviders = [
                   { name: 'Agoda', price: stay.price, url: officialUrl },
@@ -252,9 +303,8 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
                         justifyContent: 'space-between',
                         padding: isLowest ? '8px 12px' : '6px 12px',
                         borderRadius: isLowest ? '12px' : '8px',
-                        background: isLowest ? '#ffffff' : 'transparent',
-                        border: isLowest ? '1.5px solid #10b981' : '1px solid transparent',
-                        boxShadow: isLowest ? '0 2px 8px rgba(16, 185, 129, 0.08)' : 'none'
+                        background: isLowest ? '#f0fdf4' : 'transparent',
+                        border: isLowest ? '1.5px solid #10b981' : '1px solid transparent'
                       }}
                     >
                       {/* Left: Channel Name & Badge */}
@@ -299,14 +349,14 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{
-                            background: '#ecfdf5',
-                            color: '#047857',
+                            background: isLowest ? '#059669' : '#ecfdf5',
+                            color: isLowest ? '#ffffff' : '#047857',
                             padding: '4px 12px',
                             borderRadius: '8px',
                             textDecoration: 'none',
                             fontSize: '0.78rem',
                             fontWeight: '700',
-                            border: '1px solid rgba(5, 150, 105, 0.18)',
+                            border: isLowest ? 'none' : '1px solid rgba(5, 150, 105, 0.18)',
                             transition: 'background 0.2s ease'
                           }}
                         >
