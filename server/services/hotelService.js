@@ -271,7 +271,7 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 
       }
     }
 
-    const childrenParam = children > 0 ? `&children=${children}` : '';
+    const childrenParam = (children > 0 && childAges) ? `&children=${children}&children_ages=${childAges}` : '';
     const url = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(queryTarget)}&check_in_date=${checkIn}&check_out_date=${checkOut}&adults=${adults}${childrenParam}&currency=TWD&api_key=${config.serpApiKey}`;
     const res = await axios.get(url, { timeout: 12000 });
     
@@ -356,6 +356,33 @@ export async function searchGlobalHotels({
   // 2. If SerpApi limits or unavailable, use authentic real-world individual hotels database
   if (!filtered || filtered.length === 0) {
     filtered = generateCityHotels(targetCityName, 24, rooms);
+  }
+
+  // Exact hotel name precision filtering
+  const isBroadCity = Boolean(CITY_SERP_MAP[queryTerm]);
+  const lowerQuery = queryTerm.toLowerCase();
+  const isHotelSearch = !isBroadCity && (
+    lowerQuery.includes('飯店') || lowerQuery.includes('酒店') || lowerQuery.includes('hotel') ||
+    lowerQuery.includes('resort') || lowerQuery.includes('inn') || lowerQuery.includes('villa') ||
+    lowerQuery.includes('民宿') || lowerQuery.includes('會館') || lowerQuery.includes('晶華') ||
+    lowerQuery.includes('君品') || lowerQuery.includes('老爺') || lowerQuery.includes('萬豪') ||
+    lowerQuery.includes('喜來登') || lowerQuery.includes('寒舍') || lowerQuery.includes('大倉') ||
+    lowerQuery.includes('加賀屋') || lowerQuery.includes('三井') || lowerQuery.includes('圓山')
+  );
+
+  if (isHotelSearch && filtered && filtered.length > 0) {
+    const cleanKw = queryTerm.replace(/飯店|酒店|Hotel|Resort|民宿|會館|館/gi, '').trim().toLowerCase();
+    const exactMatches = filtered.filter(item => {
+      const name = item.name.toLowerCase();
+      return name.includes(lowerQuery) || (cleanKw.length >= 2 && name.includes(cleanKw));
+    });
+
+    if (exactMatches.length > 0) {
+      filtered = exactMatches;
+    } else {
+      // Return top #1 property returned by Google Hotels for that query
+      filtered = [filtered[0]];
+    }
   }
 
   // Filter by stay type & max budget limit
