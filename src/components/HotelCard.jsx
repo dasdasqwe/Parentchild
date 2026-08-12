@@ -1,122 +1,64 @@
 import React, { useState } from 'react';
-import { Star, MapPin, ExternalLink, Heart, Tag, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, Star, ExternalLink, Tag, MapPin, ChevronDown, ChevronUp, ShieldCheck } from 'lucide-react';
 
 export default function HotelCard({ stay, isSaved, onToggleSave }) {
   const [showProviders, setShowProviders] = useState(false);
-  const [currentImgIdx, setCurrentImgIdx] = useState(0);
 
-  const gallery = (stay.images && stay.images.length > 0) ? stay.images : [stay.image];
-  const activeImage = gallery[currentImgIdx] || stay.image;
-
-  const lowestProvider = stay.providers?.find(p => p.isLowest || p.name === stay.lowestPriceProvider) || stay.providers?.[0];
-  const targetUrl = lowestProvider?.url || stay.url || 'https://www.agoda.com';
-  const providerName = stay.lowestPriceProvider || lowestProvider?.name || 'Agoda';
-
-  const officialUrl = stay.websiteUrl || targetUrl;
-  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stay.name + ' ' + (stay.address || stay.cityName || ''))}`;
-
-  const handlePrevImg = (e) => {
-    e.stopPropagation();
-    setCurrentImgIdx(prev => (prev === 0 ? gallery.length - 1 : prev - 1));
+  const getLowestProvider = () => {
+    if (!stay.providers || stay.providers.length === 0) return null;
+    return stay.providers.reduce((min, p) => p.price < min.price ? p : min, stay.providers[0]);
   };
 
-  const handleNextImg = (e) => {
-    e.stopPropagation();
-    setCurrentImgIdx(prev => (prev === gallery.length - 1 ? 0 : prev + 1));
-  };
+  const lowestProvider = getLowestProvider();
+  const mapUrl = stay.gps
+    ? `https://www.google.com/maps/search/?api=1&query=${stay.gps.latitude},${stay.gps.longitude}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stay.name + ' ' + stay.address)}`;
+
+  const officialUrl = (stay.providers && stay.providers.length > 0 && stay.providers[0].url)
+    ? stay.providers[0].url
+    : stay.url || 'https://www.agoda.com';
 
   return (
-    <div className="glass-panel glass-card-hover" style={{
-      borderRadius: '20px',
-      overflow: 'hidden',
-      position: 'relative',
-      background: '#ffffff',
-      border: '1px solid rgba(15, 23, 42, 0.08)',
-      boxShadow: '0 10px 30px -5px rgba(15, 23, 42, 0.06)',
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
+    <div
+      className="card-hover-effect"
+      style={{
+        background: '#ffffff',
+        borderRadius: '20px',
+        border: '1px solid rgba(15, 23, 42, 0.08)',
+        boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.05)',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        position: 'relative'
+      }}
+    >
+      
+      {/* Hotel Image Container */}
+      <div style={{ position: 'relative', width: '100%', height: '220px', overflow: 'hidden', background: '#e2e8f0' }}>
+        <img
+          src={stay.image}
+          alt={stay.name}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transition: 'transform 0.5s ease'
+          }}
+          loading="lazy"
+          onError={(e) => {
+            e.target.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
+          }}
+        />
 
-      {/* Media Photo Wall */}
-      <div style={{ position: 'relative', height: '220px', width: '100%', overflow: 'hidden' }}>
-        <a
-          href={officialUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ display: 'block', width: '100%', height: '100%' }}
-        >
-          <img
-            src={activeImage}
-            alt={stay.name}
-            onError={(e) => {
-              e.currentTarget.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80';
-            }}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
-            onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.06)'}
-            onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1.0)'}
-          />
-        </a>
-
-        {/* Gallery Slider Controls */}
-        {gallery.length > 1 && (
-          <>
-            <button
-              onClick={handlePrevImg}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '10px',
-                transform: 'translateY(-50%)',
-                background: 'rgba(255, 255, 255, 0.85)',
-                backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(0, 0, 0, 0.1)',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#0f172a',
-                cursor: 'pointer',
-                zIndex: 2
-              }}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              onClick={handleNextImg}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                right: '10px',
-                transform: 'translateY(-50%)',
-                background: 'rgba(255, 255, 255, 0.85)',
-                backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(0, 0, 0, 0.1)',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#0f172a',
-                cursor: 'pointer',
-                zIndex: 2
-              }}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </>
-        )}
-
-        {/* Badges */}
+        {/* Badges Top Left */}
         <div style={{
           position: 'absolute',
           top: '12px',
           left: '12px',
           display: 'flex',
           gap: '6px',
-          zIndex: 2,
+          zIndex: 3,
           flexWrap: 'wrap'
         }}>
           {stay.type === 'Family Hotel' && <span className="badge-amber">👨‍👩‍👧‍👦 親子飯店</span>}
@@ -186,6 +128,7 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
       {/* Card Info Area */}
       <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
         <div>
+          {/* Hotel Name */}
           <h3 style={{ fontSize: '1.1rem', fontWeight: '800', lineHeight: '1.4', marginBottom: '8px' }}>
             <a
               href={officialUrl}
@@ -197,35 +140,42 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
             </a>
           </h3>
 
-          <p style={{ fontSize: '0.82rem', color: '#475569', marginBottom: '12px' }}>
+          {/* Complete Detailed Postal Address (Requirement 2) */}
+          <div style={{ marginBottom: '12px' }}>
             <a
               href={mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: '#475569', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              style={{ color: '#0f172a', textDecoration: 'none', display: 'inline-flex', alignItems: 'flex-start', gap: '6px', fontSize: '0.84rem', fontWeight: '700' }}
             >
-              <MapPin size={15} color="#059669" style={{ flexShrink: 0 }} />
-              <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+              <MapPin size={16} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <span style={{ textDecoration: 'underline', textUnderlineOffset: '3px', lineHeight: '1.4' }}>
                 {stay.address}
               </span>
             </a>
-          </p>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
-            {stay.tags.map((tag, idx) => (
-              <span key={idx} style={{
-                background: '#f1f5f9',
-                color: '#475569',
-                fontSize: '0.76rem',
-                padding: '4px 10px',
-                borderRadius: '8px',
-                border: '1px solid rgba(15, 23, 42, 0.06)',
-                fontWeight: '600'
-              }}>
-                {tag}
-              </span>
-            ))}
           </div>
+
+          {/* Bulleted Amenities List (Requirement 1) */}
+          {stay.tags && stay.tags.length > 0 && (
+            <div style={{
+              background: '#f8fafc',
+              border: '1px solid rgba(15, 23, 42, 0.06)',
+              borderRadius: '12px',
+              padding: '10px 14px',
+              marginBottom: '16px'
+            }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: '800', color: '#059669', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                ✨ 設施與服務特色：
+              </div>
+              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.78rem', color: '#334155', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                {stay.tags.map((tag, idx) => (
+                  <li key={idx} style={{ fontWeight: '600', lineHeight: '1.3' }}>
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         {/* Provider Comparison Callout & Drawer */}
@@ -238,104 +188,120 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: '12px'
+            marginBottom: '10px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Tag size={15} color="#059669" />
-              <span style={{ fontSize: '0.84rem', fontWeight: '800', color: '#059669' }}>
-                全網最低價: {providerName}
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.84rem', fontWeight: '800', color: '#059669' }}>
+              <Tag size={15} />
+              <span>全網最低價: {lowestProvider ? lowestProvider.name : 'Agoda'}</span>
             </div>
+
             <button
               onClick={() => setShowProviders(!showProviders)}
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#475569',
-                fontSize: '0.78rem',
+                color: '#059669',
+                fontSize: '0.8rem',
                 fontWeight: '700',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '2px',
+                outline: 'none'
               }}
             >
-              比價 ({stay.providers ? stay.providers.length : 3}家) {showProviders ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+              <span>比價 ({stay.providers ? stay.providers.length : 3}家)</span>
+              {showProviders ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             </button>
           </div>
 
-          {showProviders && stay.providers && (
+          {/* Expandable Multi-Provider Price Drawer */}
+          {showProviders && (
             <div style={{
               background: '#f8fafc',
+              border: '1px solid rgba(15, 23, 42, 0.08)',
               borderRadius: '12px',
               padding: '12px',
               marginBottom: '12px',
-              fontSize: '0.82rem',
-              border: '1px solid rgba(15, 23, 42, 0.08)'
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
             }}>
-              {stay.providers.map((p, pIdx) => (
-                <div key={pIdx} style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '8px 0',
-                  borderBottom: pIdx !== stay.providers.length - 1 ? '1px dashed rgba(15, 23, 42, 0.1)' : 'none'
-                }}>
-                  <span style={{ color: p.isLowest ? '#059669' : '#475569', fontWeight: p.isLowest ? '800' : '500' }}>
-                    {p.name} {p.isLowest && '👑 最低'}
-                  </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span style={{ color: p.isLowest ? '#059669' : '#0f172a', fontWeight: '700' }}>
-                      NT$ {p.price.toLocaleString()}
-                    </span>
-                    <a
-                      href={p.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        background: 'rgba(5, 150, 105, 0.15)',
-                        color: '#059669',
-                        padding: '2px 8px',
-                        borderRadius: '6px',
-                        fontSize: '0.76rem',
-                        fontWeight: '700',
-                        textDecoration: 'none'
-                      }}
-                    >
-                      前往
-                    </a>
+              {stay.providers && stay.providers.length > 0 ? (
+                stay.providers.map((p, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      fontSize: '0.84rem',
+                      padding: '6px 8px',
+                      borderRadius: '8px',
+                      background: p.name === lowestProvider?.name ? '#ffffff' : 'transparent',
+                      border: p.name === lowestProvider?.name ? '1px solid rgba(5, 150, 105, 0.3)' : 'none'
+                    }}
+                  >
+                    <div style={{ fontWeight: '700', color: p.name === lowestProvider?.name ? '#059669' : '#334155', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      {p.name} {p.name === lowestProvider?.name && <span style={{ fontSize: '0.72rem', background: '#059669', color: '#fff', padding: '1px 5px', borderRadius: '4px' }}>👑 最低</span>}
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontWeight: '800', color: p.name === lowestProvider?.name ? '#059669' : '#0f172a' }}>
+                        NT$ {p.price.toLocaleString()}
+                      </span>
+                      <a
+                        href={p.url || officialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          background: '#ecfdf5',
+                          color: '#059669',
+                          padding: '3px 10px',
+                          borderRadius: '6px',
+                          textDecoration: 'none',
+                          fontSize: '0.76rem',
+                          fontWeight: '700'
+                        }}
+                      >
+                        前往
+                      </a>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <div style={{ fontSize: '0.8rem', color: '#64748b', textAlign: 'center' }}>已載入最優價連結</div>
+              )}
             </div>
           )}
 
+          {/* Primary Direct Booking CTA */}
           <a
-            href={targetUrl}
+            href={officialUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary"
             style={{
-              width: '100%',
-              height: '46px',
-              padding: '0 16px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px',
-              textDecoration: 'none',
+              gap: '6px',
+              width: '100%',
+              padding: '12px 0',
               borderRadius: '12px',
               fontSize: '0.92rem',
               fontWeight: '800',
+              textDecoration: 'none',
               boxSizing: 'border-box'
             }}
           >
-            <span>前往 {providerName} 預訂搶購</span>
+            <span>前往 {lowestProvider ? lowestProvider.name : 'Agoda'} 預訂搶購</span>
             <ExternalLink size={16} />
           </a>
         </div>
 
       </div>
+
     </div>
   );
 }
