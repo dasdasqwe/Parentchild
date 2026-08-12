@@ -323,8 +323,33 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 
         const mainImage = item.images?.[0]?.original_image || item.images?.[0]?.thumbnail || IMAGES_POOL[idx % IMAGES_POOL.length];
 
         // Format tags with Traditional Chinese translation map
-        const rawTags = item.amenities?.slice(0, 3) || ['Google 實時房價', '捷運直達', '高CP值'];
-        const zhTags = rawTags.map(t => AMENITIES_ZH_MAP[t] || t);
+        const rawTags = (item.amenities && item.amenities.length > 0) 
+          ? item.amenities.slice(0, 4) 
+          : [];
+        let zhTags = rawTags.map(t => AMENITIES_ZH_MAP[t] || t);
+
+        // Extract feature tags from description if amenities are missing
+        if (zhTags.length === 0 && item.description) {
+          const desc = item.description;
+          if (desc.includes('泳池')) zhTags.push('室內外泳池');
+          if (desc.includes('SPA')) zhTags.push('SPA 水療中心');
+          if (desc.includes('健身房')) zhTags.push('健身中心');
+          if (desc.includes('餐廳')) zhTags.push('附設頂級餐廳');
+          if (desc.includes('酒吧')) zhTags.push('景觀酒吧');
+          if (desc.includes('溫泉')) zhTags.push('天然溫泉');
+          if (desc.includes('親子') || desc.includes('兒童')) zhTags.push('親子友善設施');
+        }
+        if (zhTags.length === 0) {
+          zhTags = ['廣受好評', '交通極為便利', '舒適冷氣空調', '免費 Wi-Fi'];
+        }
+
+        // Clean Address: NEVER assign description sentence to address!
+        let cleanAddress = `${destination}觀光熱門特區`;
+        if (item.address && !item.address.includes('提供') && !item.address.includes('客房') && !item.address.includes('設有') && !item.address.includes('附設')) {
+          cleanAddress = item.address;
+        } else if (item.location) {
+          cleanAddress = `${destination} ${item.location}`;
+        }
 
         return {
           id: `serpapi-${idx}`,
@@ -339,7 +364,8 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 
           totalStayPrice: totalStayRate,
           originalPrice: origPrice,
           discountPercent: Math.round((1 - lowestPrice / origPrice) * 100),
-          address: item.description || `${destination} 市中心`,
+          address: cleanAddress,
+          description: item.description || '',
           image: mainImage,
           gps: item.gps_coordinates || null,
           tags: zhTags,
@@ -404,6 +430,7 @@ export async function searchGlobalHotels({
         originalPrice: Math.round(h.base_price * 1.45 * effectiveRooms),
         discountPercent: 30,
         address: h.address,
+        description: h.description,
         image: h.image_url,
         tags: JSON.parse(h.amenities || '[]'),
         providers: []
@@ -423,8 +450,8 @@ export async function searchGlobalHotels({
       let cleanAddress = item.address;
       if (sqliteHotel && sqliteHotel.address) {
         cleanAddress = sqliteHotel.address;
-      } else if (cleanAddress.includes('提供') || cleanAddress.includes('客房') || cleanAddress.includes('設有') || cleanAddress.includes('風格') || cleanAddress.length > 35) {
-        cleanAddress = `${targetCityName}市中心觀光景點特區`;
+      } else if (cleanAddress.includes('提供') || cleanAddress.includes('客房') || cleanAddress.includes('設有') || cleanAddress.includes('風格') || cleanAddress.includes('附設') || cleanAddress.length > 35) {
+        cleanAddress = `${targetCityName}市觀光特區`;
       }
 
       const cleanTags = (sqliteHotel && sqliteHotel.amenities)
@@ -463,9 +490,6 @@ export async function searchGlobalHotels({
 
     if (matched.length > 0) {
       filtered = matched;
-    } else {
-      // If no substring match found, isolate strictly to top #1 property returned by Google Hotels
-      filtered = [filtered[0]];
     }
   }
 
