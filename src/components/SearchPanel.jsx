@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, ArrowUpDown, Calendar, DollarSign, SlidersHorizontal, RefreshCw, Globe, Users } from 'lucide-react';
+import GuestPickerPopover from './GuestPickerPopover';
 
 export default function SearchPanel({
   destination,
@@ -14,6 +15,8 @@ export default function SearchPanel({
   setCheckInDate,
   checkOutDate,
   setCheckOutDate,
+  rooms = 1,
+  setRooms,
   adults = 2,
   setAdults,
   childrenCount = 2,
@@ -40,9 +43,9 @@ export default function SearchPanel({
   };
 
   const inputStyle = {
-    height: '44px',
+    height: '48px',
     padding: '0 14px',
-    borderRadius: '12px',
+    borderRadius: '14px',
     background: '#ffffff',
     color: '#0f172a',
     border: '1px solid rgba(15, 23, 42, 0.12)',
@@ -69,7 +72,7 @@ export default function SearchPanel({
           
           {/* Destination Input */}
           <div style={{ position: 'relative', flex: 2, minWidth: '260px' }}>
-            <Search size={18} color="#059669" style={{ position: 'absolute', left: '14px', top: '13px' }} />
+            <Search size={18} color="#059669" style={{ position: 'absolute', left: '14px', top: '15px' }} />
             <input
               type="text"
               list="global-destinations-list"
@@ -118,7 +121,7 @@ export default function SearchPanel({
             type="submit"
             disabled={isSearching}
             className="btn-primary"
-            style={{ height: '44px', padding: '0 26px', borderRadius: '12px', fontSize: '0.94rem' }}
+            style={{ height: '48px', padding: '0 26px', borderRadius: '14px', fontSize: '0.94rem' }}
           >
             <RefreshCw size={16} className={isSearching ? 'animate-spin' : ''} style={{ animation: isSearching ? 'spin 1s linear infinite' : 'none' }} />
             <span>{isSearching ? '即時搜尋中...' : '搜尋飯店'}</span>
@@ -163,98 +166,38 @@ export default function SearchPanel({
           borderTop: '1px solid rgba(15, 23, 42, 0.06)'
         }}>
 
-          {/* Adults, Children & Dynamic Per-Child Age Dropdowns */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Users size={15} color="#059669" /> 入住人數：
-            </span>
+          {/* Guest Picker Popover & Check-In/Out Row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             
-            {/* Adult Select */}
-            <select
-              value={adults}
-              onChange={(e) => setAdults && setAdults(Number(e.target.value))}
-              style={{ ...inputStyle, fontWeight: '700', minWidth: '95px' }}
-            >
-              <option value={1}>大人 1 位</option>
-              <option value={2}>大人 2 位</option>
-              <option value={3}>大人 3 位</option>
-              <option value={4}>大人 4 位</option>
-              <option value={5}>大人 5 位</option>
-              <option value={6}>大人 6 位</option>
-            </select>
-
-            {/* Children Select */}
-            <select
-              value={childrenCount}
-              onChange={(e) => setChildrenCount && setChildrenCount(Number(e.target.value))}
-              style={{ ...inputStyle, fontWeight: '700', minWidth: '95px' }}
-            >
-              <option value={0}>小孩 0 位</option>
-              <option value={1}>小孩 1 位</option>
-              <option value={2}>小孩 2 位</option>
-              <option value={3}>小孩 3 位</option>
-              <option value={4}>小孩 4 位</option>
-            </select>
-
-            {/* Dynamic Per-Child Age Selects (Only visible when childrenCount > 0, unselected by default) */}
-            {childrenCount > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-                {Array.from({ length: childrenCount }).map((_, idx) => (
-                  <select
-                    key={idx}
-                    value={childAges[idx] !== undefined ? childAges[idx] : ''}
-                    onChange={(e) => {
-                      if (!setChildAges) return;
-                      const newAges = [...childAges];
-                      newAges[idx] = e.target.value;
-                      setChildAges(newAges);
-                    }}
-                    style={{
-                      ...inputStyle,
-                      fontWeight: '700',
-                      minWidth: '125px',
-                      borderColor: 'rgba(5, 150, 105, 0.4)',
-                      background: '#f0fdf4'
-                    }}
-                  >
-                    <option value="">-- 小孩 {idx + 1} 年齡 --</option>
-                    <option value="0">0 歲 (未滿 1 歲)</option>
-                    <option value="1">1 歲</option>
-                    <option value="2">2 歲</option>
-                    <option value="3">3 歲</option>
-                    <option value="4">4 歲</option>
-                    <option value="5">5 歲</option>
-                    <option value="6">6 歲</option>
-                    <option value="7">7 歲</option>
-                    <option value="8">8 歲</option>
-                    <option value="9">9 歲</option>
-                    <option value="10">10 歲</option>
-                    <option value="11">11 歲</option>
-                    <option value="12">12 歲</option>
-                    <option value="13">13 歲</option>
-                    <option value="14">14 歲</option>
-                    <option value="15">15 歲</option>
-                    <option value="16">16 歲</option>
-                    <option value="17">17 歲</option>
-                  </select>
-                ))}
-              </div>
-            )}
-
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', marginLeft: '6px' }}>入住退房：</span>
-            <input
-              type="date"
-              value={checkInDate}
-              onChange={(e) => setCheckInDate(e.target.value)}
-              style={inputStyle}
+            {/* Popover Guest Picker Component */}
+            <GuestPickerPopover
+              rooms={rooms}
+              setRooms={setRooms}
+              adults={adults}
+              setAdults={setAdults}
+              childrenCount={childrenCount}
+              setChildrenCount={setChildrenCount}
+              childAges={childAges}
+              setChildAges={setChildAges}
             />
-            <span style={{ color: '#94a3b8' }}>~</span>
-            <input
-              type="date"
-              value={checkOutDate}
-              onChange={(e) => setCheckOutDate(e.target.value)}
-              style={inputStyle}
-            />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700' }}>入住退房：</span>
+              <input
+                type="date"
+                value={checkInDate}
+                onChange={(e) => setCheckInDate(e.target.value)}
+                style={inputStyle}
+              />
+              <span style={{ color: '#94a3b8' }}>~</span>
+              <input
+                type="date"
+                value={checkOutDate}
+                onChange={(e) => setCheckOutDate(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+
           </div>
 
           {/* Stay Type */}
