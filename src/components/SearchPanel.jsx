@@ -66,10 +66,10 @@ export default function SearchPanel({
     }}>
 
       <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        
+
         {/* Main Search Row */}
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          
+
           {/* Destination Input */}
           <div style={{ position: 'relative', flex: 2, minWidth: '260px' }}>
             <Search size={18} color="#059669" style={{ position: 'absolute', left: '14px', top: '15px' }} />
@@ -78,7 +78,7 @@ export default function SearchPanel({
               list="global-destinations-list"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
-              placeholder="搜尋飯店名稱或地點 (例如：台北晶華酒店, 沖繩, Regent Taipei, 宜蘭, 東京)..."
+              placeholder="搜尋飯店名稱或地點"
               style={{
                 ...inputStyle,
                 width: '100%',
@@ -168,7 +168,7 @@ export default function SearchPanel({
 
           {/* Guest Picker Popover & Check-In/Out Row */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-            
+
             {/* Popover Guest Picker Component */}
             <GuestPickerPopover
               rooms={rooms}
@@ -223,7 +223,7 @@ export default function SearchPanel({
             <input
               type="range"
               min="500"
-              max="15000"
+              max="30000"
               step="500"
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
