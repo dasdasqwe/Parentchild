@@ -14,7 +14,7 @@ export async function getStays(req, res) {
       checkOut,
       adults = 2,
       children = 2,
-      childAge = 6
+      childAges = '6,6'
     } = req.query;
 
     const targetDest = destination || cityId || '';
@@ -30,7 +30,7 @@ export async function getStays(req, res) {
       checkOut,
       adults: Number(adults),
       children: Number(children),
-      childAge: Number(childAge)
+      childAges
     });
 
     return res.json(result);

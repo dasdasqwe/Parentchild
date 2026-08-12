@@ -275,7 +275,7 @@ export async function searchGlobalHotels({
   checkOut = getTomorrowStr(2),
   adults = 2,
   children = 2,
-  childAge = 6
+  childAges = '6,6'
 } = {}) {
   const queryTerm = (destination || '').trim();
   const targetCityName = queryTerm || '台北';
@@ -302,7 +302,7 @@ export async function searchGlobalHotels({
       checkOut,
       adults,
       children,
-      childAge
+      childAges
     });
 
     const lowestName = deepLinks && deepLinks.length > 0 ? deepLinks[0].name : 'Agoda';

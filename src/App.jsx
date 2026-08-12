@@ -34,8 +34,13 @@ export default function App() {
   const [checkOutDate, setCheckOutDate] = useState(getTomorrowStr(2));
   const [adults, setAdults] = useState(2);
   const [childrenCount, setChildrenCount] = useState(2);
-  const [childAge, setChildAge] = useState(6);
+  const [childAges, setChildAges] = useState(['', '']);
   
+  // Sync childAges array length whenever childrenCount changes
+  useEffect(() => {
+    setChildAges(prev => Array.from({ length: childrenCount }, (_, i) => (prev && prev[i] !== undefined ? prev[i] : '')));
+  }, [childrenCount]);
+
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
@@ -75,16 +80,17 @@ export default function App() {
   // Reset page to 1 when search inputs change
   useEffect(() => {
     setCurrentPage(1);
-  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, adults, childrenCount, childAge]);
+  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, adults, childrenCount, JSON.stringify(childAges)]);
 
   // Fetch hotel data from backend API
   useEffect(() => {
     fetchStaysData();
-  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, adults, childrenCount, childAge, currentPage]);
+  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, adults, childrenCount, JSON.stringify(childAges), currentPage]);
 
   const fetchStaysData = async () => {
     setIsSearching(true);
     try {
+      const formattedChildAges = childAges.map(a => (a !== '' && a !== null && a !== undefined ? a : 6)).join(',');
       const query = new URLSearchParams({
         destination: destination.trim(),
         sort: sortBy,
@@ -96,7 +102,7 @@ export default function App() {
         checkOut: checkOutDate,
         adults: adults,
         children: childrenCount,
-        childAge: childAge
+        childAges: formattedChildAges
       });
 
       const res = await fetch(`/api/stays/search?${query}`);
@@ -164,8 +170,8 @@ export default function App() {
           setAdults={setAdults}
           childrenCount={childrenCount}
           setChildrenCount={setChildrenCount}
-          childAge={childAge}
-          setChildAge={setChildAge}
+          childAges={childAges}
+          setChildAges={setChildAges}
           onSearch={fetchStaysData}
           isSearching={isSearching}
         />
