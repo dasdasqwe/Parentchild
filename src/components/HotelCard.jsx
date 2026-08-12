@@ -177,7 +177,7 @@ export default function HotelCard({ stay, isSaved, onToggleSave }) {
               <span className="font-display" style={{ fontSize: '1.45rem', fontWeight: '900', color: '#34d399' }}>
                 NT$ {stay.price.toLocaleString()}
               </span>
-              <span style={{ fontSize: '0.75rem', color: '#cbd5e1' }}>/晚起</span>
+              <span style={{ fontSize: '0.75rem', color: '#cbd5e1' }}>/晚起 (含稅費)</span>
             </div>
           </div>
         </div>

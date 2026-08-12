@@ -263,6 +263,7 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
     if (res.data && res.data.properties && Array.isArray(res.data.properties) && res.data.properties.length > 0) {
       const parsedList = res.data.properties.map((item, idx) => {
         const lowestPrice = item.rate_per_night?.extracted_lowest || item.price || 3200;
+        const beforeTax = item.rate_per_night?.extracted_before_taxes_fees || Math.round(lowestPrice * 0.86);
         const origPrice = Math.round(lowestPrice * 1.35);
         return {
           id: `serpapi-${idx}`,
@@ -273,6 +274,7 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
           rating: item.overall_rating || 4.8,
           reviewsCount: item.reviews || 1200,
           price: lowestPrice,
+          beforeTaxPrice: beforeTax,
           originalPrice: origPrice,
           discountPercent: Math.round((1 - lowestPrice / origPrice) * 100),
           address: item.description || `${destination} 市中心`,
