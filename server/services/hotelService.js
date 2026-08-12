@@ -395,14 +395,21 @@ export async function searchGlobalHotels({
       childAges
     });
 
-    const lowestName = deepLinks && deepLinks.length > 0 ? deepLinks[0].name : 'Agoda';
-    const lowestUrl = deepLinks && deepLinks.length > 0 ? deepLinks[0].url : 'https://www.agoda.com';
+    const sortedDeepLinks = (deepLinks || []).slice().sort((a, b) => a.price - b.price);
+    const lowestItem = sortedDeepLinks.length > 0 ? sortedDeepLinks[0] : null;
+
+    const effectivePrice = lowestItem ? lowestItem.price : hotel.price;
+    const lowestName = lowestItem ? lowestItem.name : 'Agoda';
+    const lowestUrl = lowestItem ? lowestItem.url : 'https://www.agoda.com';
 
     return {
       ...hotel,
+      price: effectivePrice,
+      beforeTaxPrice: Math.round(effectivePrice * 0.86),
+      originalPrice: Math.round(effectivePrice * 1.45),
       lowestPriceProvider: lowestName,
       url: lowestUrl,
-      providers: deepLinks || []
+      providers: sortedDeepLinks
     };
   });
 
