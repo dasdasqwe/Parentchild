@@ -16,7 +16,7 @@ export default function SearchPanel({
   setCheckOutDate,
   adults = 2,
   setAdults,
-  childrenCount = 1,
+  childrenCount = 2,
   setChildrenCount,
   onSearch,
   isSearching

@@ -33,7 +33,7 @@ export default function App() {
   const [checkInDate, setCheckInDate] = useState(getTodayStr());
   const [checkOutDate, setCheckOutDate] = useState(getTomorrowStr(2));
   const [adults, setAdults] = useState(2);
-  const [childrenCount, setChildrenCount] = useState(1);
+  const [childrenCount, setChildrenCount] = useState(2);
   
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
