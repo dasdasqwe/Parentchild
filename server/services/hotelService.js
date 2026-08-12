@@ -381,29 +381,32 @@ export async function searchGlobalHotels({
     filtered = generateCityHotels(targetCityName, 24, rooms);
   }
 
-  // Exact hotel name precision filtering
-  const isBroadCity = Boolean(CITY_SERP_MAP[queryTerm]);
-  const lowerQuery = queryTerm.toLowerCase();
-  const isHotelSearch = !isBroadCity && (
-    lowerQuery.includes('飯店') || lowerQuery.includes('酒店') || lowerQuery.includes('hotel') ||
-    lowerQuery.includes('resort') || lowerQuery.includes('inn') || lowerQuery.includes('villa') ||
-    lowerQuery.includes('民宿') || lowerQuery.includes('會館') || lowerQuery.includes('晶華') ||
-    lowerQuery.includes('君品') || lowerQuery.includes('老爺') || lowerQuery.includes('萬豪') ||
-    lowerQuery.includes('喜來登') || lowerQuery.includes('寒舍') || lowerQuery.includes('大倉') ||
-    lowerQuery.includes('加賀屋') || lowerQuery.includes('三井') || lowerQuery.includes('圓山')
-  );
+  // Broad Cities list for regional search vs specific hotel search
+  const BROAD_CITIES_SET = new Set([
+    '台北', '臺北', '宜蘭', '台中', '臺中', '高雄', '台南', '臺南', '桃園', '新竹', '苗栗', '彰化',
+    '南投', '嘉義', '屏東', '墾丁', '花蓮', '台東', '臺東', '澎湖', '金門', '沖繩', '東京', '大阪',
+    '首爾', '京都', '曼谷', '巴黎', '紐約', 'taipei', 'yilan', 'taichung', 'kaohsiung', 'tainan',
+    'taoyuan', 'hsinchu', 'okinawa', 'tokyo', 'osaka', 'seoul', 'kyoto', 'bangkok', 'paris', 'new york'
+  ]);
 
-  if (isHotelSearch && filtered && filtered.length > 0) {
-    const cleanKw = queryTerm.replace(/飯店|酒店|Hotel|Resort|民宿|會館|館/gi, '').trim().toLowerCase();
-    const exactMatches = filtered.filter(item => {
-      const name = item.name.toLowerCase();
-      return name.includes(lowerQuery) || (cleanKw.length >= 2 && name.includes(cleanKw));
+  const normQuery = queryTerm.toLowerCase().trim();
+  const isBroadCity = BROAD_CITIES_SET.has(normQuery) || Boolean(CITY_SERP_MAP[queryTerm]);
+
+  // Exact hotel name precision filtering (Only trigger when searching specific hotel/landmark)
+  if (!isBroadCity && normQuery.length > 0 && filtered && filtered.length > 0) {
+    const cleanKw = normQuery.replace(/飯店|酒店|hotel|resort|b&b|民宿|會館|館|旅店|旅館/gi, '').trim();
+
+    const matched = filtered.filter(item => {
+      const name = (item.name || '').toLowerCase();
+      if (name.includes(normQuery)) return true;
+      if (cleanKw.length >= 2 && name.includes(cleanKw)) return true;
+      return false;
     });
 
-    if (exactMatches.length > 0) {
-      filtered = exactMatches;
+    if (matched.length > 0) {
+      filtered = matched;
     } else {
-      // Return top #1 property returned by Google Hotels for that query
+      // If no substring match found, isolate strictly to top #1 property returned by Google Hotels
       filtered = [filtered[0]];
     }
   }
