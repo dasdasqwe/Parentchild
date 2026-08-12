@@ -35,43 +35,24 @@ export function buildProviderDeepLinks(stay = {}, query = {}, normCityName = '')
   const basePrice = stay.price || stay.basePrice || 3200;
 
   const inputProviders = (stay.providers && stay.providers.length > 0) ? stay.providers : [
-    { name: 'Agoda', price: basePrice, url: '', isLowest: true },
-    { name: 'Booking.com', price: Math.round(basePrice * 1.05), url: '' },
-    { name: 'Trip.com', price: Math.round(basePrice * 1.08), url: '' }
+    { name: 'Agoda', price: basePrice, isLowest: true },
+    { name: 'Booking.com', price: Math.round(basePrice * 1.05) },
+    { name: 'Trip.com', price: Math.round(basePrice * 1.08) }
   ];
 
   return inputProviders.map(p => {
-    let targetUrl = p.url || '';
     const pName = (p.name || '').toLowerCase();
+    let targetUrl = '';
 
     if (pName.includes('booking')) {
-      if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://'))) {
-        const sep = targetUrl.includes('?') ? '&' : '?';
-        targetUrl = `${targetUrl}${sep}ss=${fullHotelKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1`;
-      } else {
-        targetUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${fullHotelKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=search_results`;
-      }
+      targetUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${fullHotelKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=search_results`;
     } else if (pName.includes('agoda')) {
-      if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://'))) {
-        const sep = targetUrl.includes('?') ? '&' : '?';
-        targetUrl = `${targetUrl}${sep}textToSearch=${fullHotelKw}&asq=${fullHotelKw}&text=${fullHotelKw}&kw=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}${childAgesParam}&rooms=1`;
-      } else {
-        targetUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${fullHotelKw}&asq=${fullHotelKw}&text=${fullHotelKw}&kw=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}${childAgesParam}&rooms=1`;
-      }
+      targetUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${fullHotelKw}&asq=${fullHotelKw}&text=${fullHotelKw}&kw=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}${childAgesParam}&rooms=1`;
     } else if (pName.includes('trip')) {
-      if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://'))) {
-        const sep = targetUrl.includes('?') ? '&' : '?';
-        targetUrl = `${targetUrl}${sep}searchValue=${fullHotelKw}&keyword=${fullHotelKw}&searchName=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&adult=${adults}&children=${children}`;
-      } else {
-        targetUrl = `https://tw.trip.com/hotels/list?searchValue=${fullHotelKw}&keyword=${fullHotelKw}&searchName=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&adult=${adults}&children=${children}`;
-      }
+      targetUrl = `https://tw.trip.com/hotels/list?searchValue=${fullHotelKw}&keyword=${fullHotelKw}&searchName=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&adult=${adults}&children=${children}`;
     } else {
-      if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://'))) {
-        const sep = targetUrl.includes('?') ? '&' : '?';
-        targetUrl = `${targetUrl}${sep}textToSearch=${fullHotelKw}&asq=${fullHotelKw}&text=${fullHotelKw}&kw=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}${childAgesParam}&rooms=1`;
-      } else {
-        targetUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${fullHotelKw}&asq=${fullHotelKw}&text=${fullHotelKw}&kw=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}${childAgesParam}&rooms=1`;
-      }
+      // Default to Agoda clean search deep link
+      targetUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${fullHotelKw}&asq=${fullHotelKw}&text=${fullHotelKw}&kw=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}${childAgesParam}&rooms=1`;
     }
 
     return {
