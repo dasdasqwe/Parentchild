@@ -496,6 +496,46 @@ db.transaction(() => {
   for (const s of SHOWS_SEED) insertShow.run(s);
 })();
 
+// Pre-compiled Prepared Statements for Max Performance
+const statements = {
+  hotelsAll: db.prepare('SELECT * FROM hotels LIMIT 24'),
+  hotelsSearch: db.prepare(`
+    SELECT * FROM hotels 
+    WHERE LOWER(keywords) LIKE ? 
+       OR LOWER(name_zh) LIKE ? 
+       OR LOWER(name_en) LIKE ?
+       OR LOWER(city_name) LIKE ?
+  `),
+  packagesAll: db.prepare('SELECT * FROM tour_packages LIMIT 20'),
+  packagesSearch: db.prepare('SELECT * FROM tour_packages WHERE LOWER(title) LIKE ? OR LOWER(city_name) LIKE ? OR LOWER(keywords) LIKE ?'),
+  attractionsAll: db.prepare('SELECT * FROM family_attractions LIMIT 20'),
+  attractionsSearch: db.prepare('SELECT * FROM family_attractions WHERE LOWER(name) LIKE ? OR LOWER(city_name) LIKE ? OR LOWER(keywords) LIKE ?'),
+  showsAll: db.prepare('SELECT * FROM family_shows_galleries LIMIT 20'),
+  showsSearch: db.prepare('SELECT * FROM family_shows_galleries WHERE LOWER(title) LIKE ? OR LOWER(city_name) LIKE ? OR LOWER(keywords) LIKE ?'),
+  citiesAll: db.prepare('SELECT * FROM cities'),
+  citiesSearch: db.prepare('SELECT * FROM cities WHERE LOWER(name) LIKE ? OR LOWER(aliases) LIKE ? OR LOWER(country) LIKE ?'),
+  cacheGet: db.prepare('SELECT response_json, expires_at FROM api_cache WHERE cache_key = ?'),
+  cacheSet: db.prepare('INSERT OR REPLACE INTO api_cache (cache_key, response_json, created_at, expires_at) VALUES (?, ?, ?, ?)'),
+  cacheClean: db.prepare('DELETE FROM api_cache WHERE expires_at <= ?'),
+  savedGet: db.prepare('SELECT stay_data FROM saved_stays ORDER BY created_at DESC'),
+  savedAdd: db.prepare('INSERT OR REPLACE INTO saved_stays (id, stay_data, created_at) VALUES (?, ?, ?)'),
+  savedRemove: db.prepare('DELETE FROM saved_stays WHERE id = ?'),
+  savedClear: db.prepare('DELETE FROM saved_stays')
+};
+
+// Automatic cache purging on startup
+export function cleanExpiredCache() {
+  try {
+    const info = statements.cacheClean.run(Date.now());
+    if (info.changes > 0) {
+      console.log(`[SQLITE-CLEANUP] Cleaned ${info.changes} expired API cache entries`);
+    }
+  } catch (err) {
+    console.error('SQLite Cache Cleanup Error:', err);
+  }
+}
+cleanExpiredCache();
+
 /**
  * High-Performance SQLite District Query Engine
  */
@@ -503,14 +543,12 @@ export function queryDistrictFromSQLite(cityName = '台北', idx = 0, nameStr = 
   const cleanCity = cityName.replace(/飯店|酒店|hotel|resort|b&b|民宿|會館|館|旅店|旅館/gi, '').trim();
   const searchCity = (cleanCity.length >= 2) ? cleanCity : '台北';
 
-  // 1. Try keyword match in SQLite city_districts
   if (nameStr) {
     const kwStmt = db.prepare('SELECT district_name FROM city_districts WHERE city_name LIKE ? AND keywords LIKE ?');
     const kwRow = kwStmt.get(`%${searchCity}%`, `%${nameStr.slice(0, 2)}%`);
     if (kwRow) return `${searchCity} ${kwRow.district_name}`;
   }
 
-  // 2. Query districts list from SQLite
   const stmt = db.prepare('SELECT district_name FROM city_districts WHERE city_name LIKE ?');
   const rows = stmt.all(`%${searchCity}%`);
 
@@ -525,25 +563,17 @@ export function queryDistrictFromSQLite(cityName = '台北', idx = 0, nameStr = 
 export function queryHotelsFromSQLite(searchTerm = '', cityName = '') {
   const term = searchTerm.trim().toLowerCase();
   if (!term) {
-    return db.prepare('SELECT * FROM hotels LIMIT 24').all();
+    return statements.hotelsAll.all();
   }
 
   const pattern = `%${term}%`;
   const cleanTerm = term.replace(/飯店|酒店|hotel|resort|b&b|民宿|會館|館|旅店|旅館/gi, '').trim();
   const cleanPattern = `%${cleanTerm}%`;
 
-  const stmt = db.prepare(`
-    SELECT * FROM hotels 
-    WHERE LOWER(keywords) LIKE ? 
-       OR LOWER(name_zh) LIKE ? 
-       OR LOWER(name_en) LIKE ?
-       OR LOWER(city_name) LIKE ?
-  `);
-
-  let results = stmt.all(pattern, pattern, pattern, pattern);
+  let results = statements.hotelsSearch.all(pattern, pattern, pattern, pattern);
 
   if (results.length === 0 && cleanTerm.length >= 2) {
-    results = stmt.all(cleanPattern, cleanPattern, cleanPattern, cleanPattern);
+    results = statements.hotelsSearch.all(cleanPattern, cleanPattern, cleanPattern, cleanPattern);
   }
 
   return results;
@@ -552,42 +582,41 @@ export function queryHotelsFromSQLite(searchTerm = '', cityName = '') {
 // 2. Tour Packages Query Engine (套裝行程)
 export function queryPackagesFromSQLite(searchTerm = '') {
   const term = searchTerm.trim().toLowerCase();
-  if (!term) return db.prepare('SELECT * FROM tour_packages LIMIT 20').all();
+  if (!term) return statements.packagesAll.all();
   const pattern = `%${term}%`;
-  return db.prepare('SELECT * FROM tour_packages WHERE LOWER(title) LIKE ? OR LOWER(city_name) LIKE ? OR LOWER(keywords) LIKE ?').all(pattern, pattern, pattern);
+  return statements.packagesSearch.all(pattern, pattern, pattern);
 }
 
 // 3. Family Attractions Query Engine (親子景點)
 export function queryAttractionsFromSQLite(searchTerm = '') {
   const term = searchTerm.trim().toLowerCase();
-  if (!term) return db.prepare('SELECT * FROM family_attractions LIMIT 20').all();
+  if (!term) return statements.attractionsAll.all();
   const pattern = `%${term}%`;
-  return db.prepare('SELECT * FROM family_attractions WHERE LOWER(name) LIKE ? OR LOWER(city_name) LIKE ? OR LOWER(keywords) LIKE ?').all(pattern, pattern, pattern);
+  return statements.attractionsSearch.all(pattern, pattern, pattern);
 }
 
 // 4. Family Shows Query Engine (親子表演藝廊)
 export function queryShowsFromSQLite(searchTerm = '') {
   const term = searchTerm.trim().toLowerCase();
-  if (!term) return db.prepare('SELECT * FROM family_shows_galleries LIMIT 20').all();
+  if (!term) return statements.showsAll.all();
   const pattern = `%${term}%`;
-  return db.prepare('SELECT * FROM family_shows_galleries WHERE LOWER(title) LIKE ? OR LOWER(city_name) LIKE ? OR LOWER(keywords) LIKE ?').all(pattern, pattern, pattern);
+  return statements.showsSearch.all(pattern, pattern, pattern);
 }
 
 // 5. Cities Query Engine (熱門城市與別名表)
 export function queryCitiesFromSQLite(searchTerm = '') {
   const term = searchTerm.trim().toLowerCase();
   if (!term) {
-    return db.prepare('SELECT * FROM cities').all();
+    return statements.citiesAll.all();
   }
   const pattern = `%${term}%`;
-  return db.prepare('SELECT * FROM cities WHERE LOWER(name) LIKE ? OR LOWER(aliases) LIKE ? OR LOWER(country) LIKE ?').all(pattern, pattern, pattern);
+  return statements.citiesSearch.all(pattern, pattern, pattern);
 }
 
 // 6. Persistent API Cache Engine (SQLite API 持久化快取)
 export function getCachedApiFromSQLite(cacheKey) {
   try {
-    const stmt = db.prepare('SELECT response_json, expires_at FROM api_cache WHERE cache_key = ?');
-    const row = stmt.get(cacheKey);
+    const row = statements.cacheGet.get(cacheKey);
     if (row && row.expires_at > Date.now()) {
       console.log(`[SQLITE-CACHE-HIT] Loaded cached API response from SQLite for key: "${cacheKey}"`);
       return JSON.parse(row.response_json);
@@ -600,12 +629,8 @@ export function getCachedApiFromSQLite(cacheKey) {
 
 export function setCachedApiToSQLite(cacheKey, data, ttlMs = 15 * 60 * 1000) {
   try {
-    const stmt = db.prepare(`
-      INSERT OR REPLACE INTO api_cache (cache_key, response_json, created_at, expires_at)
-      VALUES (?, ?, ?, ?)
-    `);
     const now = Date.now();
-    stmt.run(cacheKey, JSON.stringify(data), now, now + ttlMs);
+    statements.cacheSet.run(cacheKey, JSON.stringify(data), now, now + ttlMs);
   } catch (err) {
     console.error('SQLite Cache Set Error:', err);
   }
@@ -614,7 +639,7 @@ export function setCachedApiToSQLite(cacheKey, data, ttlMs = 15 * 60 * 1000) {
 // 7. Server-side User Saved Stays CRUD Engine (最愛收藏表)
 export function getSavedStaysFromSQLite() {
   try {
-    const rows = db.prepare('SELECT stay_data FROM saved_stays ORDER BY created_at DESC').all();
+    const rows = statements.savedGet.all();
     return rows.map(r => JSON.parse(r.stay_data));
   } catch (err) {
     console.error('SQLite Saved Stays Get Error:', err);
@@ -625,11 +650,7 @@ export function getSavedStaysFromSQLite() {
 export function addSavedStayToSQLite(item) {
   try {
     if (!item || !item.id) return false;
-    const stmt = db.prepare(`
-      INSERT OR REPLACE INTO saved_stays (id, stay_data, created_at)
-      VALUES (?, ?, ?)
-    `);
-    stmt.run(String(item.id), JSON.stringify(item), Date.now());
+    statements.savedAdd.run(String(item.id), JSON.stringify(item), Date.now());
     return true;
   } catch (err) {
     console.error('SQLite Add Saved Stay Error:', err);
@@ -640,8 +661,7 @@ export function addSavedStayToSQLite(item) {
 export function removeSavedStayFromSQLite(id) {
   try {
     if (!id) return false;
-    const stmt = db.prepare('DELETE FROM saved_stays WHERE id = ?');
-    stmt.run(String(id));
+    statements.savedRemove.run(String(id));
     return true;
   } catch (err) {
     console.error('SQLite Remove Saved Stay Error:', err);
@@ -651,7 +671,7 @@ export function removeSavedStayFromSQLite(id) {
 
 export function clearSavedStaysFromSQLite() {
   try {
-    db.prepare('DELETE FROM saved_stays').run();
+    statements.savedClear.run();
     return true;
   } catch (err) {
     console.error('SQLite Clear Saved Stays Error:', err);

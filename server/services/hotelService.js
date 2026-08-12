@@ -2,7 +2,7 @@ import axios from 'axios';
 import { config } from '../config/env.js';
 import { buildProviderDeepLinks } from '../utils/urlBuilder.js';
 import { paginateArray, sortStays } from '../utils/pagination.js';
-import { queryHotelsFromSQLite, getCachedApiFromSQLite, setCachedApiToSQLite } from '../db/sqliteEngine.js';
+import { queryHotelsFromSQLite, queryCitiesFromSQLite, getCachedApiFromSQLite, setCachedApiToSQLite } from '../db/sqliteEngine.js';
 
 // In-Memory API Cache Strategy (TTL: 15 minutes) for On-Demand API cost reduction
 // Persistent SQLite API Cache Strategy (TTL: 15 minutes) for On-Demand API cost reduction
@@ -453,6 +453,7 @@ export async function searchGlobalHotels({
   }
 
   // Broad Cities list for regional search vs specific hotel search
+  const dbCities = queryCitiesFromSQLite();
   const BROAD_CITIES_SET = new Set([
     '台北', '臺北', '宜蘭', '台中', '臺中', '高雄', '台南', '臺南', '桃園', '新竹', '苗栗', '彰化',
     '南投', '嘉義', '屏東', '墾丁', '花蓮', '台東', '臺東', '澎湖', '金門', '沖繩', '東京', '大阪',

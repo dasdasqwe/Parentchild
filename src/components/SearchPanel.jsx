@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ArrowUpDown, Calendar, DollarSign, SlidersHorizontal, RefreshCw, Globe, Users } from 'lucide-react';
 import GuestPickerPopover from './GuestPickerPopover';
 
@@ -26,6 +26,24 @@ export default function SearchPanel({
   onSearch,
   isSearching
 }) {
+  const [dbCities, setDbCities] = useState([]);
+
+  useEffect(() => {
+    fetchCities();
+  }, []);
+
+  const fetchCities = async () => {
+    try {
+      const res = await fetch('/api/cities');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        setDbCities(data.data);
+      }
+    } catch (err) {
+      console.warn('Failed to fetch cities from API:', err);
+    }
+  };
+
   const quickDestinations = [
     { label: '台北', value: '台北' },
     { label: '宜蘭', value: '宜蘭' },
@@ -89,17 +107,23 @@ export default function SearchPanel({
               }}
             />
             <datalist id="global-destinations-list">
-              <option value="宜蘭">宜蘭 (Yilan)</option>
-              <option value="台北">台北 (Taipei)</option>
-              <option value="台中">台中 (Taichung)</option>
-              <option value="花蓮">花蓮 (Hualien)</option>
-              <option value="高雄">高雄 (Kaohsiung)</option>
-              <option value="沖繩">沖繩 (Okinawa, Japan)</option>
-              <option value="東京">東京 (Tokyo, Japan)</option>
-              <option value="首爾">首爾 (Seoul, Korea)</option>
-              <option value="曼谷">曼谷 (Bangkok, Thailand)</option>
-              <option value="巴黎">巴黎 (Paris, France)</option>
-              <option value="紐約">紐約 (New York, USA)</option>
+              {dbCities.length > 0 ? (
+                dbCities.map(c => (
+                  <option key={c.city_id} value={c.name.split(' ')[0]}>{`${c.name} (${c.country})`}</option>
+                ))
+              ) : (
+                <>
+                  <option value="宜蘭">宜蘭 (Yilan)</option>
+                  <option value="台北">台北 (Taipei)</option>
+                  <option value="台中">台中 (Taichung)</option>
+                  <option value="花蓮">花蓮 (Hualien)</option>
+                  <option value="高雄">高雄 (Kaohsiung)</option>
+                  <option value="沖繩">沖繩 (Okinawa, Japan)</option>
+                  <option value="東京">東京 (Tokyo, Japan)</option>
+                  <option value="首爾">首爾 (Seoul, Korea)</option>
+                  <option value="曼谷">曼谷 (Bangkok, Thailand)</option>
+                </>
+              )}
             </datalist>
           </div>
 
