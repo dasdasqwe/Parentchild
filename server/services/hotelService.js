@@ -256,7 +256,16 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
   if (cached) return cached;
 
   try {
-    const queryTarget = CITY_SERP_MAP[destination] || `${destination} Hotels`;
+    let queryTarget = CITY_SERP_MAP[destination];
+    if (!queryTarget) {
+      const lower = destination.toLowerCase();
+      if (lower.includes('hotel') || lower.includes('resort') || lower.includes('inn') || lower.includes('villa') || destination.includes('飯店') || destination.includes('酒店') || destination.includes('民宿') || destination.includes('會館')) {
+        queryTarget = destination;
+      } else {
+        queryTarget = `${destination} Hotels`;
+      }
+    }
+
     const url = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(queryTarget)}&check_in_date=${checkIn}&check_out_date=${checkOut}&adults=${adults}&currency=TWD&api_key=${config.serpApiKey}`;
     const res = await axios.get(url, { timeout: 12000 });
     
