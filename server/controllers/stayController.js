@@ -12,6 +12,7 @@ export async function getStays(req, res) {
       pageSize = 12,
       checkIn,
       checkOut,
+      rooms = 1,
       adults = 2,
       children = 2,
       childAges = '6,6'
@@ -28,6 +29,7 @@ export async function getStays(req, res) {
       pageSize: Number(pageSize),
       checkIn,
       checkOut,
+      rooms: Number(rooms),
       adults: Number(adults),
       children: Number(children),
       childAges

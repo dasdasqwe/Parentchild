@@ -195,15 +195,17 @@ const IMAGES_POOL = [
   'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80'
 ];
 
-function generateCityHotels(cityName, count = 24) {
+function generateCityHotels(cityName, count = 24, rooms = 1) {
   const list = [];
   const displayCity = cityName || '精選城市';
   const realNames = REAL_INDIVIDUAL_HOTELS[displayCity] || REAL_INDIVIDUAL_HOTELS['台北'];
   const isExactHotelName = displayCity.includes('飯店') || displayCity.includes('酒店') || displayCity.includes('Hotel') || displayCity.includes('Resort') || displayCity.includes('民宿');
+  const effectiveRooms = Math.max(1, Number(rooms) || 1);
 
   for (let i = 1; i <= count; i++) {
     const hotelName = (i === 1 && isExactHotelName) ? displayCity : (realNames[(i - 1) % realNames.length] || `${displayCity} 經典精品飯店 ${i}`);
-    const basePrice = 1450 + (i * 430) % 5200;
+    const singlePrice = 1450 + (i * 430) % 5200;
+    const basePrice = singlePrice * effectiveRooms;
     const origPrice = Math.round(basePrice * 1.45);
     const rating = Math.min(5.0, Number((4.6 + (i * 0.07) % 0.38).toFixed(1)));
     const reviewsCount = 650 + i * 280;
@@ -218,6 +220,7 @@ function generateCityHotels(cityName, count = 24) {
       rating,
       reviewsCount,
       price: basePrice,
+      beforeTaxPrice: Math.round(basePrice * 0.86),
       originalPrice: origPrice,
       discountPercent: Math.round((1 - basePrice / origPrice) * 100),
       address: `${displayCity}市中心觀光景點特區`,
@@ -249,10 +252,11 @@ function getTomorrowStr(addDays = 2) {
 /**
  * Fetch real live hotel API data via SerpApi Google Hotels API with On-Demand Cache
  */
-async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }) {
+async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, rooms = 1, adults = 2, children = 0, childAges = '' }) {
   if (!config.serpApiKey) return null;
 
-  const cacheKey = `${destination.trim().toLowerCase()}_${checkIn}_${checkOut}_${adults}`;
+  const effectiveRooms = Math.max(1, Number(rooms) || 1);
+  const cacheKey = `${destination.trim().toLowerCase()}_${checkIn}_${checkOut}_r${effectiveRooms}_a${adults}_c${children}_ag${childAges}`;
   const cached = getCachedResult(cacheKey);
   if (cached) return cached;
 
@@ -267,20 +271,23 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
       }
     }
 
-    const url = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(queryTarget)}&check_in_date=${checkIn}&check_out_date=${checkOut}&adults=${adults}&currency=TWD&api_key=${config.serpApiKey}`;
+    const childrenParam = children > 0 ? `&children=${children}` : '';
+    const url = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(queryTarget)}&check_in_date=${checkIn}&check_out_date=${checkOut}&adults=${adults}${childrenParam}&currency=TWD&api_key=${config.serpApiKey}`;
     const res = await axios.get(url, { timeout: 12000 });
     
     if (res.data && res.data.properties && Array.isArray(res.data.properties) && res.data.properties.length > 0) {
       const parsedList = res.data.properties.map((item, idx) => {
-        const lowestPrice = item.rate_per_night?.extracted_lowest || item.price || 3200;
-        const beforeTax = item.rate_per_night?.extracted_before_taxes_fees || Math.round(lowestPrice * 0.86);
-        const totalStayRate = item.total_rate?.extracted_lowest || null;
+        const singleRoomPrice = item.rate_per_night?.extracted_lowest || item.price || 3200;
+        const lowestPrice = singleRoomPrice * effectiveRooms;
+        const singleBeforeTax = item.rate_per_night?.extracted_before_taxes_fees || Math.round(singleRoomPrice * 0.86);
+        const beforeTax = singleBeforeTax * effectiveRooms;
+        const totalStayRate = item.total_rate?.extracted_lowest ? item.total_rate.extracted_lowest * effectiveRooms : null;
         const origPrice = Math.round(lowestPrice * 1.35);
 
         // Map real booking channels from item.prices if present
         const apiProviders = Array.isArray(item.prices) && item.prices.length > 0 ? item.prices.map(p => ({
           name: p.source || 'OTA Booking',
-          price: p.rate_per_night?.extracted_lowest || lowestPrice,
+          price: (p.rate_per_night?.extracted_lowest || singleRoomPrice) * effectiveRooms,
           url: p.link || ''
         })) : [];
 
@@ -329,12 +336,13 @@ async function fetchLiveSerpApiHotels({ destination, checkIn, checkOut, adults }
 export async function searchGlobalHotels({
   destination = '',
   type = 'all',
-  maxPrice = 10000,
+  maxPrice = 30000,
   sort = 'price_asc',
   page = 1,
   pageSize = 12,
   checkIn = getTodayStr(),
   checkOut = getTomorrowStr(2),
+  rooms = 1,
   adults = 2,
   children = 2,
   childAges = '6,6'
@@ -343,18 +351,18 @@ export async function searchGlobalHotels({
   const targetCityName = queryTerm || '台北';
 
   // 1. Try real live SerpApi Google Hotels fetching with On-Demand Caching Strategy
-  let filtered = await fetchLiveSerpApiHotels({ destination: targetCityName, checkIn, checkOut, adults });
+  let filtered = await fetchLiveSerpApiHotels({ destination: targetCityName, checkIn, checkOut, rooms, adults, children, childAges });
 
   // 2. If SerpApi limits or unavailable, use authentic real-world individual hotels database
   if (!filtered || filtered.length === 0) {
-    filtered = generateCityHotels(targetCityName, 24);
+    filtered = generateCityHotels(targetCityName, 24, rooms);
   }
 
   // Filter by stay type & max budget limit
   if (type !== 'all') {
     filtered = filtered.filter(i => i.type === type);
   }
-  const maxP = Number(maxPrice) || 10000;
+  const maxP = Number(maxPrice) || 30000;
   filtered = filtered.filter(i => i.price <= maxP);
 
   // Attach provider deep links (Agoda, Booking.com, Trip.com) for each hotel
@@ -362,6 +370,7 @@ export async function searchGlobalHotels({
     const deepLinks = buildProviderDeepLinks(hotel, {
       checkIn,
       checkOut,
+      rooms,
       adults,
       children,
       childAges
