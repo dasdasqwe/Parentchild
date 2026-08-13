@@ -18,16 +18,24 @@ export async function searchHotelsService({
 }) {
   let serpHotels = [];
 
+  // Calculate dynamic guest count multiplier factor:
+  // Base price is for 2 adults (1 room).
+  // Extra adults add +35% per person, extra children add +15% per person.
+  const numAdults = Math.max(1, parseInt(adults, 10) || 2);
+  const numChildren = Math.max(0, parseInt(children, 10) || 0);
+  const guestMultiplier = 1 + (Math.max(0, numAdults - 2) * 0.35) + (numChildren * 0.15);
+
   // If SerpAPI Key is provided and city/keyword search is requested, fetch real-time Google Hotels API
   if (SERPAPI_KEY && (city || keyword)) {
     try {
       const searchQuery = `${city || ''} ${keyword || ''} 親子飯店`.trim();
-      const serpUrl = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(searchQuery)}&check_in_date=${checkIn || ''}&check_out_date=${checkOut || ''}&adults=${adults}&currency=TWD&gl=tw&hl=zh-tw&api_key=${SERPAPI_KEY}`;
+      const serpUrl = `https://serpapi.com/search.json?engine=google_hotels&q=${encodeURIComponent(searchQuery)}&check_in_date=${checkIn || ''}&check_out_date=${checkOut || ''}&adults=${numAdults}&currency=TWD&gl=tw&hl=zh-tw&api_key=${SERPAPI_KEY}`;
       
       const serpRes = await axios.get(serpUrl, { timeout: 4000 });
       if (serpRes.data && serpRes.data.properties) {
         serpHotels = serpRes.data.properties.map((p, idx) => {
-          const basePrice = p.rate_per_night?.extracted_before_taxes || p.rate_per_night?.extracted_lowest || 3800;
+          const rawPrice = p.rate_per_night?.extracted_before_taxes || p.rate_per_night?.extracted_lowest || 3800;
+          const basePrice = Math.round(rawPrice * guestMultiplier);
           const hotelName = p.name || '精選親子飯店';
           const cityName = city || '台灣';
 
@@ -58,8 +66,8 @@ export async function searchHotelsService({
               cityName,
               checkIn,
               checkOut,
-              adults,
-              children,
+              adults: numAdults,
+              children: numChildren,
               childAges
             })
           };
@@ -96,7 +104,6 @@ export async function searchHotelsService({
 
   let rows = db.prepare(sql).all(...params);
 
-  // Combine SerpAPI real-time live results + Local DB results (deduplicated)
   let dbHotels = rows.map(h => {
     let amenities = [];
     try {
@@ -105,7 +112,9 @@ export async function searchHotelsService({
       amenities = [];
     }
 
-    const basePrice = h.base_price;
+    // Apply dynamic guest count multiplier to base price
+    const basePrice = Math.round(h.base_price * guestMultiplier);
+
     const platforms = [
       { name: 'Agoda', price: Math.round(basePrice * 0.95), isLowest: true },
       { name: 'Booking.com', price: Math.round(basePrice * 1.02), isLowest: false },
@@ -118,13 +127,14 @@ export async function searchHotelsService({
       cityName: h.city_name,
       checkIn,
       checkOut,
-      adults,
-      children,
+      adults: numAdults,
+      children: numChildren,
       childAges
     });
 
     return {
       ...h,
+      base_price: basePrice,
       amenities,
       platforms,
       lowestPrice: Math.round(basePrice * 0.95),
@@ -142,7 +152,6 @@ export async function searchHotelsService({
     return true;
   });
 
-  // If search returned empty (e.g. searching a rare town without API response), auto fallback to all DB hotels
   if (hotels.length === 0) {
     hotels = dbHotels;
   }
