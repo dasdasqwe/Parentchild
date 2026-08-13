@@ -25,8 +25,9 @@ export default function GuestPickerPopover({ adults, setAdults, children, setChi
       left: 0,
       width: '320px',
       padding: '1.25rem',
-      zIndex: 100,
-      background: '#1e293b'
+      zIndex: 9999,
+      background: '#1e293b',
+      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)'
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <h4 style={{ fontSize: '0.95rem', fontWeight: 700 }}>選擇入住人數</h4>
@@ -43,6 +44,7 @@ export default function GuestPickerPopover({ adults, setAdults, children, setChi
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <button
+            type="button"
             onClick={() => setAdults(Math.max(1, adults - 1))}
             style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #475569', background: 'none', color: '#fff', cursor: 'pointer' }}
           >
@@ -50,6 +52,7 @@ export default function GuestPickerPopover({ adults, setAdults, children, setChi
           </button>
           <span style={{ fontWeight: 700 }}>{adults}</span>
           <button
+            type="button"
             onClick={() => setAdults(adults + 1)}
             style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #475569', background: 'none', color: '#fff', cursor: 'pointer' }}
           >
@@ -66,6 +69,7 @@ export default function GuestPickerPopover({ adults, setAdults, children, setChi
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <button
+            type="button"
             onClick={() => handleChildCountChange(-1)}
             style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #475569', background: 'none', color: '#fff', cursor: 'pointer' }}
           >
@@ -73,6 +77,7 @@ export default function GuestPickerPopover({ adults, setAdults, children, setChi
           </button>
           <span style={{ fontWeight: 700 }}>{children}</span>
           <button
+            type="button"
             onClick={() => handleChildCountChange(1)}
             style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #475569', background: 'none', color: '#fff', cursor: 'pointer' }}
           >
@@ -109,6 +114,7 @@ export default function GuestPickerPopover({ adults, setAdults, children, setChi
       )}
 
       <button
+        type="button"
         onClick={onClose}
         style={{
           width: '100%',

@@ -51,7 +51,7 @@ export default function SearchPanel({ onSearch }) {
   };
 
   return (
-    <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
+    <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem', position: 'relative', zIndex: 100 }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', alignItems: 'end' }}>
         {/* City & Keyword */}
         <div>
