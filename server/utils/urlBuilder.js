@@ -33,14 +33,14 @@ export function buildDeepLinks({ hotelName, cityName, checkIn, checkOut, adults 
   }
 
   // 3. Trip.com Deep Link
-  // Use `searchWord` parameter (Trip.com standard) instead of `keyword` to prevent string truncation
   let tripUrl = `https://tw.trip.com/hotels/list?searchWord=${encSearch}&checkIn=${cin}&checkOut=${cout}&Adult=${adults}&Children=${children}`;
   if (children > 0 && childAges.length > 0) {
     tripUrl += `&childAges=${childAges.join(',')}`;
   }
 
   // 4. Hotels.com Deep Link
-  let hotelsComUrl = `https://tw.hotels.com/Hotel-Search?q-destination=${encSearch}&d1=${cin}&d2=${cout}&rooms=1&q-room-0-adults=${adults}`;
+  // Use `destination` and `startDate`/`endDate` standard Expedia parameters for Hotels.com
+  let hotelsComUrl = `https://tw.hotels.com/Hotel-Search?destination=${encSearch}&startDate=${cin}&endDate=${cout}&rooms=1&q-room-0-adults=${adults}`;
   if (children > 0) {
     hotelsComUrl += `&q-room-0-children=${children}`;
     childAges.forEach((age, idx) => {
