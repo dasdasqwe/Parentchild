@@ -1,165 +1,112 @@
-import { searchGlobalHotels } from './hotelService.js';
-import axios from 'axios';
-import { config as env } from '../config/env.js';
+import { parseLineCommand } from './lineCommandParser.js';
+import { buildHotelCarouselFlex, buildAttractionCarouselFlex, buildShowCarouselFlex, buildHelpFlex } from './lineFlexBuilder.js';
+import { searchHotelsService } from './hotelService.js';
+import db from '../db/sqliteEngine.js';
+import { fetchOpenDataAttractions } from './openDataService.js';
 
-export function parseLineMessage(text) {
-  const clean = (text || '').trim();
-  const tokens = clean.split(/\s+/);
-  
-  let destination = '宜蘭';
-  let budget = 10000;
+const publicUrl = process.env.PUBLIC_URL || 'https://parentchild.onrender.com';
 
-  if (tokens.length >= 2) {
-    destination = tokens[0];
-    const parsedNum = parseInt(tokens[1], 10);
-    if (!isNaN(parsedNum) && parsedNum > 0) {
-      budget = parsedNum;
-    }
-  } else if (tokens.length === 1 && tokens[0]) {
-    const parsedNum = parseInt(tokens[0], 10);
-    if (!isNaN(parsedNum) && parsedNum > 0) {
-      budget = parsedNum;
-    } else {
-      destination = tokens[0];
-    }
-  }
+export async function processLineMessage(userText) {
+  const parsed = parseLineCommand(userText);
 
-  return { destination, budget };
-}
+  switch (parsed.type) {
+    case 'HELP':
+      return buildHelpFlex();
 
-export function buildLineFlexCarousel(destination, hotels) {
-  const contents = hotels.map(item => ({
-    type: 'bubble',
-    hero: {
-      type: 'image',
-      url: item.image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-      size: 'full',
-      aspectRatio: '20:13',
-      aspectMode: 'cover'
-    },
-    body: {
-      type: 'box',
-      layout: 'vertical',
-      contents: [
-        {
-          type: 'text',
-          text: item.name,
-          weight: 'bold',
-          size: 'md',
-          wrap: true,
-          maxLines: 2
-        },
-        {
-          type: 'box',
-          layout: 'baseline',
-          margin: 'md',
-          contents: [
+    case 'HOME':
+      return {
+        type: 'template',
+        altText: '點擊開啟 StayPulse 官方網站',
+        template: {
+          type: 'buttons',
+          text: '🌐 歡迎使用 StayPulse 親子旅遊一站式平台',
+          actions: [
             {
-              type: 'text',
-              text: `⭐ ${item.rating || 4.8}`,
-              size: 'xs',
-              color: '#d97706',
-              weight: 'bold',
-              flex: 0
-            },
-            {
-              type: 'text',
-              text: ` (${item.reviewsCount || 800}則評價)`,
-              size: 'xs',
-              color: '#999999',
-              flex: 0
-            }
-          ]
-        },
-        {
-          type: 'box',
-          layout: 'baseline',
-          margin: 'md',
-          contents: [
-            {
-              type: 'text',
-              text: `NT$ ${(item.price || 0).toLocaleString()}`,
-              size: 'xl',
-              color: '#059669',
-              weight: 'bold'
-            },
-            {
-              type: 'text',
-              text: ' /晚起',
-              size: 'xs',
-              color: '#aaaaaa'
+              type: 'uri',
+              label: '🚀 開啟官方網站',
+              uri: publicUrl
             }
           ]
         }
-      ]
-    },
-    footer: {
-      type: 'box',
-      layout: 'vertical',
-      spacing: 'sm',
-      contents: [
-        {
-          type: 'button',
-          style: 'primary',
-          color: '#059669',
-          height: 'sm',
-          action: {
-            type: 'uri',
-            label: `👑 前往 ${item.lowestPriceProvider || 'Agoda'} 搶購`,
-            uri: item.url || 'https://www.agoda.com'
-          }
-        }
-      ]
-    }
-  }));
+      };
 
-  return {
-    type: 'flex',
-    altText: `🎯 StayPulse 為您找到「${destination}」精選比價飯店`,
-    contents: {
-      type: 'carousel',
-      contents
-    }
-  };
-}
-
-export async function processLineQuery(text) {
-  const { destination, budget } = parseLineMessage(text);
-  const result = await searchGlobalHotels({
-    destination,
-    maxPrice: budget,
-    sort: 'price_asc',
-    page: 1,
-    pageSize: 6
-  });
-
-  const hotels = result.data || [];
-  const flexMessage = buildLineFlexCarousel(destination, hotels);
-
-  return {
-    success: true,
-    destination,
-    budget,
-    count: hotels.length,
-    data: hotels,
-    flexMessage
-  };
-}
-
-export async function replyLineWebhook(replyToken, messages) {
-  if (!env.lineChannelAccessToken) return;
-  try {
-    await axios.post(
-      'https://api.line.me/v2/bot/message/reply',
-      { replyToken, messages },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${env.lineChannelAccessToken}`
-        }
+    case 'SEARCH_HOTELS': {
+      const hotels = await searchHotelsService({
+        city: parsed.city,
+        maxPrice: parsed.maxPrice
+      });
+      if (hotels.length === 0) {
+        return { type: 'text', text: `😔 抱歉，找不到位於「${parsed.city}」符合條件的飯店。您可以嘗試查詢：「搜尋飯店 台北」` };
       }
-    );
-  } catch (err) {
-    console.error('LINE Reply API Error:', err.message);
+      return buildHotelCarouselFlex(hotels);
+    }
+
+    case 'COMPARE_HOTEL': {
+      const hotels = await searchHotelsService({ keyword: parsed.hotelName });
+      if (hotels.length === 0) {
+        return { type: 'text', text: `😔 找不到名稱包含「${parsed.hotelName}」的飯店。` };
+      }
+      const target = hotels[0];
+      let msg = `📊 【${target.name_zh}】各大平台比價一覽表：\n\n`;
+      target.platforms.forEach(p => {
+        msg += `${p.isLowest ? '🔥 [最便宜] ' : '• '}${p.name}: NT$ ${p.price.toLocaleString()}\n`;
+      });
+      msg += `\n🔗 立即前往訂房頁面比價：\n${publicUrl}/?hotel=${encodeURIComponent(target.name_zh)}`;
+      return { type: 'text', text: msg };
+    }
+
+    case 'BOOK_HOTEL': {
+      const hotels = await searchHotelsService({ keyword: parsed.hotelName });
+      if (hotels.length === 0) {
+        return { type: 'text', text: `😔 找不到「${parsed.hotelName}」飯店資訊。` };
+      }
+      const target = hotels[0];
+      return {
+        type: 'text',
+        text: `🛒 【${target.name_zh}】訂房直連按鈕已產生：\n\n` +
+          `• Agoda: ${target.deepLinks.agoda}\n\n` +
+          `• Booking.com: ${target.deepLinks.booking}\n\n` +
+          `• Trip.com: ${target.deepLinks.trip}`
+      };
+    }
+
+    case 'SEARCH_ATTRACTIONS': {
+      const attrs = db.prepare(`SELECT * FROM family_attractions WHERE city_name LIKE ? OR address LIKE ?`).all(`%${parsed.city}%`, `%${parsed.city}%`);
+      if (attrs.length === 0) {
+        return { type: 'text', text: `🎪 目前「${parsed.city}」尚無特選景點，為您導引至全台熱門景點探索！` };
+      }
+      return buildAttractionCarouselFlex(attrs);
+    }
+
+    case 'SEARCH_SHOWS': {
+      const shows = db.prepare(`SELECT * FROM family_shows_galleries WHERE city_name LIKE ? OR venue LIKE ?`).all(`%${parsed.city}%`, `%${parsed.city}%`);
+      if (shows.length === 0) {
+        return { type: 'text', text: `🎭 目前「${parsed.city}」無近期表演。` };
+      }
+      return buildShowCarouselFlex(shows);
+    }
+
+    case 'SEARCH_EXHIBITIONS': {
+      const openDataList = await fetchOpenDataAttractions();
+      let text = `🖼 【文化部 Open Data 展覽資訊】\n\n`;
+      openDataList.forEach((item, idx) => {
+        text += `${idx + 1}. ${item.title}\n📍 ${item.location}\n📅 ${item.time}\n\n`;
+      });
+      return { type: 'text', text };
+    }
+
+    case 'MY_ITINERARY':
+      return {
+        type: 'text',
+        text: `📋 請點擊以下連結查看與管理您的「親子行程規劃」：\n${publicUrl}/?tab=itinerary`
+      };
+
+    default: {
+      const hotels = await searchHotelsService({ keyword: parsed.query || userText });
+      if (hotels.length > 0) {
+        return buildHotelCarouselFlex(hotels);
+      }
+      return buildHelpFlex();
+    }
   }
 }

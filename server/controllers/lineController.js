@@ -1,29 +1,37 @@
-import { processLineQuery, replyLineWebhook } from '../services/lineService.js';
+import { processLineMessage } from '../services/lineService.js';
+import { Client } from '@line/bot-sdk';
 
-export async function handleLineWebhook(req, res) {
+const lineConfig = {
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
+  channelSecret: process.env.LINE_CHANNEL_SECRET || ''
+};
+
+const client = lineConfig.channelAccessToken ? new Client(lineConfig) : null;
+
+export async function handleWebhook(req, res) {
   try {
     const events = req.body.events || [];
-    for (const event of events) {
+    await Promise.all(events.map(async (event) => {
       if (event.type === 'message' && event.message.type === 'text') {
-        const userText = event.message.text;
-        const result = await processLineQuery(userText);
-        await replyLineWebhook(event.replyToken, [result.flexMessage]);
+        const replyMsg = await processLineMessage(event.message.text);
+        if (client && event.replyToken) {
+          await client.replyMessage(event.replyToken, replyMsg);
+        }
       }
-    }
-    return res.status(200).json({ status: 'ok' });
+    }));
+    res.status(200).send('OK');
   } catch (err) {
-    console.error('LINE Webhook Error:', err);
-    return res.status(500).json({ status: 'error', error: err.message });
+    console.error('[LINE Webhook Error]', err);
+    res.status(500).send('Error');
   }
 }
 
-export async function simulateLineMessage(req, res) {
+export async function handleSimulate(req, res) {
   try {
-    const queryText = req.body.query || '宜蘭 3000';
-    const result = await processLineQuery(queryText);
-    return res.json(result);
+    const { text } = req.body;
+    const replyMsg = await processLineMessage(text);
+    res.json({ success: true, message: replyMsg });
   } catch (err) {
-    console.error('LINE Simulate Error:', err);
-    return res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: err.message });
   }
 }

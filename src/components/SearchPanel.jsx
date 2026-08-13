@@ -1,264 +1,212 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ArrowUpDown, Calendar, DollarSign, SlidersHorizontal, RefreshCw, Globe, Users } from 'lucide-react';
+import { Search, MapPin, Calendar, Users, SlidersHorizontal } from 'lucide-react';
 import GuestPickerPopover from './GuestPickerPopover';
 
-export default function SearchPanel({
-  destination,
-  setDestination,
-  sortBy,
-  setSortBy,
-  maxPrice,
-  setMaxPrice,
-  stayType,
-  setStayType,
-  checkInDate,
-  setCheckInDate,
-  checkOutDate,
-  setCheckOutDate,
-  rooms = 1,
-  setRooms,
-  adults = 2,
-  setAdults,
-  childrenCount = 2,
-  setChildrenCount,
-  childAges = ['', ''],
-  setChildAges,
-  onSearch,
-  isSearching
-}) {
-  const [dbCities, setDbCities] = useState([]);
+export default function SearchPanel({ onSearch }) {
+  const [city, setCity] = useState('');
+  const [keyword, setKeyword] = useState('');
+  const [checkIn, setCheckIn] = useState(new Date().toISOString().split('T')[0]);
+  const [stayNights, setStayNights] = useState(1);
+  const [checkOut, setCheckOut] = useState(
+    new Date(Date.now() + 86400000).toISOString().split('T')[0]
+  );
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [childAges, setChildAges] = useState([]);
+  const [showGuestPicker, setShowGuestPicker] = useState(false);
+  const [sortBy, setSortBy] = useState('composite');
 
-  useEffect(() => {
-    fetchCities();
-  }, []);
+  // Dual linkage: nights -> checkout
+  const handleNightsChange = (nights) => {
+    const n = Math.max(1, parseInt(nights, 10) || 1);
+    setStayNights(n);
+    const cinDate = new Date(checkIn);
+    cinDate.setDate(cinDate.getDate() + n);
+    setCheckOut(cinDate.toISOString().split('T')[0]);
+  };
 
-  const fetchCities = async () => {
-    try {
-      const res = await fetch('/api/cities');
-      const data = await res.json();
-      if (data.success && Array.isArray(data.data)) {
-        setDbCities(data.data);
-      }
-    } catch (err) {
-      console.warn('Failed to fetch cities from API:', err);
+  // Dual linkage: checkout -> nights
+  const handleCheckOutChange = (coutStr) => {
+    setCheckOut(coutStr);
+    const cinDate = new Date(checkIn);
+    const coutDate = new Date(coutStr);
+    const diffTime = coutDate - cinDate;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays > 0) {
+      setStayNights(diffDays);
     }
   };
 
-  const quickDestinations = [
-    { label: '台北', value: '台北' },
-    { label: '宜蘭', value: '宜蘭' },
-    { label: '台中', value: '台中' },
-    { label: '花蓮', value: '花蓮' },
-    { label: '沖繩 🇯🇵', value: '沖繩' },
-    { label: '東京 🇯🇵', value: '東京' },
-    { label: '首爾 🇰🇷', value: '首爾' },
-    { label: '曼谷 🇹🇭', value: '曼谷' }
-  ];
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    onSearch();
-  };
-
-  const inputStyle = {
-    height: '48px',
-    padding: '0 14px',
-    borderRadius: '14px',
-    background: '#ffffff',
-    color: '#0f172a',
-    border: '1px solid rgba(15, 23, 42, 0.12)',
-    outline: 'none',
-    fontSize: '0.9rem',
-    fontWeight: '600',
-    boxSizing: 'border-box'
+  const handleTriggerSearch = () => {
+    onSearch({
+      city,
+      keyword,
+      checkIn,
+      checkOut,
+      adults,
+      children,
+      childAges,
+      sortBy
+    });
   };
 
   return (
-    <div style={{
-      background: '#ffffff',
-      borderRadius: '24px',
-      border: '1px solid rgba(15, 23, 42, 0.08)',
-      boxShadow: '0 10px 30px -5px rgba(15, 23, 42, 0.04)',
-      padding: '24px',
-      marginBottom: '28px'
-    }}>
-
-      <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-
-        {/* Main Search Row */}
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-
-          {/* Destination Input */}
-          <div style={{ position: 'relative', flex: 2, minWidth: '260px' }}>
-            <Search size={18} color="#059669" style={{ position: 'absolute', left: '14px', top: '15px' }} />
+    <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', alignItems: 'end' }}>
+        {/* City & Keyword */}
+        <div>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.4rem', fontWeight: 600 }}>
+            目的地或飯店名稱
+          </label>
+          <div style={{ position: 'relative' }}>
+            <MapPin size={18} style={{ position: 'absolute', left: 12, top: 12, color: '#6366f1' }} />
             <input
               type="text"
-              list="global-destinations-list"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-              placeholder="搜尋飯店名稱或地點"
+              placeholder="例：宜蘭, 蘭城晶英"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
               style={{
-                ...inputStyle,
                 width: '100%',
-                paddingLeft: '42px',
-                borderColor: 'rgba(5, 150, 105, 0.3)',
-                fontSize: '0.95rem',
-                fontWeight: '700'
+                padding: '0.65rem 0.65rem 0.65rem 2.5rem',
+                borderRadius: '10px',
+                background: 'rgba(15, 23, 42, 0.6)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#fff'
               }}
             />
-            <datalist id="global-destinations-list">
-              {dbCities.length > 0 ? (
-                dbCities.map(c => (
-                  <option key={c.city_id} value={c.name.split(' ')[0]}>{`${c.name} (${c.country})`}</option>
-                ))
-              ) : (
-                <>
-                  <option value="宜蘭">宜蘭 (Yilan)</option>
-                  <option value="台北">台北 (Taipei)</option>
-                  <option value="台中">台中 (Taichung)</option>
-                  <option value="花蓮">花蓮 (Hualien)</option>
-                  <option value="高雄">高雄 (Kaohsiung)</option>
-                  <option value="沖繩">沖繩 (Okinawa, Japan)</option>
-                  <option value="東京">東京 (Tokyo, Japan)</option>
-                  <option value="首爾">首爾 (Seoul, Korea)</option>
-                  <option value="曼谷">曼谷 (Bangkok, Thailand)</option>
-                </>
-              )}
-            </datalist>
           </div>
+        </div>
 
-          {/* Sort Selector */}
-          <div style={{ flex: 1, minWidth: '180px' }}>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              style={{ ...inputStyle, width: '100%', fontWeight: '700' }}
-            >
-              <option value="price_asc">💰 價格由低到高 (最低價優先)</option>
-              <option value="price_desc">💰 價格由高到低</option>
-              <option value="rating_desc">⭐ 旅客評分由高到低</option>
-            </select>
+        {/* Dates & Nights */}
+        <div>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.4rem', fontWeight: 600 }}>
+            入住 - 退房日期 (晚數)
+          </label>
+          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+            <input
+              type="date"
+              value={checkIn}
+              onChange={(e) => setCheckIn(e.target.value)}
+              style={{
+                flex: 1,
+                padding: '0.65rem',
+                borderRadius: '10px',
+                background: 'rgba(15, 23, 42, 0.6)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#fff'
+              }}
+            />
+            <input
+              type="number"
+              min="1"
+              max="30"
+              value={stayNights}
+              onChange={(e) => handleNightsChange(e.target.value)}
+              style={{
+                width: '60px',
+                padding: '0.65rem',
+                borderRadius: '10px',
+                background: 'rgba(15, 23, 42, 0.6)',
+                border: '1px solid rgba(99, 102, 241, 0.4)',
+                color: '#6366f1',
+                fontWeight: 700,
+                textAlign: 'center'
+              }}
+            />
+            <span style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>晚</span>
           </div>
+        </div>
 
-          {/* Search CTA */}
+        {/* Guests Picker */}
+        <div style={{ position: 'relative' }}>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.4rem', fontWeight: 600 }}>
+            入住人數
+          </label>
           <button
-            type="submit"
-            disabled={isSearching}
-            className="btn-primary"
-            style={{ height: '48px', padding: '0 26px', borderRadius: '14px', fontSize: '0.94rem' }}
+            type="button"
+            onClick={() => setShowGuestPicker(!showGuestPicker)}
+            style={{
+              width: '100%',
+              padding: '0.65rem',
+              borderRadius: '10px',
+              background: 'rgba(15, 23, 42, 0.6)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              cursor: 'pointer'
+            }}
           >
-            <RefreshCw size={16} className={isSearching ? 'animate-spin' : ''} style={{ animation: isSearching ? 'spin 1s linear infinite' : 'none' }} />
-            <span>{isSearching ? '即時搜尋中...' : '搜尋飯店'}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}>
+              <Users size={16} color="#6366f1" />
+              {adults} 大 {children} 小
+            </span>
           </button>
 
-        </div>
-
-        {/* Quick Destination Pills */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Globe size={14} color="#059669" /> 熱門搜尋：
-          </span>
-          {quickDestinations.map(d => (
-            <button
-              key={d.value}
-              type="button"
-              onClick={() => { setDestination(d.value); }}
-              style={{
-                background: destination === d.value ? '#059669' : '#f8fafc',
-                color: destination === d.value ? '#ffffff' : '#334155',
-                border: '1px solid rgba(15, 23, 42, 0.08)',
-                padding: '4px 12px',
-                borderRadius: '8px',
-                fontSize: '0.8rem',
-                fontWeight: '700',
-                cursor: 'pointer'
-              }}
-            >
-              {d.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Secondary Filter Controls */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '16px',
-          paddingTop: '16px',
-          borderTop: '1px solid rgba(15, 23, 42, 0.06)'
-        }}>
-
-          {/* Guest Picker Popover & Check-In/Out Row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-
-            {/* Popover Guest Picker Component */}
+          {showGuestPicker && (
             <GuestPickerPopover
-              rooms={rooms}
-              setRooms={setRooms}
               adults={adults}
               setAdults={setAdults}
-              childrenCount={childrenCount}
-              setChildrenCount={setChildrenCount}
+              children={children}
+              setChildren={setChildren}
               childAges={childAges}
               setChildAges={setChildAges}
+              onClose={() => setShowGuestPicker(false)}
             />
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700' }}>入住退房：</span>
-              <input
-                type="date"
-                value={checkInDate}
-                onChange={(e) => setCheckInDate(e.target.value)}
-                style={inputStyle}
-              />
-              <span style={{ color: '#94a3b8' }}>~</span>
-              <input
-                type="date"
-                value={checkOutDate}
-                onChange={(e) => setCheckOutDate(e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-
-          </div>
-
-          {/* Stay Type */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700' }}>住宿類型：</span>
-            <select
-              value={stayType}
-              onChange={(e) => setStayType(e.target.value)}
-              style={inputStyle}
-            >
-              <option value="all">全部分類</option>
-              <option value="Hotel">平價飯店</option>
-              <option value="Family Hotel">親子飯店</option>
-              <option value="B&B">特色民宿</option>
-            </select>
-          </div>
-
-          {/* Max Budget Slider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: '240px' }}>
-            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', whiteSpace: 'nowrap' }}>
-              預算上限: <strong style={{ color: '#059669' }}>NT$ {maxPrice.toLocaleString()}</strong>
-            </span>
-            <input
-              type="range"
-              min="500"
-              max="30000"
-              step="500"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              style={{ flex: 1, accentColor: '#059669' }}
-            />
-          </div>
-
+          )}
         </div>
 
-      </form>
+        {/* Sort Selector */}
+        <div>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.4rem', fontWeight: 600 }}>
+            排序方式
+          </label>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.65rem',
+              borderRadius: '10px',
+              background: 'rgba(15, 23, 42, 0.6)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#fff'
+            }}
+          >
+            <option value="composite">✨ 綜合推薦 (評分與價格平衡)</option>
+            <option value="price_asc">💰 價格由低到高</option>
+            <option value="price_desc">💎 價格由高到低</option>
+            <option value="rating">★ 評分優先</option>
+          </select>
+        </div>
 
+        {/* Search Button */}
+        <div>
+          <button
+            type="button"
+            onClick={handleTriggerSearch}
+            style={{
+              width: '100%',
+              padding: '0.75rem',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+              color: '#fff',
+              border: 'none',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)'
+            }}
+          >
+            <Search size={18} />
+            搜尋比價
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

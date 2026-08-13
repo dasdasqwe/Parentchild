@@ -1,12 +1,17 @@
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { getStays } from './controllers/stayController.js';
-import { getTourPackages, getFamilyAttractions, getFamilyShows } from './controllers/exploreController.js';
-import { handleLineWebhook, simulateLineMessage } from './controllers/lineController.js';
-import { getSavedStays, saveStay, deleteSavedStay, clearSavedStays, getCities } from './controllers/savedStaysController.js';
-import { scrapeOpenDataAttractions } from './services/openDataService.js';
+
+import { initDatabase } from './db/sqliteEngine.js';
+import { searchStays } from './controllers/stayController.js';
+import { getAttractions, getShows } from './controllers/exploreController.js';
+import { handleWebhook, handleSimulate } from './controllers/lineController.js';
+import { createItinerary, getItinerary } from './controllers/itineraryController.js';
+import { fetchOpenDataAttractions } from './services/openDataService.js';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,43 +19,38 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Initialize SQLite Tables & Seed Data
+initDatabase();
+
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// RESTful API Routes
-app.get('/api/stays/search', getStays);
-app.get('/api/search', getStays); // Backward-compatible alias
-
-// SQLite Multi-Module API Endpoints
-app.get('/api/explore/packages', getTourPackages);
-app.get('/api/explore/attractions', getFamilyAttractions);
-app.get('/api/explore/shows', getFamilyShows);
-app.get('/api/cities', getCities);
-
-// SQLite User Saved Stays Endpoints
-app.get('/api/saved-stays', getSavedStays);
-app.post('/api/saved-stays', saveStay);
-app.delete('/api/saved-stays/:id', deleteSavedStay);
-app.delete('/api/saved-stays', clearSavedStays);
-
-app.post('/api/line/webhook', handleLineWebhook);
-app.post('/api/line/simulate', simulateLineMessage);
-
-// Official Government Open Data API Route
+// API Routes
+app.get('/api/stays/search', searchStays);
+app.get('/api/explore/attractions', getAttractions);
+app.get('/api/explore/shows', getShows);
 app.get('/api/family-attractions', async (req, res) => {
-  const cityName = req.query.cityName || req.query.cityId || '台中';
-  const data = await scrapeOpenDataAttractions(cityName);
-  return res.json({ success: true, data });
+  const data = await fetchOpenDataAttractions();
+  res.json({ success: true, data });
 });
 
-// Serve Vite SPA static production build in dist/
-const distPath = path.join(__dirname, '../dist');
-app.use(express.static(distPath));
+// LINE Bot Routes
+app.post('/api/line/webhook', handleWebhook);
+app.post('/api/line/simulate', handleSimulate);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'));
-});
+// Itinerary Routes
+app.post('/api/itineraries', createItinerary);
+app.get('/api/itineraries/:shareCode', getItinerary);
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[SERVER] Clean StayPulse modular server running on port ${PORT}`);
+// Static files for Production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  });
+}
+
+app.listen(PORT, () => {
+  console.log(`[Server] StayPulse Express backend running on http://localhost:${PORT}`);
 });

@@ -2,255 +2,72 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import SearchPanel from './components/SearchPanel';
 import HotelGrid from './components/HotelGrid';
-import PaginationBar from './components/PaginationBar';
+import ExplorePage from './components/ExplorePage';
+import ItineraryBuilder from './components/ItineraryBuilder';
 import LineBotDrawer from './components/LineBotDrawer';
-import SavedStaysModal from './components/SavedStaysModal';
-import Footer from './components/Footer';
 
 export default function App() {
-  const getTodayStr = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-  };
-
-  const getTomorrowStr = (addDays = 2) => {
-    const d = new Date();
-    d.setDate(d.getDate() + addDays);
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-  };
-
-  // State Management
-  const [destination, setDestination] = useState('');
-  const [sortBy, setSortBy] = useState('price_asc'); // 'price_asc' | 'price_desc' | 'rating_desc'
-  const [maxPrice, setMaxPrice] = useState(10000);
-  const [stayType, setStayType] = useState('all');
-  const [checkInDate, setCheckInDate] = useState(getTodayStr());
-  const [checkOutDate, setCheckOutDate] = useState(getTomorrowStr(2));
-  const [rooms, setRooms] = useState(1);
-  const [adults, setAdults] = useState(2);
-  const [childrenCount, setChildrenCount] = useState(2);
-  const [childAges, setChildAges] = useState(['', '']);
-  
-  // Sync childAges array length whenever childrenCount changes
-  useEffect(() => {
-    setChildAges(prev => Array.from({ length: childrenCount }, (_, i) => (prev && prev[i] !== undefined ? prev[i] : '')));
-  }, [childrenCount]);
-
-  // Pagination State
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
-
-  // Data & Loading States
-  const [stays, setStays] = useState([]);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    pageSize: 12,
-    totalPages: 1,
-    totalCount: 0,
-    hasNextPage: false,
-    hasPrevPage: false
-  });
-  const [isSearching, setIsSearching] = useState(false);
-
-  // Modals
-  const [isLineBotDrawerOpen, setIsLineBotDrawerOpen] = useState(false);
-  const [isSavedModalOpen, setIsSavedModalOpen] = useState(false);
-  const [savedItems, setSavedItems] = useState(() => {
-    try {
-      const local = localStorage.getItem('staypulse_saved_items');
-      return local ? JSON.parse(local) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [activeTab, setActiveTab] = useState('hotels');
+  const [hotels, setHotels] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isLineDrawerOpen, setIsLineDrawerOpen] = useState(false);
 
   useEffect(() => {
-    try {
-      localStorage.setItem('staypulse_saved_items', JSON.stringify(savedItems));
-    } catch (err) {
-      console.error('Failed to persist saved items:', err);
-    }
-  }, [savedItems]);
-
-  // Load saved stays from SQLite DB API on mount
-  useEffect(() => {
-    fetchSavedStays();
+    // Initial Hotel Load
+    handleSearch({});
   }, []);
 
-  const fetchSavedStays = async () => {
+  const handleSearch = async (params) => {
+    setLoading(true);
     try {
-      const res = await fetch('/api/saved-stays');
-      const data = await res.json();
-      if (data.success && Array.isArray(data.data)) {
-        setSavedItems(data.data);
-      }
-    } catch (err) {
-      console.warn('SQLite saved-stays sync fallback to localStorage:', err);
-    }
-  };
-
-  // Reset page to 1 when search inputs change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, rooms, adults, childrenCount, JSON.stringify(childAges)]);
-
-  // Fetch hotel data from backend API
-  useEffect(() => {
-    fetchStaysData();
-  }, [destination, sortBy, maxPrice, stayType, checkInDate, checkOutDate, rooms, adults, childrenCount, JSON.stringify(childAges), currentPage]);
-
-  const fetchStaysData = async () => {
-    setIsSearching(true);
-    try {
-      const formattedChildAges = childAges.map(a => (a !== '' && a !== null && a !== undefined ? a : 6)).join(',');
-      const query = new URLSearchParams({
-        destination: destination.trim(),
-        sort: sortBy,
-        maxPrice,
-        type: stayType,
-        page: currentPage,
-        pageSize: pageSize,
-        checkIn: checkInDate,
-        checkOut: checkOutDate,
-        rooms: rooms,
-        adults: adults,
-        children: childrenCount,
-        childAges: formattedChildAges
-      });
-
+      const query = new URLSearchParams(params).toString();
       const res = await fetch(`/api/stays/search?${query}`);
-      const data = await res.json();
-      if (data.success) {
-        setStays(data.data || []);
-        if (data.pagination) {
-          setPagination(data.pagination);
-        }
-      }
-    } catch (err) {
-      console.error('Fetch Stays Error:', err);
+      const json = await res.json();
+      setHotels(json.data || []);
+    } catch (e) {
+      console.error(e);
     } finally {
-      setIsSearching(false);
-    }
-  };
-
-  const handleToggleSave = async (item) => {
-    const exists = savedItems.some(i => i.id === item.id);
-    if (exists) {
-      handleRemoveSavedItem(item.id);
-    } else {
-      setSavedItems(prev => [...prev, item]);
-      try {
-        await fetch('/api/saved-stays', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(item)
-        });
-      } catch (err) {
-        console.error('Failed to save to SQLite:', err);
-      }
-    }
-  };
-
-  const handleRemoveSavedItem = async (id) => {
-    setSavedItems(prev => prev.filter(i => i.id !== id));
-    try {
-      await fetch(`/api/saved-stays/${id}`, { method: 'DELETE' });
-    } catch (err) {
-      console.error('Failed to remove from SQLite:', err);
-    }
-  };
-
-  const handleClearSaved = async () => {
-    setSavedItems([]);
-    try {
-      await fetch('/api/saved-stays', { method: 'DELETE' });
-    } catch (err) {
-      console.error('Failed to clear SQLite saved stays:', err);
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#f8fafc' }}>
-      
-      {/* 1. Clean Minimalist Navbar */}
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Navbar
-        onOpenLineBotDrawer={() => setIsLineBotDrawerOpen(true)}
-        onOpenSavedModal={() => setIsSavedModalOpen(true)}
-        savedCount={savedItems.length}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        toggleLineDrawer={() => setIsLineDrawerOpen(true)}
       />
 
-      {/* 2. Main Page Container */}
-      <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 24px', flex: 1, width: '100%' }}>
-        
-        {/* Search & Sort Panel */}
-        <SearchPanel
-          destination={destination}
-          setDestination={setDestination}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          stayType={stayType}
-          setStayType={setStayType}
-          checkInDate={checkInDate}
-          setCheckInDate={setCheckInDate}
-          checkOutDate={checkOutDate}
-          setCheckOutDate={setCheckOutDate}
-          rooms={rooms}
-          setRooms={setRooms}
-          adults={adults}
-          setAdults={setAdults}
-          childrenCount={childrenCount}
-          setChildrenCount={setChildrenCount}
-          childAges={childAges}
-          setChildAges={setChildAges}
-          onSearch={fetchStaysData}
-          isSearching={isSearching}
-        />
+      <main style={{ flex: 1, padding: '2rem 1.5rem', maxWidth: 1200, margin: '0 auto', width: '100%' }}>
+        {activeTab === 'hotels' && (
+          <div>
+            <SearchPanel onSearch={handleSearch} />
+            <HotelGrid hotels={hotels} loading={loading} />
+          </div>
+        )}
 
-        {/* Hotel Grid Canvas */}
-        <HotelGrid
-          stays={stays}
-          savedStays={savedItems}
-          onToggleSave={handleToggleSave}
-          destination={destination}
-        />
+        {activeTab === 'explore' && <ExplorePage />}
 
-        {/* Multi-page Pagination Bar */}
-        <PaginationBar
-          pagination={pagination}
-          onPageChange={(p) => setCurrentPage(p)}
-        />
-
+        {activeTab === 'itinerary' && <ItineraryBuilder />}
       </main>
 
-      {/* 3. LINE Bot Testing Drawer */}
+      {/* LINE Bot Simulator Drawer */}
       <LineBotDrawer
-        isOpen={isLineBotDrawerOpen}
-        onClose={() => setIsLineBotDrawerOpen(false)}
+        isOpen={isLineDrawerOpen}
+        onClose={() => setIsLineDrawerOpen(false)}
       />
 
-      {/* 4. Saved Stays Modal */}
-      <SavedStaysModal
-        isOpen={isSavedModalOpen}
-        onClose={() => setIsSavedModalOpen(false)}
-        savedItems={savedItems}
-        onRemoveItem={handleRemoveSavedItem}
-        onClearAll={handleClearSaved}
-      />
-
-      {/* 5. Clean Footer */}
-      <Footer
-        onOpenLineBotModal={() => setIsLineBotDrawerOpen(true)}
-        onOpenConsole={() => {}}
-      />
-
+      <footer style={{
+        textAlign: 'center',
+        padding: '1.5rem',
+        background: 'rgba(15, 23, 42, 0.9)',
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+        color: '#64748b',
+        fontSize: '0.85rem'
+      }}>
+        © 2026 StayPulse 親子資訊 LINE Bot — 全方位親子旅遊比價與景點探索平台
+      </footer>
     </div>
   );
 }

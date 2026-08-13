@@ -1,97 +1,123 @@
 import React from 'react';
-import { Building2, Bot, Heart, Sparkles, MapPin, Search } from 'lucide-react';
+import { Compass, Hotel, Calendar, MessageSquare, Heart, Sparkles } from 'lucide-react';
 
-export default function Navbar({ onOpenLineBotDrawer, onOpenSavedModal, savedCount }) {
+export default function Navbar({ activeTab, setActiveTab, toggleLineDrawer, savedCount }) {
   return (
     <header style={{
-      background: '#ffffff',
-      borderBottom: '1px solid rgba(15, 23, 42, 0.08)',
       position: 'sticky',
       top: 0,
-      zIndex: 100,
-      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.03)'
+      zIndex: 50,
+      padding: '1rem 2rem',
+      background: 'rgba(15, 23, 42, 0.8)',
+      backdropFilter: 'blur(16px)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between'
     }}>
-      <div style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        padding: '16px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '16px'
-      }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }} onClick={() => setActiveTab('hotels')}>
+        <div style={{
+          width: 40,
+          height: 40,
+          borderRadius: 12,
+          background: 'linear-gradient(135deg, #6366f1 0%, #ec4899 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 0 15px rgba(99, 102, 241, 0.5)'
+        }}>
+          <Sparkles color="#fff" size={24} />
+        </div>
+        <div>
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.025em', background: 'linear-gradient(to right, #fff, #cbd5e1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            StayPulse
+          </h1>
+          <p style={{ fontSize: '0.75rem', color: '#94a3b8' }}>親子旅遊一站式比價與探索</p>
+        </div>
+      </div>
 
-        {/* Brand Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '12px',
-            background: 'linear-gradient(135deg, #059669 0%, #0284c7 100%)',
+      <nav style={{ display: 'flex', gap: '0.5rem', background: 'rgba(255, 255, 255, 0.05)', padding: '0.25rem', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+        <button
+          onClick={() => setActiveTab('hotels')}
+          style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '22px',
-            boxShadow: '0 4px 12px rgba(5, 150, 105, 0.25)',
-            color: '#ffffff'
-          }}>
-            🏨
-          </div>
-          <div>
-            <span className="font-display" style={{ fontSize: '1.4rem', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.5px' }}>
-              StayPulse
-            </span>
-            <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', fontWeight: '600', marginTop: '-2px' }}>
-              全球國內外飯店比價 • LINE 機器人
-            </span>
-          </div>
-        </div>
+            gap: '0.5rem',
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: activeTab === 'hotels' ? 'var(--primary)' : 'transparent',
+            color: '#fff',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          <Hotel size={18} />
+          飯店比價
+        </button>
 
-        {/* Action Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button
-            onClick={onOpenLineBotDrawer}
-            style={{
-              padding: '10px 18px',
-              borderRadius: '12px',
-              background: 'rgba(6, 199, 85, 0.1)',
-              border: '1px solid rgba(6, 199, 85, 0.3)',
-              color: '#059669',
-              fontWeight: '700',
-              fontSize: '0.88rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            <Bot size={18} color="#06c755" />
-            <span>LINE 機器人查詢</span>
-          </button>
+        <button
+          onClick={() => setActiveTab('explore')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: activeTab === 'explore' ? 'var(--primary)' : 'transparent',
+            color: '#fff',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          <Compass size={18} />
+          親子探索
+        </button>
 
-          <button
-            onClick={onOpenSavedModal}
-            style={{
-              padding: '10px 16px',
-              borderRadius: '12px',
-              background: '#f8fafc',
-              border: '1px solid rgba(15, 23, 42, 0.1)',
-              color: '#0f172a',
-              fontWeight: '700',
-              fontSize: '0.88rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              cursor: 'pointer'
-            }}
-          >
-            <Heart size={18} color="#f43f5e" fill={savedCount > 0 ? "#f43f5e" : "transparent"} />
-            <span>收藏清單 ({savedCount})</span>
-          </button>
-        </div>
+        <button
+          onClick={() => setActiveTab('itinerary')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.5rem 1rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: activeTab === 'itinerary' ? 'var(--primary)' : 'transparent',
+            color: '#fff',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          <Calendar size={18} />
+          行程規劃
+        </button>
+      </nav>
 
+      <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <button
+          onClick={toggleLineDrawer}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.5rem 1rem',
+            borderRadius: '12px',
+            border: 'none',
+            background: 'linear-gradient(135deg, #06C755 0%, #00B900 100%)',
+            color: '#fff',
+            fontWeight: 700,
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(6, 199, 85, 0.3)'
+          }}
+        >
+          <MessageSquare size={18} />
+          LINE Bot 測試器
+        </button>
       </div>
     </header>
   );

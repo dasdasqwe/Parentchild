@@ -1,8 +1,30 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Diagnostic data
+.pnpm-debug.log*
+
+# Dependency directories
 node_modules/
-dist/
+
+# Environment variables
 .env
 .env.local
-.DS_Store
-*.db-wal
-*.db-shm
+.env.development.local
+.env.test.local
+.env.production.local
 
+# Build output
+dist/
+build/
+
+# SQLite / Database runtime files
+*.sqlite
+*.sqlite3
+server/db/staypulse_db.json

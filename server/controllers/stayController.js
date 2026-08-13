@@ -1,47 +1,25 @@
-import { searchGlobalHotels } from '../services/hotelService.js';
+import { searchHotelsService } from '../services/hotelService.js';
 
-export async function getStays(req, res) {
+export async function searchStays(req, res) {
   try {
-    const {
-      destination = '',
-      cityId = '',
-      type = 'all',
-      maxPrice = 10000,
-      sort = 'price_asc',
-      page = 1,
-      pageSize = 12,
+    const { city, keyword, minPrice, maxPrice, sortBy, checkIn, checkOut, adults, children, childAges } = req.query;
+    const agesArr = childAges ? String(childAges).split(',').map(n => parseInt(n, 10)) : [];
+
+    const hotels = await searchHotelsService({
+      city,
+      keyword,
+      minPrice,
+      maxPrice,
+      sortBy,
       checkIn,
       checkOut,
-      rooms = 1,
-      adults = 2,
-      children = 2,
-      childAges = '6,6'
-    } = req.query;
-
-    const targetDest = destination || cityId || '';
-
-    const result = await searchGlobalHotels({
-      destination: targetDest,
-      type,
-      maxPrice: Number(maxPrice),
-      sort,
-      page: Number(page),
-      pageSize: Number(pageSize),
-      checkIn,
-      checkOut,
-      rooms: Number(rooms),
-      adults: Number(adults),
-      children: Number(children),
-      childAges
+      adults: adults ? parseInt(adults, 10) : 2,
+      children: children ? parseInt(children, 10) : 0,
+      childAges: agesArr
     });
 
-    return res.json(result);
+    res.json({ success: true, count: hotels.length, data: hotels });
   } catch (err) {
-    console.error('Stay Search Error:', err);
-    return res.status(500).json({
-      success: false,
-      message: '抓取飯店數據失敗',
-      error: err.message
-    });
+    res.status(500).json({ success: false, error: err.message });
   }
 }

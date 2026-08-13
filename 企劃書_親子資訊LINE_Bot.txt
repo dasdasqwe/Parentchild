@@ -1,0 +1,682 @@
+================================================================================
+    親子資訊 LINE Bot — 全方位親子旅遊比價與景點探索平台 企劃書
+================================================================================
+
+專案名稱: 親子資訊 LINE Bot (ParentChild Travel Bot)
+版    本: v2.0 — 基於現有 StayPulse 平台之全面升級計畫
+日    期: 2026-08-12
+目    標: 打造一站式親子旅遊智能助手，整合飯店比價、親子景點、表演劇場搜尋，
+          並透過 LINE Bot 提供即時查詢服務
+
+================================================================================
+一、專案總覽
+================================================================================
+
+【現有基礎 (StayPulse)】
+
+目前已有一套運作中的飯店搜尋比價平台，部署於：
+https://parentchild.onrender.com/
+
+技術棧如下：
+
+  項目          現有技術
+  ──────────    ─────────────────────────────────────────
+  前端          React 18 + Vite 6 + Lucide Icons
+  後端          Express.js (Node.js)
+  資料庫        SQLite (better-sqlite3) — 飯店、景點、表演、城市資料
+  外部 API      SerpAPI (Google Hotels)、文化部 Open Data API
+  訂房平台連結  Agoda、Booking.com、Trip.com Deep Link
+  LINE Bot      基礎文字指令查詢 + Flex Message 卡片回覆
+  部署          Docker + Render.com
+
+【升級目標】
+
+將現有平台從「飯店比價工具」升級為完整的親子旅遊一站式平台，新增以下核心能力。
+
+
+================================================================================
+二、核心功能需求
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+功能 1：飯店搜尋與多平台比價排序
+────────────────────────────────────────────────────────────────────────────────
+
+※ 此功能在現有 StayPulse 中已有基礎實作，需要強化完善。
+
+【現有能力】
+  ✅ 依地點/飯店名稱搜尋 (SerpAPI + SQLite 雙引擎)
+  ✅ 價格由低到高/由高到低排序
+  ✅ 產生 Agoda、Booking.com、Trip.com 三大平台 Deep Link
+  ✅ 前端 SearchPanel 支援入住/退房日期、人數設定
+
+【需要強化】
+  □ 新增「評分排序」與「綜合排序」(價格 × 評分加權)
+  □ 新增「房型篩選」(親子房、家庭房、標準房)
+  □ 強化 SerpAPI 回傳資料解析：提取各平台實際價格而非僅最低價
+  □ 新增「價格走勢」功能：記錄同一飯店不同日期查詢的價格變化
+  □ 前端飯店卡片增加「各平台比價一覽表」，用戶可一眼看出最便宜的訂房管道
+
+【改動檔案】
+  ├── server/services/hotelService.js    — 強化排序邏輯、新增綜合排序演算法
+  ├── server/utils/urlBuilder.js         — 驗證並修正 Deep Link 參數完整性
+  ├── src/components/HotelCard.jsx       — 新增比價表格區塊
+  ├── src/components/SearchPanel.jsx     — 新增排序選項與房型篩選
+  └── server/db/sqliteEngine.js          — 新增 price_history 資料表
+
+
+────────────────────────────────────────────────────────────────────────────────
+功能 2：訂房網站超連結 (Deep Link 直連)
+────────────────────────────────────────────────────────────────────────────────
+
+※ 已有基礎架構，需確保參數帶入的完整性與正確性。
+
+【現有能力】
+  ✅ urlBuilder.js 已實作三大平台 Deep Link 建構
+  ✅ 帶入飯店名稱、入住日、退房日、大人/小孩人數
+
+【需要強化】
+  □ Agoda：加入 rooms 參數（目前寫死 rooms=1，應改為動態帶入）
+  □ Booking.com：加入 no_rooms 及 age 參數以傳遞小孩年齡
+  □ Trip.com：加入 childAges 明細參數
+  □ 新增 Hotels.com 作為第四個比價平台
+  □ 前端卡片上各平台按鈕直接打開對應網站，且網址完整帶入所有搜尋參數
+
+【改動檔案】
+  ├── server/utils/urlBuilder.js         — 修正各平台 URL 參數邏輯
+  └── src/components/HotelCard.jsx       — 強化平台切換按鈕 UI
+
+
+────────────────────────────────────────────────────────────────────────────────
+功能 3：入住退房日期與旅客資訊帶入訂房網
+────────────────────────────────────────────────────────────────────────────────
+
+※ 前端已支援日期/人數輸入，需確保後端到 Deep Link 全鏈路正確傳遞。
+
+【現有能力】
+  ✅ SearchPanel.jsx 已支援入住日、退房日、房間數、大人數、小孩數、小孩年齡
+  ✅ App.jsx 將參數傳遞給後端 API
+
+【需要強化】
+  □ 新增「住宿天數」自動計算與手動輸入
+    （雙向連動：改天數自動更新退房日，改退房日自動更新天數）
+  □ 小孩年齡選擇器改為下拉選單（0-17 歲），非自由輸入
+  □ 前端參數驗證：入住日不可早於今天、退房日必須晚於入住日
+  □ Deep Link 產生時，確認日期格式統一為 YYYY-MM-DD
+
+【改動檔案】
+  ├── src/App.jsx                         — 新增住宿天數計算邏輯
+  ├── src/components/SearchPanel.jsx      — 天數輸入與年齡下拉選單
+  ├── src/components/GuestPickerPopover.jsx — 強化年齡選擇 UI
+  └── server/utils/urlBuilder.js          — 日期格式標準化
+
+
+────────────────────────────────────────────────────────────────────────────────
+功能 4：親子景點與表演劇場搜尋 (未來擴充，本次先建好架構)
+────────────────────────────────────────────────────────────────────────────────
+
+※ 重要功能！此功能在現有系統中已有 SQLite 資料表與基礎 API，需要大幅擴充內容
+  並建立前端頁面。
+
+【現有能力】
+  ✅ sqliteEngine.js 已建立 family_attractions 與 family_shows_galleries 資料表
+  ✅ exploreController.js 已有景點/表演 API
+  ✅ openDataService.js 已串接文化部官方 Open Data API
+
+【需要新增】
+  □ 前端「探索」頁面：建立獨立的親子景點與表演劇場瀏覽頁
+  □ 景點卡片元件：顯示景點名稱、地址、門票、評分、特色標籤
+  □ 表演劇場卡片：顯示劇名、場館、票價、演出日期、購票連結
+  □ 超連結整合：
+      - 景點 → Google Maps 導航連結 + 官方網站連結
+      - 表演 → OPENTIX、Klook、KKday 購票連結
+  □ 資料來源擴充：
+      - 交通部觀光署「觀光資訊資料庫」API
+      - 文化部「展覽與表演」Open Data API（已串接）
+      - OPENTIX 親子演出資訊
+  □ SQLite 種子資料擴充：各縣市至少 5-10 筆親子景點/表演
+
+【新增/改動檔案】
+  ├── [NEW] src/components/ExplorePage.jsx         — 探索頁面主容器
+  ├── [NEW] src/components/AttractionCard.jsx      — 景點卡片元件
+  ├── [NEW] src/components/ShowCard.jsx            — 表演劇場卡片元件
+  ├── [NEW] src/components/ExploreSearchBar.jsx    — 探索搜尋列
+  ├── server/controllers/exploreController.js       — 擴充 API 回傳欄位
+  ├── server/services/openDataService.js            — 整合多個 Open Data 來源
+  ├── server/db/sqliteEngine.js                     — 擴充種子資料
+  ├── src/App.jsx                                   — 加入路由切換 (飯店/探索)
+  └── src/components/Navbar.jsx                     — 加入「探索景點」導航按鈕
+
+
+────────────────────────────────────────────────────────────────────────────────
+功能 5：LINE Bot 關鍵字查詢與頁面導引
+────────────────────────────────────────────────────────────────────────────────
+
+※ 核心功能！需重新設計 LINE Bot 指令體系，支援多類型查詢。
+
+【現有能力】
+  ✅ lineService.js 基礎文字解析 (「地點 預算」格式)
+  ✅ Flex Message 飯店卡片輪播回覆
+  ✅ Webhook 接收與 Reply API 回覆
+
+【需要重新設計】
+
+  ┌────────────────────────────────────────────────────────────────────┐
+  │                    LINE Bot 指令表                                │
+  ├──────────────────────────┬──────────────────┬─────────────────────┤
+  │ 指令格式                 │ 功能說明         │ 回覆內容            │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 搜尋飯店 宜蘭            │ 搜尋該地區飯店   │ Flex卡片輪播        │
+  │                          │                  │ (含比價連結)        │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 搜尋飯店 宜蘭 3000       │ 搜尋+預算上限    │ 預算內飯店卡片      │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 比價 蘭城晶英酒店        │ 指定飯店跨平台   │ 各平台價格+訂房連結 │
+  │                          │ 比價             │                     │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 訂房 蘭城晶英            │ 帶入完整訂房參數 │ Agoda/Booking直連   │
+  │ 0815-0817 2大2小         │                  │ (含日期人數)        │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 親子景點 台北            │ 搜尋親子景點     │ 景點Flex卡片        │
+  │                          │                  │ (含導航/介紹連結)   │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 親子表演 台北            │ 搜尋親子表演     │ 表演Flex卡片        │
+  │                          │                  │ (含購票連結)        │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 展覽 台中                │ 搜尋文化展覽     │ 官方展覽資訊        │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 幫助 / help              │ 指令說明         │ 所有指令列表        │
+  ├──────────────────────────┼──────────────────┼─────────────────────┤
+  │ 首頁                     │ 導引至網站       │ 網站連結按鈕        │
+  └──────────────────────────┴──────────────────┴─────────────────────┘
+
+【LINE Bot 回覆格式設計】
+
+  飯店查詢 → Flex Message 卡片輪播
+    - 飯店圖片 + 名稱 + 評分 + 最低價
+    - 按鈕 1: 「🏷 前往最低價 Agoda」→ Deep Link
+    - 按鈕 2: 「📊 查看完整比價」→ 網站比價頁面
+    - 按鈕 3: 「❤️ 加入收藏」→ PostBack
+
+  景點查詢 → Flex Message 卡片
+    - 景點圖片 + 名稱 + 地址
+    - 按鈕 1: 「📍 Google Maps 導航」
+    - 按鈕 2: 「📖 查看詳細介紹」→ 官方網站
+
+  表演查詢 → Flex Message 卡片
+    - 演出海報 + 劇名 + 場館 + 日期
+    - 按鈕 1: 「🎫 前往購票」→ OPENTIX/Klook
+    - 按鈕 2: 「📍 場館位置」→ Google Maps
+
+【新增/改動檔案】
+  ├── server/services/lineService.js         — 重寫指令解析器 (支援多指令)
+  ├── server/controllers/lineController.js   — 新增 PostBack 事件處理
+  ├── [NEW] server/services/lineFlexBuilder.js — 獨立 Flex Message 模板建構器
+  ├── [NEW] server/services/lineCommandParser.js — 指令解析器模組
+  └── src/components/LineBotDrawer.jsx       — 更新模擬測試面板的指令範例
+
+
+================================================================================
+三、額外建議功能
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+功能 6：行程規劃助手
+────────────────────────────────────────────────────────────────────────────────
+
+  • 使用者可建立「旅遊行程」，將飯店 + 景點 + 表演組合成完整行程
+  • 行程可分享為網頁連結
+  • LINE Bot 支援「我的行程」指令查看已儲存行程
+
+  新增檔案:
+  ├── [NEW] server/db/itineraryEngine.js        — 行程資料表 CRUD
+  ├── [NEW] server/controllers/itineraryController.js
+  ├── [NEW] src/components/ItineraryBuilder.jsx  — 行程編排拖拉介面
+  └── [NEW] src/components/ItinerarySharePage.jsx — 行程分享頁面
+
+
+────────────────────────────────────────────────────────────────────────────────
+功能 7：即時價格通知 (LINE Push Message)
+────────────────────────────────────────────────────────────────────────────────
+
+  • 使用者可設定「價格提醒」：當指定飯店價格低於目標值時主動推播
+  • 背景排程 (cron job) 定期查詢飯店價格
+  • LINE Push API 主動通知使用者
+
+  新增檔案:
+  ├── [NEW] server/services/priceAlertService.js   — 價格提醒引擎
+  ├── [NEW] server/cron/priceChecker.js            — 定時排程檢查
+  └── server/db/sqliteEngine.js                    — 新增 price_alerts 資料表
+
+
+────────────────────────────────────────────────────────────────────────────────
+功能 8：使用者評論與推薦系統
+────────────────────────────────────────────────────────────────────────────────
+
+  • 使用者可對飯店/景點留下簡評與評分
+  • 依據歷史查詢偏好推薦熱門飯店
+  • LINE Bot 支援「推薦 宜蘭」指令取得智能推薦
+
+  新增檔案:
+  ├── [NEW] server/db/reviewEngine.js
+  ├── [NEW] server/services/recommendationService.js
+  ├── [NEW] src/components/ReviewSection.jsx
+  └── [NEW] src/components/ReviewForm.jsx
+
+
+────────────────────────────────────────────────────────────────────────────────
+功能 9：多語系支援
+────────────────────────────────────────────────────────────────────────────────
+
+  • 繁體中文 (預設) / English / 日本語
+  • LINE Bot 自動偵測使用者語系並回覆對應語言
+
+
+────────────────────────────────────────────────────────────────────────────────
+功能 10：數據分析儀表板
+────────────────────────────────────────────────────────────────────────────────
+
+  • 管理後台顯示：熱門搜尋關鍵字、最多人收藏飯店、LINE Bot 使用率
+  • 視覺化圖表 (使用 Chart.js 或 Recharts)
+
+
+================================================================================
+四、技術架構
+================================================================================
+
+【系統架構】
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │                        使用者端                                │
+  │  ┌──────────────────┐    ┌──────────────────────────────────┐  │
+  │  │  LINE App         │    │  Web 瀏覽器 (React SPA)          │  │
+  │  │  (使用者手機)     │    │  https://parentchild.onrender.com│  │
+  │  └────────┬─────────┘    └──────────────┬───────────────────┘  │
+  └───────────┼────────────────────────────────┼───────────────────┘
+              │                                │
+              ▼                                ▼
+  ┌───────────────────┐         ┌──────────────────────────────────┐
+  │  LINE Messaging   │         │  Backend Server                  │
+  │  API Platform     │────────▶│  (Node.js + Express)             │
+  │  (Webhook)        │         │                                  │
+  └───────────────────┘         │  Controllers:                    │
+                                │  ├── stayController      飯店API│
+                                │  ├── exploreController   景點API│
+                                │  ├── lineController      LINE   │
+                                │  └── itineraryController 行程API│
+                                │                                  │
+                                │  Services:                       │
+                                │  ├── hotelService    飯店比價引擎│
+                                │  ├── lineService     LINE核心    │
+                                │  ├── lineCommandParser 指令解析  │
+                                │  ├── lineFlexBuilder  Flex模板   │
+                                │  ├── openDataService 政府Open Data│
+                                │  ├── priceAlertService 價格通知  │
+                                │  └── urlBuilder      Deep Link   │
+                                │                                  │
+                                │  Database:                       │
+                                │  └── SQLite (staypulse_hotels.db)│
+                                └──────────┬───────────────────────┘
+                                           │
+                          ┌────────────────┼────────────────┐
+                          ▼                ▼                ▼
+                  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+                  │  SerpAPI     │ │  文化部      │ │  Agoda /     │
+                  │  (Google     │ │  Open Data   │ │  Booking /   │
+                  │   Hotels)    │ │  API         │ │  Trip.com    │
+                  └──────────────┘ └──────────────┘ └──────────────┘
+
+
+【資料庫 Schema (SQLite)】
+
+  hotels (飯店主表)
+  ──────────────────────────────────────────────
+  id              INTEGER  PRIMARY KEY
+  hotel_key       TEXT     UNIQUE NOT NULL
+  name_zh         TEXT     NOT NULL
+  name_en         TEXT     NOT NULL
+  city_name       TEXT     NOT NULL
+  address         TEXT     NOT NULL
+  description     TEXT
+  rating          REAL     DEFAULT 4.8
+  reviews_count   INTEGER  DEFAULT 1200
+  hotel_class     INTEGER  DEFAULT 4
+  base_price      INTEGER  DEFAULT 3200
+  image_url       TEXT
+  amenities       TEXT     (JSON array)
+  keywords        TEXT
+
+  family_attractions (親子景點)
+  ──────────────────────────────────────────────
+  id              INTEGER  PRIMARY KEY
+  attraction_key  TEXT     UNIQUE NOT NULL
+  name            TEXT     NOT NULL
+  city_name       TEXT     NOT NULL
+  address         TEXT     NOT NULL
+  category        TEXT     DEFAULT '室內樂園'
+  ticket_price    INTEGER  DEFAULT 350
+  rating          REAL     DEFAULT 4.8
+  reviews_count   INTEGER  DEFAULT 1500
+  image_url       TEXT
+  features        TEXT
+  keywords        TEXT
+  official_url    TEXT     (新增：官方網站)
+  google_maps_url TEXT     (新增：Google Maps)
+
+  family_shows_galleries (親子表演藝廊)
+  ──────────────────────────────────────────────
+  id              INTEGER  PRIMARY KEY
+  show_key        TEXT     UNIQUE NOT NULL
+  title           TEXT     NOT NULL
+  venue           TEXT     NOT NULL
+  city_name       TEXT     NOT NULL
+  ticket_price    INTEGER  DEFAULT 600
+  rating          REAL     DEFAULT 4.9
+  reviews_count   INTEGER  DEFAULT 620
+  image_url       TEXT
+  event_date      TEXT
+  highlights      TEXT
+  keywords        TEXT
+  ticket_url      TEXT     (新增：購票連結)
+  venue_maps_url  TEXT     (新增：場館地圖)
+
+  price_history (價格歷史) [新增]
+  ──────────────────────────────────────────────
+  id              INTEGER  PRIMARY KEY
+  hotel_key       TEXT     FK → hotels
+  provider_name   TEXT
+  price           INTEGER
+  check_in_date   TEXT
+  check_out_date  TEXT
+  query_timestamp INTEGER
+
+  price_alerts (價格提醒) [新增]
+  ──────────────────────────────────────────────
+  id              INTEGER  PRIMARY KEY
+  line_user_id    TEXT
+  hotel_key       TEXT     FK → hotels
+  target_price    INTEGER
+  check_in_date   TEXT
+  check_out_date  TEXT
+  is_active       INTEGER
+  created_at      INTEGER
+
+  itineraries (旅遊行程) [新增]
+  ──────────────────────────────────────────────
+  id              INTEGER  PRIMARY KEY
+  share_code      TEXT     UNIQUE
+  line_user_id    TEXT
+  title           TEXT
+  items_json      TEXT     (JSON array)
+  created_at      INTEGER
+  updated_at      INTEGER
+
+
+================================================================================
+五、完整專案檔案結構
+================================================================================
+
+  親子資訊line rboot/
+  ├── .env                              # 環境變數 (API Keys)
+  ├── .env.example                      # 環境變數範例
+  ├── .gitignore
+  ├── Dockerfile                        # Docker 部署設定
+  ├── package.json                      # Node.js 依賴
+  ├── vite.config.js                    # Vite 前端打包設定
+  ├── index.html                        # SPA 入口
+  │
+  ├── src/                              # 前端 (React)
+  │   ├── main.jsx                      # React 入口
+  │   ├── App.jsx                       # 主應用 + 路由
+  │   ├── index.css                     # 全域樣式
+  │   └── components/
+  │       ├── Navbar.jsx                # 導航列 (含探索按鈕)
+  │       ├── SearchPanel.jsx           # 飯店搜尋面板
+  │       ├── GuestPickerPopover.jsx    # 旅客人數選擇器
+  │       ├── HotelCard.jsx             # 飯店卡片 (含比價表)
+  │       ├── HotelGrid.jsx             # 飯店網格容器
+  │       ├── PaginationBar.jsx         # 分頁導航
+  │       ├── ExplorePage.jsx           # [NEW] 探索頁面
+  │       ├── AttractionCard.jsx        # [NEW] 景點卡片
+  │       ├── ShowCard.jsx              # [NEW] 表演卡片
+  │       ├── ExploreSearchBar.jsx      # [NEW] 探索搜尋列
+  │       ├── ItineraryBuilder.jsx      # [NEW] 行程規劃器
+  │       ├── ItinerarySharePage.jsx    # [NEW] 行程分享頁
+  │       ├── ReviewSection.jsx         # [NEW] 評論區塊
+  │       ├── LineBotDrawer.jsx         # LINE Bot 測試面板
+  │       ├── SavedStaysModal.jsx       # 收藏彈窗
+  │       └── Footer.jsx               # 頁尾
+  │
+  ├── server/                           # 後端 (Express.js)
+  │   ├── index.js                      # Express 主入口 + 路由
+  │   ├── config/
+  │   │   └── env.js                    # 環境變數載入
+  │   ├── controllers/
+  │   │   ├── stayController.js         # 飯店搜尋 API
+  │   │   ├── exploreController.js      # 景點/表演 API
+  │   │   ├── lineController.js         # LINE Webhook
+  │   │   ├── savedStaysController.js   # 收藏 CRUD API
+  │   │   └── itineraryController.js    # [NEW] 行程 API
+  │   ├── services/
+  │   │   ├── hotelService.js           # 飯店比價核心引擎
+  │   │   ├── lineService.js            # LINE Bot 核心邏輯
+  │   │   ├── lineCommandParser.js      # [NEW] 指令解析器
+  │   │   ├── lineFlexBuilder.js        # [NEW] Flex 模板工廠
+  │   │   ├── openDataService.js        # 政府 Open Data 串接
+  │   │   ├── priceAlertService.js      # [NEW] 價格提醒引擎
+  │   │   └── recommendationService.js  # [NEW] 推薦引擎
+  │   ├── db/
+  │   │   └── sqliteEngine.js           # SQLite 資料庫引擎
+  │   ├── utils/
+  │   │   ├── urlBuilder.js             # Deep Link 建構器
+  │   │   └── pagination.js             # 分頁工具
+  │   └── cron/
+  │       └── priceChecker.js           # [NEW] 定時價格檢查
+  │
+  └── dist/                             # Vite 生產打包輸出
+
+
+================================================================================
+六、API 路由設計
+================================================================================
+
+【現有 API (保留並強化)】
+
+  方法     路由                        說明
+  ──────   ─────────────────────────   ──────────────────
+  GET      /api/stays/search           飯店搜尋比價
+  GET      /api/explore/packages       套裝行程
+  GET      /api/explore/attractions    親子景點
+  GET      /api/explore/shows          親子表演
+  GET      /api/cities                 城市列表
+  GET      /api/family-attractions     官方 Open Data 景點
+  GET      /api/saved-stays            取得收藏
+  POST     /api/saved-stays            新增收藏
+  DELETE   /api/saved-stays/:id        刪除收藏
+  DELETE   /api/saved-stays            清空收藏
+  POST     /api/line/webhook           LINE Webhook
+  POST     /api/line/simulate          LINE 模擬測試
+
+【新增 API】
+
+  方法     路由                                 說明
+  ──────   ──────────────────────────────────   ──────────────────
+  GET      /api/stays/:hotelKey/price-history   飯店價格歷史
+  POST     /api/price-alerts                    設定價格提醒
+  GET      /api/price-alerts/:lineUserId        取得使用者提醒
+  DELETE   /api/price-alerts/:id                取消價格提醒
+  POST     /api/itineraries                     建立行程
+  GET      /api/itineraries/:shareCode          取得行程 (分享)
+  PUT      /api/itineraries/:id                 更新行程
+  DELETE   /api/itineraries/:id                 刪除行程
+  GET      /api/explore/attractions/nearby      附近景點 (GPS)
+  GET      /api/explore/shows/upcoming          即將開演
+
+
+================================================================================
+七、LINE Bot 完整指令參考
+================================================================================
+
+【飯店相關】
+
+  📍 搜尋飯店 {地點}
+     範例: 搜尋飯店 宜蘭
+     回覆: 該地區飯店 Flex 卡片輪播
+
+  💰 搜尋飯店 {地點} {預算}
+     範例: 搜尋飯店 台北 5000
+     回覆: 預算內飯店列表
+
+  📊 比價 {飯店名稱}
+     範例: 比價 蘭城晶英酒店
+     回覆: Agoda / Booking / Trip.com 各平台價格
+
+  🛒 訂房 {飯店名稱} {入住日}-{退房日} {大人}大{小孩}小
+     範例: 訂房 蘭城晶英 0815-0817 2大2小
+     回覆: 各平台訂房直連按鈕 (含日期人數預填)
+
+【景點與表演】
+
+  🎠 親子景點 {地點}
+     範例: 親子景點 台北
+     回覆: 景點 Flex 卡片 (含導航/介紹連結)
+
+  🎭 親子表演 {地點}
+     範例: 親子表演 宜蘭
+     回覆: 表演 Flex 卡片 (含購票連結)
+
+  🖼 展覽 {地點}
+     範例: 展覽 台中
+     回覆: 文化部官方展覽資訊
+
+【行程與收藏】
+
+  📋 我的行程
+     回覆: 已儲存行程列表
+
+  ❤️ 我的收藏
+     回覆: 已收藏飯店列表
+
+  🔔 設定提醒 {飯店名稱} {目標價格}
+     範例: 設定提醒 蘭城晶英 5000
+     回覆: 確認訊息，當價格低於 5000 時通知
+
+【系統指令】
+
+  ❓ 幫助 / help
+     回覆: 完整指令說明
+
+  🏠 首頁
+     回覆: 網站連結按鈕
+
+
+================================================================================
+八、開發階段規劃
+================================================================================
+
+Phase 1：核心飯店比價強化 (1-2 週)
+────────────────────────────────────
+  [x] 確認現有系統可正常運作
+  [ ] 強化 urlBuilder.js Deep Link 參數完整性
+  [ ] 新增住宿天數雙向連動計算
+  [ ] 改善飯店卡片比價 UI
+  [ ] 新增綜合排序演算法
+  [ ] 新增 Hotels.com 平台支援
+
+Phase 2：LINE Bot 指令系統重建 (1-2 週)
+────────────────────────────────────
+  [ ] 建立 lineCommandParser.js 多指令解析器
+  [ ] 建立 lineFlexBuilder.js Flex 模板工廠
+  [ ] 實作飯店搜尋、比價、訂房指令
+  [ ] 實作景點/表演搜尋指令
+  [ ] 實作幫助/首頁指令
+  [ ] 更新 LineBotDrawer.jsx 測試面板
+
+Phase 3：親子景點與表演模組 (2-3 週)
+────────────────────────────────────
+  [ ] 擴充 SQLite 種子資料 (各縣市 5-10 筆)
+  [ ] 建立前端探索頁面 (ExplorePage.jsx)
+  [ ] 建立景點/表演卡片元件
+  [ ] 整合 Google Maps 導航連結
+  [ ] 整合 OPENTIX / Klook 購票連結
+  [ ] 串接觀光署 Open Data API
+
+Phase 4：進階功能 (2-3 週)
+────────────────────────────────────
+  [ ] 行程規劃助手
+  [ ] 價格歷史記錄
+  [ ] 價格通知推播
+  [ ] 使用者評論系統
+  [ ] 數據分析儀表板
+
+Phase 5：部署與優化 (1 週)
+────────────────────────────────────
+  [ ] Docker 映像更新
+  [ ] Render.com 部署驗證
+  [ ] LINE Bot 正式 Webhook 設定
+  [ ] 效能壓力測試
+  [ ] 安全性檢查 (API Key 保護、Rate Limiting)
+
+
+================================================================================
+九、環境變數需求
+================================================================================
+
+  # LINE Messaging API
+  LINE_CHANNEL_ACCESS_TOKEN=your_token_here
+  LINE_CHANNEL_SECRET=your_secret_here
+
+  # SerpAPI (Google Hotels Data)
+  SERPAPI_KEY=your_serpapi_key_here
+
+  # Server
+  PORT=3001
+
+  # [NEW] 網站公開 URL (供 LINE Bot 導引使用)
+  PUBLIC_URL=https://parentchild.onrender.com
+
+  # [NEW] Google Maps API Key (選配，用於嵌入地圖)
+  GOOGLE_MAPS_API_KEY=your_key_here
+
+
+================================================================================
+十、待確認事項
+================================================================================
+
+  1. 開發範圍確認：是否要一次性完成 Phase 1-5 全部功能？
+     或是先完成 Phase 1-3 核心功能即可？
+
+  2. LINE Bot 已有 Channel 嗎？
+     是否已在 LINE Developers Console 建立好 Messaging API Channel
+     並取得 Token 和 Secret？
+
+  3. SerpAPI Key 是否有效？
+     現有 .env 中的 SERPAPI_KEY 是否可正常使用？
+     （免費方案每月 100 次查詢限制）
+
+  4. 專案目錄確認：新專案要建在「親子資訊line rboot」資料夾？
+     或是在現有「網頁資料爬蟲」資料夾上直接改？
+
+  5. 是否需要新增 Hotels.com 作為第四個比價平台？
+
+  6. 前端框架偏好：目前是 React + Vite，是否繼續使用？
+     或想換用 Next.js？
+
+================================================================================
+十一、設計決策待討論
+================================================================================
+
+  1. LINE Rich Menu：是否需要設計 LINE 圖文選單 (Rich Menu)？
+     讓用戶不用打字就能點選功能。
+
+  2. 登入系統：是否需要使用者帳號系統 (LINE Login OAuth)？
+     還是所有功能都匿名使用？
+
+  3. 通知頻率：價格提醒功能，多久檢查一次？(建議每 6 小時)
+
+  4. 資料更新：親子景點/表演資料多久更新一次？
+     (建議每天自動從 Open Data 同步)
+
+================================================================================
+                              企劃書完成
+================================================================================

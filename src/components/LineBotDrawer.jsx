@@ -1,208 +1,168 @@
 import React, { useState } from 'react';
-import { Bot, Send, X, Sparkles, CheckCircle2, MessageSquare } from 'lucide-react';
+import { X, Send, Bot, MessageSquare } from 'lucide-react';
 
 export default function LineBotDrawer({ isOpen, onClose }) {
-  const [query, setQuery] = useState('宜蘭 3000');
-  const [response, setResponse] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const sampleKeywords = ['宜蘭 3000', '台北 飯店', '沖繩 5000', '東京 4000', '花蓮 民宿'];
+  const [inputCommand, setInputCommand] = useState('搜尋飯店 宜蘭');
+  const [messages, setMessages] = useState([
+    { sender: 'bot', text: '👋 您好！我是 StayPulse 親子資訊 LINE Bot。\n請輸入關鍵字指令（例如：搜尋飯店 宜蘭、比價 蘭城晶英、親子景點 台北）開始體驗！' }
+  ]);
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleTestQuery = async (keywordToTest) => {
-    const target = keywordToTest || query;
-    if (!target.trim() || isLoading) return;
+  const handleSendMessage = async (textToSend) => {
+    const cmd = textToSend || inputCommand;
+    if (!cmd.trim()) return;
 
-    setIsLoading(true);
+    const newMsgs = [...messages, { sender: 'user', text: cmd }];
+    setMessages(newMsgs);
+    setInputCommand('');
+    setLoading(true);
+
     try {
       const res = await fetch('/api/line/simulate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: target.trim() })
+        body: JSON.stringify({ text: cmd })
       });
-      const data = await res.json();
-      setResponse(data);
-    } catch (err) {
-      console.error(err);
+      const json = await res.json();
+      if (json.success) {
+        setMessages([...newMsgs, { sender: 'bot', flex: json.message }]);
+      }
+    } catch (e) {
+      setMessages([...newMsgs, { sender: 'bot', text: '⚠️ 發生連線錯誤，請確定後端伺服器運作中。' }]);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
+
+  const quickCommands = [
+    '搜尋飯店 宜蘭',
+    '比價 蘭城晶英酒店',
+    '訂房 蘭城晶英 0815-0817 2大2小',
+    '親子景點 台北',
+    '親子表演 宜蘭',
+    '展覽 台中',
+    '幫助'
+  ];
 
   return (
     <div style={{
       position: 'fixed',
       top: 0,
-      left: 0,
       right: 0,
-      bottom: 0,
-      background: 'rgba(15, 23, 42, 0.4)',
-      backdropFilter: 'blur(8px)',
-      zIndex: 999,
+      width: '420px',
+      maxWidth: '100vw',
+      height: '100vh',
+      zIndex: 1000,
+      background: '#0f172a',
+      borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
       display: 'flex',
-      justify: 'flex-end'
+      flexDirection: 'column',
+      boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.6)'
     }}>
-
+      {/* Header */}
       <div style={{
-        width: '440px',
-        maxWidth: '100%',
-        height: '100%',
-        background: '#ffffff',
-        boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.1)',
+        padding: '1.25rem',
+        background: 'linear-gradient(135deg, #06C755 0%, #00B900 100%)',
+        color: '#fff',
         display: 'flex',
-        flexDirection: 'column',
-        padding: '24px',
-        position: 'relative'
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
-
-        {/* Drawer Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', borderBottom: '1px solid rgba(15, 23, 42, 0.08)', paddingBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: '#06c755', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
-              <Bot size={22} />
-            </div>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
-                LINE 機器人關鍵字測試
-              </h3>
-              <span style={{ fontSize: '0.78rem', color: '#059669', fontWeight: '600' }}>
-                ● 在線服務中 (格式：地點 + 預算)
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}
-          >
-            <X size={22} />
-          </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800 }}>
+          <Bot size={22} />
+          LINE Bot 關鍵字線上模擬測試器
         </div>
-
-        {/* Drawer Body */}
-        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          
-          {/* Quick Keywords */}
-          <div>
-            <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', marginBottom: '8px' }}>
-              點擊快速測試關鍵字：
-            </div>
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              {sampleKeywords.map((kw, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setQuery(kw); handleTestQuery(kw); }}
-                  style={{
-                    background: '#f8fafc',
-                    border: '1px solid rgba(15, 23, 42, 0.1)',
-                    color: '#059669',
-                    fontSize: '0.82rem',
-                    borderRadius: '8px',
-                    padding: '4px 10px',
-                    fontWeight: '700',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {kw}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Test Input Form */}
-          <form onSubmit={(e) => { e.preventDefault(); handleTestQuery(); }} style={{ display: 'flex', gap: '8px' }}>
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="輸入關鍵字 (例如：沖繩 5000 或 東京 4000)..."
-              style={{
-                flex: 1,
-                height: '42px',
-                padding: '0 12px',
-                borderRadius: '10px',
-                background: '#f8fafc',
-                color: '#0f172a',
-                border: '1px solid rgba(15, 23, 42, 0.12)',
-                outline: 'none',
-                fontSize: '0.88rem',
-                fontWeight: '600'
-              }}
-            />
-            <button
-              type="submit"
-              disabled={isLoading}
-              style={{
-                height: '42px',
-                padding: '0 18px',
-                borderRadius: '10px',
-                background: '#06c755',
-                color: '#ffffff',
-                border: 'none',
-                fontWeight: '800',
-                fontSize: '0.88rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                cursor: 'pointer'
-              }}
-            >
-              {isLoading ? '解析中...' : '傳送'}
-              <Send size={15} />
-            </button>
-          </form>
-
-          {/* LINE Response Preview */}
-          {response && (
-            <div style={{
-              background: '#f8fafc',
-              borderRadius: '16px',
-              padding: '16px',
-              border: '1px solid rgba(6, 199, 85, 0.3)'
-            }}>
-              <div style={{ fontWeight: '800', color: '#059669', marginBottom: '12px', fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={16} /> LINE Flex 輪播卡片 (已成功為您找到 {response.count} 筆飯店)
-              </div>
-
-              {response.data && response.data.length > 0 ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {response.data.map((item, idx) => (
-                    <div key={idx} style={{
-                      background: '#ffffff',
-                      borderRadius: '12px',
-                      padding: '12px',
-                      border: '1px solid rgba(15, 23, 42, 0.08)',
-                      display: 'flex',
-                      gap: '12px',
-                      alignItems: 'center'
-                    }}>
-                      <img src={item.image} alt={item.name} style={{ width: '64px', height: '64px', borderRadius: '8px', objectFit: 'cover' }} />
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {item.name}
-                        </div>
-                        <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px' }}>
-                          ⭐ {item.rating} ({item.cityName})
-                        </div>
-                        <div style={{ fontSize: '0.95rem', fontWeight: '900', color: '#059669', marginTop: '4px' }}>
-                          NT$ {(item.price || 0).toLocaleString()} /晚起
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>
-                  未找到相符飯店，請嘗試放大預算額度！
-                </div>
-              )}
-            </div>
-          )}
-
-        </div>
-
+        <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+          <X size={20} />
+        </button>
       </div>
 
+      {/* Quick Quick Commands Tag Cloud */}
+      <div style={{ padding: '0.75rem', background: '#1e293b', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', display: 'flex', gap: '0.4rem', overflowX: 'auto' }}>
+        {quickCommands.map((cmd, idx) => (
+          <button
+            key={idx}
+            onClick={() => handleSendMessage(cmd)}
+            style={{
+              whiteSpace: 'nowrap',
+              fontSize: '0.75rem',
+              padding: '0.3rem 0.6rem',
+              borderRadius: '12px',
+              background: 'rgba(255, 255, 255, 0.08)',
+              color: '#a5b4fc',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              cursor: 'pointer'
+            }}
+          >
+            {cmd}
+          </button>
+        ))}
+      </div>
+
+      {/* Message Chat Body */}
+      <div style={{ flex: 1, padding: '1rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {messages.map((m, idx) => (
+          <div key={idx} style={{
+            alignSelf: m.sender === 'user' ? 'flex-end' : 'flex-start',
+            maxWidth: '85%'
+          }}>
+            {m.sender === 'user' ? (
+              <div style={{ padding: '0.75rem 1rem', borderRadius: '16px 16px 0 16px', background: '#06C755', color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>
+                {m.text}
+              </div>
+            ) : m.text ? (
+              <div style={{ padding: '0.75rem 1rem', borderRadius: '16px 16px 16px 0', background: '#1e293b', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', fontSize: '0.85rem', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>
+                {m.text}
+              </div>
+            ) : m.flex ? (
+              <div style={{ padding: '0.75rem', borderRadius: '16px', background: '#1e293b', border: '1px solid rgba(6, 199, 85, 0.3)' }}>
+                <div style={{ fontSize: '0.75rem', color: '#06C755', fontWeight: 800, marginBottom: '0.5rem' }}>
+                  📱 LINE Flex Message 回覆模擬:
+                </div>
+                <pre style={{ fontSize: '0.7rem', color: '#a5b4fc', background: '#0f172a', padding: '0.5rem', borderRadius: '6px', overflowX: 'auto', maxHeight: 220 }}>
+                  {JSON.stringify(m.flex, null, 2)}
+                </pre>
+              </div>
+            ) : null}
+          </div>
+        ))}
+        {loading && <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>🤖 Bot 正在思考回覆中...</div>}
+      </div>
+
+      {/* Input Footer */}
+      <div style={{ padding: '1rem', background: '#1e293b', borderTop: '1px solid rgba(255, 255, 255, 0.05)', display: 'flex', gap: '0.5rem' }}>
+        <input
+          type="text"
+          placeholder="輸入指令... (例: 搜尋飯店 宜蘭)"
+          value={inputCommand}
+          onChange={(e) => setInputCommand(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+          style={{
+            flex: 1,
+            padding: '0.65rem',
+            borderRadius: '8px',
+            background: '#0f172a',
+            border: '1px solid #334155',
+            color: '#fff'
+          }}
+        />
+        <button
+          onClick={() => handleSendMessage()}
+          style={{
+            padding: '0.65rem 1rem',
+            borderRadius: '8px',
+            background: '#06C755',
+            color: '#fff',
+            border: 'none',
+            fontWeight: 700,
+            cursor: 'pointer'
+          }}
+        >
+          <Send size={18} />
+        </button>
+      </div>
     </div>
   );
 }

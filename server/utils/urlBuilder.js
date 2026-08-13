@@ -1,63 +1,53 @@
 /**
- * Format provider deep-link URLs with checkIn, checkOut, adults, children, and dynamic per-child ages for Agoda, Booking.com, and Trip.com
- * Pre-fills exact hotel name, dates, adults, children count, and individual child ages for all 3 booking channels.
+ * Dynamic Deep Link Builder for Major Hotel Booking Platforms
  */
-export function buildProviderDeepLinks(stay = {}, query = {}, normCityName = '') {
-  const checkIn = (query && query.checkIn) || stay.checkIn || '2026-08-12';
-  const checkOut = (query && query.checkOut) || stay.checkOut || '2026-08-14';
-  const adults = Number((query && query.adults) || stay.adults || 2);
-  const children = Number((query && query.children) || stay.children || 2);
-  const rawChildAges = (query && query.childAges) || stay.childAges || '6,6';
 
-  const d1 = new Date(checkIn);
-  const d2 = new Date(checkOut);
-  const diffNights = Math.max(1, Math.round((d2 - d1) / (1000 * 3600 * 24))) || 2;
+export function buildDeepLinks({ hotelName, cityName, checkIn, checkOut, adults = 2, children = 0, childAges = [] }) {
+  const encHotel = encodeURIComponent(hotelName);
+  const encCity = encodeURIComponent(cityName || '');
+  const encHotelCity = encodeURIComponent(`${cityName || ''} ${hotelName}`);
 
-  const rawName = stay.hotelName || stay.name || stay.cityName || normCityName || '飯店';
-  const fullHotelKw = encodeURIComponent(rawName);
+  // Standardized Date Format: YYYY-MM-DD
+  const cin = checkIn || new Date().toISOString().split('T')[0];
+  const cout = checkOut || new Date(Date.now() + 86400000).toISOString().split('T')[0];
 
-  // Format childAges for Agoda URL
-  let formattedAges = '6';
-  if (children > 0) {
-    if (typeof rawChildAges === 'string') {
-      const parts = rawChildAges.split(',').map(a => (a.trim() !== '' ? a.trim() : '6'));
-      while (parts.length < children) parts.push('6');
-      formattedAges = parts.slice(0, children).join(',');
-    } else if (Array.isArray(rawChildAges)) {
-      const parts = rawChildAges.map(a => (a !== '' && a !== null && a !== undefined ? a : 6));
-      while (parts.length < children) parts.push(6);
-      formattedAges = parts.slice(0, children).join(',');
-    }
+  // 1. Agoda Deep Link
+  // Parameters: textToSearch, checkIn, checkOut, rooms, adults, children, childages
+  let agodaUrl = `https://www.agoda.com/search?textToSearch=${encHotelCity}&checkIn=${cin}&checkOut=${cout}&rooms=1&adults=${adults}&children=${children}`;
+  if (children > 0 && childAges.length > 0) {
+    agodaUrl += `&childages=${childAges.join(',')}`;
   }
 
-  const childAgesParam = children > 0 ? `&childAges=${formattedAges}` : '';
+  // 2. Booking.com Deep Link
+  // Parameters: ss, checkin, checkout, group_adults, group_children, no_rooms=1
+  let bookingUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${encHotelCity}&checkin=${cin}&checkout=${cout}&group_adults=${adults}&group_children=${children}&no_rooms=1`;
+  if (children > 0 && childAges.length > 0) {
+    childAges.forEach(age => {
+      bookingUrl += `&age=${age}`;
+    });
+  }
 
-  const basePrice = stay.price || stay.basePrice || 3200;
+  // 3. Trip.com Deep Link
+  // Parameters: keyword, checkIn, checkOut, Adult, Children, childAges
+  let tripUrl = `https://tw.trip.com/hotels/list?keyword=${encHotelCity}&checkIn=${cin}&checkOut=${cout}&Adult=${adults}&Children=${children}`;
+  if (children > 0 && childAges.length > 0) {
+    tripUrl += `&childAges=${childAges.join(',')}`;
+  }
 
-  const inputProviders = (stay.providers && stay.providers.length > 0) ? stay.providers : [
-    { name: 'Agoda', price: basePrice, isLowest: true },
-    { name: 'Booking.com', price: Math.round(basePrice * 1.05) },
-    { name: 'Trip.com', price: Math.round(basePrice * 1.08) }
-  ];
+  // 4. Hotels.com Deep Link
+  // Parameters: q, d1 (checkin YYYY-MM-DD), d2 (checkout YYYY-MM-DD), rooms=1, adults
+  let hotelsComUrl = `https://tw.hotels.com/Hotel-Search?q-destination=${encHotelCity}&d1=${cin}&d2=${cout}&rooms=1&q-room-0-adults=${adults}`;
+  if (children > 0) {
+    hotelsComUrl += `&q-room-0-children=${children}`;
+    childAges.forEach((age, idx) => {
+      hotelsComUrl += `&q-room-0-child-${idx}-age=${age}`;
+    });
+  }
 
-  return inputProviders.map(p => {
-    const pName = (p.name || '').toLowerCase();
-    let targetUrl = '';
-
-    if (pName.includes('booking')) {
-      targetUrl = `https://www.booking.com/searchresults.zh-tw.html?ss=${fullHotelKw}&checkin=${checkIn}&checkout=${checkOut}&group_adults=${adults}&group_children=${children}&sb=1&src=search_results`;
-    } else if (pName.includes('agoda')) {
-      targetUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${fullHotelKw}&asq=${fullHotelKw}&text=${fullHotelKw}&kw=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}${childAgesParam}&rooms=1`;
-    } else if (pName.includes('trip')) {
-      targetUrl = `https://tw.trip.com/hotels/list?searchValue=${fullHotelKw}&keyword=${fullHotelKw}&searchName=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&adult=${adults}&children=${children}`;
-    } else {
-      // Default to Agoda clean search deep link
-      targetUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${fullHotelKw}&asq=${fullHotelKw}&text=${fullHotelKw}&kw=${fullHotelKw}&checkIn=${checkIn}&checkOut=${checkOut}&checkin=${checkIn}&checkout=${checkOut}&los=${diffNights}&adults=${adults}&children=${children}${childAgesParam}&rooms=1`;
-    }
-
-    return {
-      ...p,
-      url: targetUrl
-    };
-  });
+  return {
+    agoda: agodaUrl,
+    booking: bookingUrl,
+    trip: tripUrl,
+    hotelsCom: hotelsComUrl
+  };
 }

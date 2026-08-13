@@ -1,29 +1,29 @@
 {
-  "name": "budget-stay-scraper",
-  "private": true,
-  "version": "1.0.0",
+  "name": "parentchild-travel-line-bot",
+  "version": "2.0.0",
+  "description": "親子資訊 LINE Bot — 全方位親子旅遊比價與景點探索平台",
+  "main": "server/index.js",
   "type": "module",
   "scripts": {
-    "dev": "node node_modules/vite/bin/vite.js",
-    "build": "node node_modules/vite/bin/vite.js build",
+    "dev": "vite",
+    "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
     "start": "node server/index.js"
   },
   "dependencies": {
+    "@line/bot-sdk": "^9.4.0",
     "axios": "^1.7.9",
-    "better-sqlite3": "^13.0.3",
-    "cheerio": "^1.0.0",
+    "better-sqlite3": "^11.8.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "lucide-react": "^0.475.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.1.0"
+    "@vitejs/plugin-react": "^4.7.0",
+    "vite": "^6.4.3"
   }
 }
