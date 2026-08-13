@@ -37,18 +37,21 @@ class LocalJSONDatabase {
   prepare(sql) {
     const self = this;
 
-    // Simple pattern matching helper for DB operations
     return {
       all: (...params) => {
         if (sql.includes('FROM hotels')) {
           let list = [...self.data.hotels];
           if (params.length >= 2 && sql.includes('city_name LIKE')) {
             const c = params[0].replace(/%/g, '');
-            list = list.filter(h => h.city_name.includes(c) || h.address.includes(c));
+            if (c) {
+              list = list.filter(h => h.city_name.includes(c) || h.address.includes(c));
+            }
           }
           if (sql.includes('name_zh LIKE')) {
             const k = params[params.length - 1].replace(/%/g, '');
-            list = list.filter(h => h.name_zh.includes(k) || h.name_en.includes(k) || h.keywords.includes(k));
+            if (k) {
+              list = list.filter(h => h.name_zh.includes(k) || h.name_en.includes(k) || h.keywords.includes(k));
+            }
           }
           return list;
         }
@@ -57,7 +60,9 @@ class LocalJSONDatabase {
           let list = [...self.data.family_attractions];
           if (params.length > 0) {
             const c = params[0].replace(/%/g, '');
-            list = list.filter(a => a.city_name.includes(c) || a.address.includes(c));
+            if (c) {
+              list = list.filter(a => a.city_name.includes(c) || a.address.includes(c));
+            }
           }
           return list;
         }
@@ -66,7 +71,9 @@ class LocalJSONDatabase {
           let list = [...self.data.family_shows_galleries];
           if (params.length > 0) {
             const c = params[0].replace(/%/g, '');
-            list = list.filter(s => s.city_name.includes(c) || s.venue.includes(c));
+            if (c) {
+              list = list.filter(s => s.city_name.includes(c) || s.venue.includes(c));
+            }
           }
           return list;
         }
@@ -120,7 +127,9 @@ class LocalJSONDatabase {
 const db = new LocalJSONDatabase();
 
 export function initDatabase() {
-  if (db.data.hotels.length === 0) {
+  // Always seed default full Taiwan database if missing key cities
+  const existingCities = db.data.hotels.map(h => h.city_name);
+  if (!existingCities.includes('台中') || !existingCities.includes('高雄') || !existingCities.includes('花蓮')) {
     db.data.hotels = [
       {
         id: 1,
@@ -172,6 +181,22 @@ export function initDatabase() {
       },
       {
         id: 4,
+        hotel_key: 'mandarin_oriental_taipei',
+        name_zh: '台北文華東方酒店',
+        name_en: 'Mandarin Oriental Taipei',
+        city_name: '台北',
+        address: '台北市松山區敦化北路158號',
+        description: '奢華歐式宮廷風格，極致貼心之親子VIP客房服務與專屬兒童禮遇。',
+        rating: 4.9,
+        reviews_count: 1890,
+        hotel_class: 5,
+        base_price: 11800,
+        image_url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&auto=format&fit=crop',
+        amenities: JSON.stringify(['米其林餐廳', '奢華SPA', '兒童專屬迎賓禮', '溫水泳池']),
+        keywords: '台北 文華東方 奢華頂級 親子禮遇 敦化北路'
+      },
+      {
+        id: 5,
         hotel_key: 'leofoo_resort_hsinchu',
         name_zh: '關西六福莊生態渡假旅館',
         name_en: 'Leofoo Resort Guanshi',
@@ -185,6 +210,70 @@ export function initDatabase() {
         image_url: 'https://images.unsplash.com/photo-1535827841776-24afc1e255ac?w=800&auto=format&fit=crop',
         amenities: JSON.stringify(['動物近距離觀賞', '六福村門票套票', '生態導覽']),
         keywords: '新竹 關西 六福莊 動物飯店 長頸鹿 六福村 親子'
+      },
+      {
+        id: 6,
+        hotel_key: 'freshfields_taichung',
+        name_zh: '清新溫泉飯店',
+        name_en: 'Freshfields Hotel Taichung',
+        city_name: '台中',
+        address: '台中市烏日區溫泉路2號',
+        description: '天然碳酸氫鈉溫泉，戶外兒童戲水池區與巨型兒童室內球池俱樂部。',
+        rating: 4.6,
+        reviews_count: 2350,
+        hotel_class: 5,
+        base_price: 4200,
+        image_url: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&auto=format&fit=crop',
+        amenities: JSON.stringify(['天然溫泉', '露天水療泡湯', '球池遊樂場', '夜景餐廳']),
+        keywords: '台中 清新溫泉 烏日 溫泉 親子球池 夜景'
+      },
+      {
+        id: 7,
+        hotel_key: 'evergreen_taichung',
+        name_zh: '台中長榮桂冠酒店',
+        name_en: 'Evergreen Laurel Hotel Taichung',
+        city_name: '台中',
+        address: '台中市西屯區臺灣大道二段666號',
+        description: '經典五星級飯店，打造全新海底世界兒童遊戲室與繪本閱讀空間。',
+        rating: 4.7,
+        reviews_count: 3100,
+        hotel_class: 5,
+        base_price: 3600,
+        image_url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop',
+        amenities: JSON.stringify(['海底世界球池', '戶外泳池', '健身房', '五星美食']),
+        keywords: '台中 長榮桂冠 臺灣大道 親子遊戲室 西屯'
+      },
+      {
+        id: 8,
+        hotel_key: 'hualien_far_glory',
+        name_zh: '遠雄悅來大飯店',
+        name_en: 'Farglory Hotel Hualien',
+        city_name: '花蓮',
+        address: '花蓮縣壽豐鄉山嶺18號',
+        description: '維多利亞宮廷渡假風，坐擁太平洋海景與海洋公園無縫接軌體驗。',
+        rating: 4.8,
+        reviews_count: 3100,
+        hotel_class: 5,
+        base_price: 6800,
+        image_url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&auto=format&fit=crop',
+        amenities: JSON.stringify(['海洋公園接駁', '無敵海景泳池', '兒童遊戲室']),
+        keywords: '花蓮 遠雄悅來 海洋公園 海景飯店 壽豐 親子渡假'
+      },
+      {
+        id: 9,
+        hotel_key: 'kaohsiung_grand_hi_lai',
+        name_zh: '高雄漢來大飯店',
+        name_en: 'Grand Hi-Lai Hotel Kaohsiung',
+        city_name: '高雄',
+        address: '高雄市前金區成功一路266號',
+        description: '高雄新灣區奢華地標，聯名三麗鷗主題親子房與露天泳池。',
+        rating: 4.8,
+        reviews_count: 4200,
+        hotel_class: 5,
+        base_price: 4800,
+        image_url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&auto=format&fit=crop',
+        amenities: JSON.stringify(['三麗鷗主題房', '露天海景泳池', '漢來海港餐廳']),
+        keywords: '高雄 漢來 大飯店 三麗鷗 主題房 成功一路 親子'
       }
     ];
 
@@ -220,6 +309,22 @@ export function initDatabase() {
         keywords: '台北 士林 天文館 宇宙探險 室內科普 雨天備案',
         official_url: 'https://www.tam.gov.taipei/',
         google_maps_url: 'https://maps.google.com/?q=臺北市立天文科學教育館'
+      },
+      {
+        id: 3,
+        attraction_key: 'national_science_museum_taichung',
+        name: '國立自然科學博物館 (科博館)',
+        city_name: '台中',
+        address: '台中市北區館前路1號',
+        category: '室內展館',
+        ticket_price: 100,
+        rating: 4.9,
+        reviews_count: 14200,
+        image_url: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&auto=format&fit=crop',
+        features: '會動的超巨型恐龍模型、生命科學廳、3D立體劇場與植物園溫室。',
+        keywords: '台中 科博館 恐龍 展覽 室內景點 親子教育',
+        official_url: 'https://www.nmns.edu.tw/',
+        google_maps_url: 'https://maps.google.com/?q=國立自然科學博物館'
       }
     ];
 
