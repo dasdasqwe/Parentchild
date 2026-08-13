@@ -12,9 +12,9 @@ export function buildDeepLinks({ hotelName, cityName, checkIn, checkOut, adults 
   const cin = checkIn || new Date().toISOString().split('T')[0];
   const cout = checkOut || new Date(Date.now() + 86400000).toISOString().split('T')[0];
 
-  // 1. Agoda Deep Link (Official Search Endpoint: https://www.agoda.com/zh-tw/search?city=... & textToSearch=...)
-  // Note: Agoda requires `los` (length of stay) or `checkIn`/`checkOut` alongside `city` or `textToSearch`
-  let agodaUrl = `https://www.agoda.com/zh-tw/search?textToSearch=${encSearch}&checkIn=${cin}&checkOut=${cout}&rooms=1&adults=${adults}&children=${children}&pcs=1`;
+  // 1. Agoda Deep Link
+  // Use `pages/agoda/default/page_textSearchResult.aspx` or `search` with `city` and `textToSearch`
+  let agodaUrl = `https://www.agoda.com/zh-tw/pages/agoda/default/page_textSearchResult.aspx?textToSearch=${encSearch}&checkIn=${cin}&checkOut=${cout}&rooms=1&adults=${adults}&children=${children}`;
   if (children > 0 && childAges.length > 0) {
     agodaUrl += `&childages=${childAges.join(',')}`;
   }
