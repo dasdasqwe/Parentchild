@@ -32,8 +32,9 @@ export function buildDeepLinks({ hotelName, cityName, checkIn, checkOut, adults 
     });
   }
 
-  // 3. Trip.com Deep Link (Standard endpoint & clean parameters)
-  let tripUrl = `https://tw.trip.com/hotels/list?keyword=${encSearch}&checkIn=${cin}&checkOut=${cout}&Adult=${adults}&Children=${children}`;
+  // 3. Trip.com Deep Link
+  // Use `searchWord` parameter (Trip.com standard) instead of `keyword` to prevent string truncation
+  let tripUrl = `https://tw.trip.com/hotels/list?searchWord=${encSearch}&checkIn=${cin}&checkOut=${cout}&Adult=${adults}&Children=${children}`;
   if (children > 0 && childAges.length > 0) {
     tripUrl += `&childAges=${childAges.join(',')}`;
   }
