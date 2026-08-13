@@ -5,7 +5,13 @@
 export function buildDeepLinks({ hotelName, cityName, checkIn, checkOut, adults = 2, children = 0, childAges = [] }) {
   // Clean hotel name by removing detailed room descriptions (e.g. "Meant To Be - Comfort Double Room - 1st Floor")
   let cleanName = (hotelName || '').split(' - ')[0].split(' (')[0].trim();
-  const searchKeyword = `${cityName || ''} ${cleanName}`.trim();
+  
+  // Avoid duplicate city prefix if hotelName already includes cityName (e.g. "台中長榮桂冠酒店" with cityName="台中")
+  let searchKeyword = cleanName;
+  if (cityName && !cleanName.includes(cityName)) {
+    searchKeyword = `${cityName} ${cleanName}`;
+  }
+
   const encSearch = encodeURIComponent(searchKeyword);
 
   // Standardized Date Format: YYYY-MM-DD
@@ -13,7 +19,6 @@ export function buildDeepLinks({ hotelName, cityName, checkIn, checkOut, adults 
   const cout = checkOut || new Date(Date.now() + 86400000).toISOString().split('T')[0];
 
   // 1. Agoda Deep Link
-  // Use `pages/agoda/default/page_textSearchResult.aspx` or `search` with `city` and `textToSearch`
   let agodaUrl = `https://www.agoda.com/zh-tw/pages/agoda/default/page_textSearchResult.aspx?textToSearch=${encSearch}&checkIn=${cin}&checkOut=${cout}&rooms=1&adults=${adults}&children=${children}`;
   if (children > 0 && childAges.length > 0) {
     agodaUrl += `&childages=${childAges.join(',')}`;
@@ -27,7 +32,7 @@ export function buildDeepLinks({ hotelName, cityName, checkIn, checkOut, adults 
     });
   }
 
-  // 3. Trip.com Deep Link
+  // 3. Trip.com Deep Link (Standard endpoint & clean parameters)
   let tripUrl = `https://tw.trip.com/hotels/list?keyword=${encSearch}&checkIn=${cin}&checkOut=${cout}&Adult=${adults}&Children=${children}`;
   if (children > 0 && childAges.length > 0) {
     tripUrl += `&childAges=${childAges.join(',')}`;
