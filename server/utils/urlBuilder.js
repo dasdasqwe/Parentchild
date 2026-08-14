@@ -39,14 +39,15 @@ export function buildDeepLinks({ hotelName, cityName, checkIn, checkOut, adults 
   }
 
   // 4. Hotels.com Deep Link
-  // Use `destination` and `startDate`/`endDate` standard Expedia parameters for Hotels.com
-  let hotelsComUrl = `https://tw.hotels.com/Hotel-Search?destination=${encSearch}&startDate=${cin}&endDate=${cout}&rooms=1&q-room-0-adults=${adults}`;
+  // Build room specification string for Hotels.com (e.g., rm1=a2c2:3:2) to reliably lock in the exact hotel search and guest count
+  let rmParam = `a${adults}`;
   if (children > 0) {
-    hotelsComUrl += `&q-room-0-children=${children}`;
-    childAges.forEach((age, idx) => {
-      hotelsComUrl += `&q-room-0-child-${idx}-age=${age}`;
-    });
+    rmParam += `c${children}`;
+    if (childAges.length > 0) {
+      rmParam += `:${childAges.join(':')}`;
+    }
   }
+  let hotelsComUrl = `https://tw.hotels.com/Hotel-Search?q-destination=${encSearch}&chkin=${cin}&chkout=${cout}&rm1=${rmParam}`;
 
   return {
     agoda: agodaUrl,
